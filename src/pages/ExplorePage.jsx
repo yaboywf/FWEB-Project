@@ -53,8 +53,6 @@ const ExplorePage = () => {
         setFilteredStudents(filtered);
     }
 
-    console.log(filteredStudents);
-
     return (
         <>
             <Nav />
