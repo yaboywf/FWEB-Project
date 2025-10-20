@@ -72,12 +72,6 @@ router.post("/login", async (req, res) => {
 
         const userCopy = { ...user };
         delete userCopy.password;
-        res.cookie("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "none",
-            maxAge: 60 * 60 * 1000 * 3,  // 3 hours
-        });
         return res.json({ token, user: userCopy });
     } catch (err) {
         console.error(err);
