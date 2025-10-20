@@ -1,0 +1,122 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: sans-serif;
+    scroll-behavior: smooth;
+}
+body {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+body > main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow-y: hidden;
+    height: 100vh;
+}
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+*::-webkit-scrollbar-thumb {
+    background: #c4c4c4;
+    border-radius: 10px;
+}
+.error_container {
+    position: absolute;
+    top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40vw;
+    pointer-events: none;
+    z-index: 2;
+}
+.error {
+    background: red;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    color: white;
+    padding: 10px 15px;
+    animation: errorAnimation 5s ease-in-out forwards;
+}
+.success {
+    background: green !important;
+}
+.error::before {
+    font: var(--fa-font-solid);
+    content: "\f06a";
+    color: white;
+}
+.spinner {
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.spinner::before {
+    content: "";
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border-top: 5px solid black !important;
+    border: 5px solid transparent;
+    animation: spin 1s linear infinite;
+}
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@keyframes errorAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px)
+    }
+
+    5% {
+        opacity: 1;
+        transform: translateY(0)
+    }
+
+    95% {
+        opacity: 1;
+        transform: translateY(0)
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px)
+    }
+}
+@media screen and (max-width: 800px) {
+    .error_container {
+        width: 80vw;
+    }
+}
+@media screen and (max-width: 250px) {
+    body *:not(main), main * {
+        display: none !important;
+    }
+    main::before {
+        content: "We are unable to display this page on your screen as is too small";
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px;
+        text-align: center;
+    }
+}
