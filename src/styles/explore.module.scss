@@ -1,0 +1,82 @@
+.search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 5px 0;
+    border-bottom: 1px solid black;
+    width: max-content;
+    margin: 10px 20px;
+
+    &::before {
+        font: var(--fa-font-solid);
+        content: "\f002";
+    }
+
+    input {
+        outline: none;
+        height: 100%;
+        background: transparent;
+        border: none;
+        font-size: 16px;
+        width: 350px;
+
+        &::-webkit-search-cancel-button {
+            display: none;
+        }
+    }
+
+    @media screen and (max-width: 450px) {
+        width: unset;
+    }
+}
+
+.container {
+    overflow: auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 10px;
+    padding: 0 20px 10px 20px;
+
+    .weakness {
+        background: #cec080;
+    }
+
+    .strength {
+        background: #accbdf;
+    }
+
+    >div:not(div[data-spinner]) {
+        padding: 15px;
+        border-radius: 20px;
+        border: 1px solid black;
+    }
+}
+
+.student_skills {
+    display: flex;
+    gap: 5px;
+    font-size: 12px;
+    border-top: 1px solid black;
+    padding-top: 8px;
+    margin-top: 8px;
+
+    div {
+        display: flex;
+        align-items: center;
+        padding: 3px 5px;
+        border-radius: 10px;
+        border: 1px solid black;
+    }
+
+    i {
+        aspect-ratio: 1;
+        margin-left: auto;
+        display: flex;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        padding: 5px;
+        background: lightgrey;
+    }
+}

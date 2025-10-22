@@ -3,7 +3,7 @@ import Sidebar from "./Sidebar";
 import axios from "redaxios";
 import { useNavigate } from "react-router-dom";
 import '../styles/icons.css';
-import '../styles/general.css';
+import '../styles/general.scss';
 import { useEffect } from "react";
 import REQ from "./Request";
 import { useUser } from "./UserProvider";

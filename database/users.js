@@ -5,6 +5,7 @@ const UserSchema = new Schema(
         student_id: {
             type: String,
             required: true,
+            unique: true,
             set: v => v?.toUpperCase(),
             validate: {
                 validator: function (value) {
@@ -53,4 +54,5 @@ const UserSchema = new Schema(
     }
 );
 
+UserSchema.index({ student_id: 1 }, { unique: true });
 export default model("User", UserSchema);

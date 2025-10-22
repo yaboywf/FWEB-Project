@@ -1,0 +1,148 @@
+.request_form {
+    padding: 10px 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    overflow: auto;
+
+    h2 {
+        font-size: 20px;
+        margin-bottom: 10px;
+
+        &:not(:first-of-type) {
+            margin-top: 20px;
+        }
+    }
+
+    p {
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    >div {
+        padding: 15px;
+        border: 1px solid black;
+        border-radius: 20px;
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+    }
+
+    .day,
+    .time {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .time {
+        margin-top: 10px;
+
+        p:last-of-type {
+            font-size: 13px;
+            color: grey;
+            user-select: none;
+        }
+    }
+
+    .day {
+        input {
+            display: none;
+
+            +label {
+                border: 1px solid black;
+                border-radius: 20px;
+                cursor: pointer;
+                text-align: center;
+                font-size: 12px;
+                min-width: 80px;
+                padding: 5px 0;
+            }
+
+            &:checked+label {
+                background: lightgrey;
+            }
+        }
+    }
+
+    input[type='time'],
+    input[type='date'] {
+        border: none;
+        outline: none;
+        border-bottom: 1px solid black;
+        padding: 5px 8px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    button {
+        grid-row: 3;
+        grid-column: 2;
+        padding: 5px 10px;
+        margin-left: auto;
+        border-radius: 10px;
+        cursor: pointer;
+        border: 1px solid black;
+        min-width: 100px;
+    }
+
+    .module {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        min-width: 120px;
+
+        input {
+            display: none;
+
+            +label {
+                border-radius: 10px;
+                padding: 5px;
+                cursor: pointer;
+                flex-direction: column;
+                font-size: 12px;
+                border: 1px solid black;
+            }
+
+            &:checked+label {
+                background: lightgrey;
+            }
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        .time {
+            flex-direction: column;
+            align-items: start;
+            gap: 5px;
+
+            p,
+            label {
+                font-weight: bold;
+            }
+
+            label {
+                margin-top: 10px;
+            }
+
+            p:nth-of-type(2) {
+                margin-top: 10px;
+            }
+
+            input {
+                width: 100%;
+            }
+        }
+    }
+
+    @media screen and (max-width: 950px) {
+        grid-template-columns: 1fr !important;
+
+        button {
+            grid-row: unset;
+            grid-column: 1;
+        }
+    }
+}

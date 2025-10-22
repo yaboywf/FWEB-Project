@@ -1,0 +1,119 @@
+.login {
+    display: flex;
+    width: 100%;
+
+    .bg {
+        background: url(login.webp) center/cover no-repeat;
+        width: 70%;
+        flex-shrink: 0;
+        padding: 10px;
+        mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 93%, rgba(0, 0, 0, 0));
+        -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 93%, rgba(0, 0, 0, 0));
+    }
+
+    form {
+        width: 30%;
+        display: flex;
+        flex-direction: column;
+        padding: 40px;
+        gap: 10px;
+
+        div {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            border-bottom: 1px solid black;
+
+            &:last-of-type {
+                flex-direction: column;
+            }
+        }
+    }
+
+    input {
+        flex: 1;
+        width: 100%;
+        padding: 5px 0;
+        border: none;
+        font-size: 14px;
+        background: transparent;
+        outline: none;
+
+        &::before {
+            font: var(--fa-font-solid);
+            content: "\f007";
+            margin-right: 10px;
+        }
+
+        &:nth-of-type(2)::before {
+            content: "\f2b5";
+        }
+    }
+
+    label {
+        font-size: 16px;
+        font-weight: bold;
+
+        &:last-of-type {
+            margin-top: 20px;
+        }
+    }
+
+    img {
+        user-select: none;
+        height: 130px;
+        object-fit: contain;
+        padding-bottom: 10px;
+        margin-bottom: 50px;
+    }
+
+    button {
+        padding: 8px 30px;
+        border-radius: 10px;
+        border: 1px solid #d3d3d3;
+        background: #ececec;
+        font-size: 14px;
+        cursor: pointer;
+        width: max-content;
+        margin-left: auto;
+    }
+
+    p {
+        font-size: 13px;
+        color: black;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .fa-eye-slash,
+    .fa-eye {
+        cursor: pointer;
+        width: 30px;
+        display: flex !important;
+        justify-content: center;
+    }
+
+    @media screen and (max-width: 800px) {
+        form {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 80%;
+            border-radius: 20px;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+        }
+
+        .bg {
+            width: 100%;
+            padding: 0 !important;
+            mask-image: none;
+            -webkit-mask-image: none;
+        }
+
+        img {
+            margin-bottom: 30px;
+        }
+    }
+}

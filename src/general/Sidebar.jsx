@@ -1,4 +1,4 @@
-import styles from "../styles/aside.module.css";
+import styles from "../styles/aside.module.scss";
 import { useState, useEffect, useMemo } from "react";
 import { useUser } from "../general/UserProvider";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ const Sidebar = () => {
         };
 
         fetchProficiencies();
-    }, [user.student_id]);
+    }, [user?.student_id]);
 
     useEffect(() => {
         let startX = 0;

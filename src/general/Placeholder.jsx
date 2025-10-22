@@ -1,4 +1,4 @@
-import '../styles/general.css'
+import '../styles/general.scss'
 
 const Placeholder = ({ height=20, width=50 }) => {
     return (

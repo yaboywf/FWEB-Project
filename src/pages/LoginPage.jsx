@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../general/UserProvider";
 import showMessage from "../general/Message";
-import styles from "../styles/login.module.css";
+import styles from "../styles/login.module.scss";
 import REQ from "../general/Request";
 import axios from "redaxios";
 
@@ -50,16 +50,7 @@ const LoginPage = () => {
                         <i onClick={() => setShowPassword(!showPassword)} className={showPassword ? "fa-solid fa-eye" : "fa-solid fa-eye-slash"} id="eyeIcon"></i>
                     </div>
                     <button type="submit">Login</button>
-                    <div>
-                        <a href="reset1.html">
-                            <i className="fa-solid fa-lock-open"></i>
-                            Reset password
-                        </a>
-                        <a href="register1.html">
-                            <i className="fa-solid fa-plus"></i>
-                            Create account
-                        </a>
-                    </div>
+                    <p onClick={() => navigate("/register")}>No account? Create one!</p>
             </form>
         </div>
     );

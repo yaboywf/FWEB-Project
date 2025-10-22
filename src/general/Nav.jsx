@@ -1,4 +1,4 @@
-import styles from '../styles/nav.module.css'
+import styles from '../styles/nav.module.scss'
 import { useNavigate } from 'react-router-dom';
 
 const Nav = ({ active = "explore" }) => {

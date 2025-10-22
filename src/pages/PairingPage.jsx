@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 import Nav from "../general/Nav"
 import REQ from "../general/Request"
 import axios from "redaxios"
-import styles from '../styles/pair.module.css'
-import styles1 from '../styles/student.module.css'
+import styles from '../styles/pair.module.scss'
+import styles1 from '../styles/student.module.scss'
 import showMessage from "../general/Message"
 import Placeholder from "../general/Placeholder"
 

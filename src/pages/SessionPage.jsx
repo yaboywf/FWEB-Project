@@ -6,8 +6,8 @@ import axios from "redaxios";
 import REQ from "../general/Request";
 import showMessage from "../general/Message";
 import Placeholder from "../general/Placeholder";
-import styles from '../styles/session.module.css'
-import styles1 from '../styles/student.module.css'
+import styles from '../styles/session.module.scss'
+import styles1 from '../styles/student.module.scss'
 
 const SessionPage = () => {
     const navigate = useNavigate();

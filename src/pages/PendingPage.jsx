@@ -3,8 +3,8 @@ import { useUser } from "../general/UserProvider";
 import Nav from "../general/Nav"
 import axios from "redaxios";
 import REQ from "../general/Request";
-import styles from '../styles/pending.module.css'
-import styles1 from '../styles/student.module.css'
+import styles from '../styles/pending.module.scss'
+import styles1 from '../styles/student.module.scss'
 import Placeholder from "../general/Placeholder";
 import { useNavigate } from "react-router-dom";
 import showMessage from "../general/Message";

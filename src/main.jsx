@@ -7,6 +7,7 @@ import NotFound from './general/NotFound'
 import Layout from './general/Layout'
 import Sidebar from './general/Sidebar';
 
+const RegisterPage = lazy(() => import('./pages/RegisterPage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const ExplorePage = lazy(() => import('./pages/ExplorePage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
@@ -22,6 +23,7 @@ createRoot(document.body).render(
 					<div className="error_container"></div>
 					<>
 						<Routes>
+							<Route path="/register" element={<RegisterPage />} />
 							<Route path="/" element={<LoginPage />} />
 							<Route element={<Layout />}>
 								<Route path="/explore" element={<ExplorePage />} />

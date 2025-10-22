@@ -1,6 +1,6 @@
 import Nav from "../general/Nav"
 import REQ from "../general/Request"
-import styles from '../styles/profile.module.css'
+import styles from '../styles/profile.module.scss'
 import { useUser } from "../general/UserProvider"
 import axios from "redaxios"
 import { useEffect, useState, useMemo } from "react"
@@ -173,6 +173,10 @@ const ProfilePage = () => {
                     <button type="submit">Save</button>
                     <button type="button" onClick={logout}>Logout</button>
                 </form>
+
+                <div>
+                    <h2>Achievement</h2>
+                </div>
 
                 <div>
                     <h2 id="modules_proficiency">Modules Proficiency</h2>

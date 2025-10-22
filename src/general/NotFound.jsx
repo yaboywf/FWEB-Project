@@ -1,5 +1,5 @@
-import styles from '../styles/error.module.css'
-import '../styles/general.css'
+import styles from '../styles/error.module.scss'
+import '../styles/general.scss'
 import { useNavigate } from "react-router-dom";
 
 const NotFound = () => {

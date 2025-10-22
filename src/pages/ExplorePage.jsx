@@ -2,9 +2,9 @@ import Nav from "../general/Nav";
 import axios from "redaxios";
 import { useEffect, useState } from "react";
 import showMessage from "../general/Message";
-import styles from '../styles/explore.module.css'
-import styles1 from '../styles/student.module.css'
-import '../styles/general.css'
+import styles from '../styles/explore.module.scss'
+import styles1 from '../styles/student.module.scss'
+import '../styles/general.scss'
 import REQ from "../general/Request";
 import Placeholder from "../general/Placeholder";
 import { useUser } from "../general/UserProvider";
