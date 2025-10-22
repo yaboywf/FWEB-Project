@@ -34,7 +34,7 @@ const checkRequiredKeys = (source, keys) => {
         if (!data) return res.status(400).json({ message: "Data is empty" });
         if (typeof data !== 'object') return res.status(400).json({ message: `Data not an object. It is a ${typeof data}` });
 
-        let missingKeys = keys.filter(key => !data.hasOwnProperty(key));
+        let missingKeys = keys.filter(key => !Object.prototype.hasOwnProperty.call(data, key));
         if (missingKeys.length > 0) return res.status(400).json({ message: "Missing required keys: " + missingKeys.join(", ") });
 
         next();

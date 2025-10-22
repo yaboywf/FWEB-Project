@@ -34,7 +34,6 @@ const ProficiencySchema = new Schema(
         }
     },
     {
-        timestamps: true,
         collection: "proficiencies"
     }
 );

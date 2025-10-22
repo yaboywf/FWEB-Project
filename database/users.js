@@ -46,10 +46,10 @@ const UserSchema = new Schema(
             type: String,
             required: true,
             minlength: 6
+        },
+        image: {
+            type: String,
         }
-    },
-    {
-        timestamps: true
     }
 );
 

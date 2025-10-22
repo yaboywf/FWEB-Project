@@ -32,25 +32,25 @@ const PairsSchema = new Schema(
             required: true
         },
         start_time: {
-            type: Date,
+            type: String,
             required: true,
             validate: {
                 validator: function (value) {
-                    const jsDay = value.getDay();
-                    const convertedDay = jsDay === 0 ? 7 : jsDay;
-                    return this.day === convertedDay;
+                    const time = value.split(":");
+                    return time.length === 2 && time[0] >= 0 && time[0] < 24 && time[1] >= 0 && time[1] < 60;
                 },
-                message: props => `start_time's day (${props.value.toDateString()}) does not match selected day (${this.day})`
+                message: "Invalid time format. Please use HH:MM format."
             }
         },
         end_time: {
-            type: Date,
+            type: String,
             required: true,
             validate: {
                 validator: function (value) {
-                    return value > this.start_time;
+                    const time = value.split(":");
+                    return time.length === 2 && time[0] >= 0 && time[0] < 24 && time[1] >= 0 && time[1] < 60;
                 },
-                message: "End time must be after start time"
+                message: "Invalid time format. Please use HH:MM format."
             }
         },
         status: {
@@ -59,7 +59,7 @@ const PairsSchema = new Schema(
             default: 1,
             required: true
         },
-        module: {
+        module_id: {
             type: Schema.Types.ObjectId,
             ref: "Module",
             required: true,
@@ -71,9 +71,12 @@ const PairsSchema = new Schema(
                 message: "Referenced module not found.",
             },
         },
+        end_date: {
+            type: Date,
+            required: true,
+        }
     },
     {
-        timestamps: true,
         collection: "pairs"
     }
 );

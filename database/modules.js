@@ -15,7 +15,6 @@ const ModuleSchema = new Schema(
         },
     },
     {
-        timestamps: true,
         collection: "modules"
     }
 );
