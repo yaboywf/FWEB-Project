@@ -7,10 +7,12 @@
     width: max-content;
     margin: 10px 20px;
 }
+
 .search::before {
     font: var(--fa-font-solid);
     content: "\f002";
 }
+
 .search input {
     outline: none;
     height: 100%;
@@ -19,9 +21,11 @@
     font-size: 16px;
     width: 350px;
 }
-.search input::-webkit-search-cancel-button{
-    display: none;  
+
+.search input::-webkit-search-cancel-button {
+    display: none;
 }
+
 .container {
     overflow: auto;
     display: grid;
@@ -29,17 +33,21 @@
     gap: 10px;
     padding: 0 20px 10px 20px;
 }
+
 .container .weakness {
     background: #cec080;
 }
+
 .container .strength {
     background: #accbdf;
 }
-.container > div {
+
+.container>div:not(div[data-spinner]) {
     padding: 15px;
     border-radius: 20px;
     border: 1px solid black;
 }
+
 .student_skills {
     display: flex;
     gap: 5px;
@@ -48,6 +56,7 @@
     padding-top: 8px;
     margin-top: 8px;
 }
+
 .student_skills div {
     display: flex;
     align-items: center;
@@ -55,6 +64,7 @@
     border-radius: 10px;
     border: 1px solid black;
 }
+
 .student_skills i {
     aspect-ratio: 1;
     margin-left: auto;
@@ -66,6 +76,7 @@
     padding: 5px;
     background: lightgrey;
 }
+
 @media screen and (max-width: 450px) {
     .search {
         width: unset;

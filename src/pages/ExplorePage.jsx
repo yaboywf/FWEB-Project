@@ -4,13 +4,16 @@ import { useEffect, useState } from "react";
 import showMessage from "../general/Message";
 import styles from '../styles/explore.module.css'
 import styles1 from '../styles/student.module.css'
+import '../styles/general.css'
 import REQ from "../general/Request";
+import Placeholder from "../general/Placeholder";
 import { useUser } from "../general/UserProvider";
 import { useNavigate } from "react-router-dom";
 
 const ExplorePage = () => {
     const navigate = useNavigate();
     const { user, userProficiencies } = useUser();
+    const [loading, setLoading] = useState(true);
     const [students, setStudents] = useState([]);
     const [filteredStudents, setFilteredStudents] = useState([]);
 
@@ -24,6 +27,7 @@ const ExplorePage = () => {
                 const matchableAccounts = await axios.get(`${REQ}/api/proficiency/matchable-accounts?strength=${encodeURIComponent(strength.join(','))}&weakness=${encodeURIComponent(weakness.join(','))}`, { withCredentials: true });
                 setStudents(matchableAccounts.data);
                 setFilteredStudents(matchableAccounts.data);
+                setLoading(false);
             } catch (err) {
                 console.error(err);
                 showMessage("Failed to fetch matchable accounts");
@@ -34,6 +38,7 @@ const ExplorePage = () => {
     }, [userProficiencies, user])
 
     const filter = (searchTerm) => {
+        if (loading) return;
         if (!searchTerm.trim()) {
             setFilteredStudents(students);
             return;
@@ -62,13 +67,32 @@ const ExplorePage = () => {
             </div>
 
             <div className={styles.container}>
+                {loading && Array.from({ length: 6 }).map((_, i) => (
+                    <div key={i}>
+                        <div className={styles1.student_info}>
+                            <img />
+                            <div>
+                                <Placeholder width={200} />
+                                <Placeholder width={150} />
+                                <Placeholder width={200} />
+                            </div>
+                        </div>
+                        <div className={styles.student_skills}>
+                            {Array.from({ length: 3 }).map((_, i) => (
+                                <Placeholder key={`proficiency_${i}`}></Placeholder>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+
+
                 {filteredStudents.map(student => (
                     <div key={student._id}>
                         <div className={styles1.student_info}>
                             <img src={student.image ? student.image : "favicon.webp"} />
                             <div>
-                                <p style={{ "--year": student.year_of_study }}>{student.name}</p>
-                                <p>{student.student_id}@student.tp.edu.sg</p>
+                                <p data-year={student.year_of_study || "?"}>{student.name}</p>
+                                <a href={`mailto:${student.student_id}@student.tp.edu.sg`}>{student.student_id}@student.tp.edu.sg</a>
                                 <p>{student.diploma}</p>
                             </div>
                         </div>

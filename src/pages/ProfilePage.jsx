@@ -5,17 +5,23 @@ import { useUser } from "../general/UserProvider"
 import axios from "redaxios"
 import { useEffect, useState, useMemo } from "react"
 import showMessage from "../general/Message"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 
 const ProfilePage = () => {
+    const location = useLocation();
     const navigate = useNavigate();
     const { user, setUser, userImage, setUserImage, userProficiencies, setUserProficiencies } = useUser();
     const [allProficiencies, setAllProficiencies] = useState([]);
     const [image, setImage] = useState(userImage || "favicon.webp");
     const [year, setYear] = useState(user.year_of_study || 1);
     const [diploma, setDiploma] = useState(user.diploma || "");
-    // const [newStrength, setNewStrength] = useState();
-    // const [newWeakness, setNewWeakness] = useState();
+
+    useEffect(() => {
+        if (location.hash) {
+            const el = document.querySelector(location.hash);
+            if (el) el.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [location]);
 
     useEffect(() => {
         setYear(user.year_of_study);
@@ -113,12 +119,34 @@ const ProfilePage = () => {
         }
     }
 
+    const updateProfile = async (e) => {
+        try {
+            e.preventDefault();
+            if (!e.target.checkValidity()) return;
+
+            const data = {
+                diploma,
+                year_of_study: year
+            }
+
+            if (image !== userImage) data.image = image;
+            await axios.put(`${REQ}/api/account/update`, data, { withCredentials: true });
+            setUser(prev => ({ ...prev, ...data }))
+            setUserImage(image);
+            showMessage("Profile updated successfully. Please login again to see the changes.", "success");
+            logout(false);
+        } catch (err) {
+            console.error(err);
+            showMessage(err.data.message);
+        }
+    }
+
     return (
         <>
             <Nav active="" />
 
             <div className={styles.profile_container}>
-                <form id="general_form" noValidate>
+                <form id="general_form" noValidate onSubmit={updateProfile}>
                     <h2>User Information</h2>
                     <div>
                         <input type="file" name="profile_picture" id="profile_picture" accept="image/*" onChange={changeProfilePicture} />

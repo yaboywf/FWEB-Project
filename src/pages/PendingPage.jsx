@@ -1,0 +1,147 @@
+import { useEffect, useState, useMemo } from "react";
+import { useUser } from "../general/UserProvider";
+import Nav from "../general/Nav"
+import axios from "redaxios";
+import REQ from "../general/Request";
+import styles from '../styles/pending.module.css'
+import styles1 from '../styles/student.module.css'
+import Placeholder from "../general/Placeholder";
+import { useNavigate } from "react-router-dom";
+import showMessage from "../general/Message";
+
+const PlaceholderTemplate = () => {
+    return (
+        <div className={styles.request}>
+            <div className={`${styles.student_info} ${styles1.student_info}`}>
+                <img />
+                <div>
+                    <Placeholder width={200} />
+                    <Placeholder width={150} />
+                    <Placeholder width={200} />
+                </div>
+            </div>
+            <div className={styles.request_info}>
+                <Placeholder width={300} />
+                <Placeholder width={300} />
+            </div>
+            <div className={`${styles.request_button}`}>
+                <Placeholder width={200} />
+                <Placeholder width={200} />
+            </div>
+        </div>
+    )
+}
+
+const PendingPage = () => {
+    const navigate = useNavigate();
+    const { user } = useUser();
+    const [loading, setLoading] = useState(true);
+    const [requests, setRequests] = useState([]);
+
+    useEffect(() => {
+        const getData = async () => {
+            const resp = await axios.get(`${REQ}/api/request/requests`, { withCredentials: true });
+            setRequests(resp.data);
+            setLoading(false);
+        }
+
+        getData();
+    }, [])
+
+    const category = useMemo(() => {
+        const received = requests.filter(request => request.receiver_id === user.student_id);
+        const sent = requests.filter(request => request.sender_id === user.student_id);
+        return { received, sent };
+    }, [requests])
+
+    const dayNumberToName = (day) => {
+        const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        return days[day - 1] || null;
+    }
+
+    const deleteRequest = async (requestId) => {
+        try {
+            await axios.delete(`${REQ}/api/request/remove?id=${requestId}`, { withCredentials: true });
+            showMessage("Request deleted successfully", "success");
+            setRequests(prev => prev.filter(request => request._id !== requestId));
+        } catch (err) {
+            console.error(err);
+            showMessage("Failed to delete request");
+        }
+    }
+
+    const acceptRequest = async (requestId) => {
+        try {
+            await axios.put(`${REQ}/api/request/update-status`, { id: requestId }, { withCredentials: true });
+            showMessage("Request accepted successfully", "success");
+            setRequests(prev => prev.filter(request => request._id !== requestId));
+        } catch (err) {
+            console.error(err);
+            showMessage("Failed to accept request");
+        }
+    }
+
+    return (
+        <>
+            <Nav active="pending" />
+
+            <div className={styles.pending_container}>
+                <div>
+                    <p>Received</p>
+                    {loading && Array.from({ length: 2 }).map((_, index) => <PlaceholderTemplate key={`received_${index}`} />)}
+                    {!loading && category.received.length === 0 && <p>No pending requests</p>}
+                    {category.received && category.received.map(request => (
+                        <div className={styles.request} key={request._id}>
+                            <div className={`${styles.student_info} ${styles1.student_info}`}>
+                                <img src={request.sender_info.image ?? "favicon.webp"} alt="Profile Picture" />
+                                <div>
+                                    <p data-year={request.sender_info.year_of_study || "?"}>{request.sender_info.name}</p>
+                                    <a href={`mailto:${request.sender_info.student_id}@student.tp.edu.sg`}>{request.sender_info.student_id}@student.tp.edu.sg</a>
+                                    <p>{request.sender_info.diploma}</p>
+                                </div>
+                            </div>
+                            <div className={styles.request_info}>
+                                <p>{request.module_info.module}</p>
+                                <p>{dayNumberToName(request.day)} | {request.start_time} - {request.end_time}</p>
+                                <p>End on {new Date(request.end_date).toLocaleDateString("en-SG", { day: "numeric", month: "long", year: "numeric" })}</p>
+                            </div>
+                            <div className={`${styles.request_button} ${styles.received}`}>
+                                <button onClick={() => acceptRequest(request._id)}>Accept</button>
+                                <button onClick={() => deleteRequest(request._id)}>Decline</button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+                <div className={styles.line}></div>
+                <div>
+                    <p>Sent</p>
+                    {loading && Array.from({ length: 2 }).map((_, index) => <PlaceholderTemplate key={`sent_${index}`} />)}
+                    {!loading && category.sent.length === 0 && <p>No pending requests</p>}
+                    {category.sent && category.sent.map(request => (
+                        <div className={styles.request} key={request._id}>
+                            <div className={`${styles.student_info} ${styles1.student_info}`}>
+                                <img src={request.receiver_info.image ?? "favicon.webp"} alt="Profile Picture" />
+                                <div>
+                                    <p data-year={`${request.receiver_info.year_of_study}`}>{request.receiver_info.name || "Deleted User"}</p>
+                                    <a href={`mailto:${request.receiver_info.student_id}@student.tp.edu.sg`}>{request.receiver_info.student_id}@student.tp.edu.sg</a>
+                                    <p>{request.receiver_info.diploma}</p>
+                                </div>
+                            </div>
+                            <div className={styles.request_info}>
+                                <p>{request.module_info.module}</p>
+                                <p>{dayNumberToName(request.day)} | {request.start_time} - {request.end_time}</p>
+                                <p>End on {new Date(request.end_date).toLocaleDateString("en-SG", { day: "numeric", month: "long", year: "numeric" })}</p>
+                            </div>
+                            <div className={`${styles.request_button} ${styles.sent}`}>
+                                <button onClick={() => navigate(`/session?pairId=${request._id}`)}>Edit</button>
+                                <button onClick={() => deleteRequest(request._id)}>Withdraw</button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div >
+        </>
+    );
+}
+
+export default PendingPage

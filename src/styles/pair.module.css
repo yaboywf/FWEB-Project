@@ -30,8 +30,8 @@
     background: lightgrey;
     border-radius: 20px;
 }
-.pair .fa-link {
-    font-size: 50px;
+.pair i {
+    font-size: 40px;
     margin-bottom: 10px;
 }
 .pair span {
@@ -44,6 +44,9 @@
     color: white;
     cursor: pointer;
     background: rgb(235, 0, 0);
+}
+.pair #end_date {
+    font-size: 12px;
 }
 .confirmation {
     backdrop-filter: blur(5px);

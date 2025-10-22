@@ -5,16 +5,20 @@ import { UserProvider } from "./general/UserProvider";
 
 import NotFound from './general/NotFound'
 import Layout from './general/Layout'
+import Sidebar from './general/Sidebar';
 
 const LoginPage = lazy(() => import('./pages/LoginPage'))
 const ExplorePage = lazy(() => import('./pages/ExplorePage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
+const PendingPage = lazy(() => import('./pages/PendingPage'))
+const PairingPage = lazy(() => import('./pages/PairingPage'))
+const SessionPage = lazy(() => import('./pages/SessionPage'))
 
 createRoot(document.body).render(
 	<StrictMode>
 		<Router>
-			<Suspense fallback={<div>Loading...</div>}>
-				<UserProvider>
+			<UserProvider>
+				<Suspense fallback={<Sidebar />}>
 					<div className="error_container"></div>
 					<>
 						<Routes>
@@ -22,12 +26,15 @@ createRoot(document.body).render(
 							<Route element={<Layout />}>
 								<Route path="/explore" element={<ExplorePage />} />
 								<Route path="/profile" element={<ProfilePage />} />
+								<Route path="/pending" element={<PendingPage />} />
+								<Route path="/pairing" element={<PairingPage />} />
+								<Route path="/session" element={<SessionPage />} />
 							</Route>
 							<Route path="*" element={<NotFound />} />
 						</Routes>
 					</>
-				</UserProvider>
-			</Suspense>
+				</Suspense>
+			</UserProvider>
 		</Router>
 	</StrictMode>,
 );

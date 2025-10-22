@@ -5,25 +5,31 @@ import { useNavigate } from "react-router-dom";
 import showMessage from "../general/Message";
 import REQ from "./Request";
 import axios from "redaxios";
+import Placeholder from "../general/Placeholder";
 
 const Sidebar = () => {
     const navigate = useNavigate();
     const { user, userImage, setUserProficiencies, userProficiencies } = useUser();
     const [showAside, setShowAside] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProficiencies = async () => {
+            if (!user?.student_id) return;
+            if (Object.keys(userProficiencies).length > 0) return setLoading(false);
+
             try {
                 const response = await axios.get(`${REQ}/api/proficiency/user-proficiency?id=${user.student_id}`, { withCredentials: true });
                 setUserProficiencies(response.data);
+                setLoading(false);
             } catch (error) {
                 console.error(error);
                 showMessage(error.response.data.message);
             }
         };
 
-        if (user.student_id) fetchProficiencies();
-    }, [user]);
+        fetchProficiencies();
+    }, [user.student_id]);
 
     useEffect(() => {
         let startX = 0;
@@ -65,6 +71,8 @@ const Sidebar = () => {
     }, []);
 
     const category = useMemo(() => {
+        if (!Array.isArray(userProficiencies)) return {};
+
         return userProficiencies.reduce((acc, proficiency) => {
             if (!acc[proficiency.type]) acc[proficiency.type] = [];
             acc[proficiency.type].push(proficiency);
@@ -81,6 +89,7 @@ const Sidebar = () => {
                         <div id="strength">Mentor Others</div>
                         <i className="fa-solid fa-edit" tabIndex="0" onClick={() => navigate("/profile#modules_proficiency")}></i>
                     </div>
+                    {loading && Array.from({ length: 3 }).map((_, index) => <Placeholder key={`strength_${index}`} width={200} />)}
                     <ul id="strength_content">
                         {category[1] && category[1].length === 0 && <p>No strength modules</p>}
                         {category[1] && category[1].length > 0 && category[1].map(proficiency => (
@@ -93,6 +102,7 @@ const Sidebar = () => {
                         <div id="weakness">Knowledge Wishlist</div>
                         <i className="fa-solid fa-edit" tabIndex="0" onClick={() => navigate("/profile#modules_proficiency")} ></i>
                     </div>
+                    {loading && Array.from({ length: 3 }).map((_, index) => <Placeholder key={`strength_${index}`} width={200} />)}
                     <ul id="weakness_content">
                         {category[2] && category[2].length === 0 && <p>No strength modules</p>}
                         {category[2] && category[2].length > 0 && category[2].map(proficiency => (
@@ -101,7 +111,7 @@ const Sidebar = () => {
                     </ul>
                 </div>
             </div>
-            <a href="/profile" style={{ '--before-background': `url("${userImage}")` }} className={styles.user}>{user.name}</a>
+            {loading ? <Placeholder width={200} /> : <a onClick={() => navigate("/profile")} style={{ '--before-background': `url("${userImage}")` }} className={styles.user}>{user.name}</a>}
         </aside>
     );
 }

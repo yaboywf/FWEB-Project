@@ -12,10 +12,11 @@
     margin-bottom: 20px;
 }
 
-.error_page a {
+.error_page p:last-of-type {
     padding: 5px 10px;
     border: 1px solid black;
     border-radius: 10px;
     text-decoration: none;
     color: black;
+    cursor: pointer;
 }

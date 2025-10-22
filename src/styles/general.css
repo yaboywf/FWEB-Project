@@ -5,27 +5,32 @@
     font-family: sans-serif;
     scroll-behavior: smooth;
 }
+
 body {
     display: flex;
     height: 100vh;
     width: 100vw;
     overflow: hidden;
 }
-body > main {
+
+body>main {
     display: flex;
     flex-direction: column;
     width: 100%;
     overflow-y: hidden;
     height: 100vh;
 }
+
 *::-webkit-scrollbar {
     width: 6px;
     height: 6px;
 }
+
 *::-webkit-scrollbar-thumb {
     background: #c4c4c4;
     border-radius: 10px;
 }
+
 .error_container {
     position: absolute;
     top: 10px;
@@ -38,6 +43,7 @@ body > main {
     pointer-events: none;
     z-index: 2;
 }
+
 .error {
     background: red;
     border-radius: 10px;
@@ -49,37 +55,60 @@ body > main {
     padding: 10px 15px;
     animation: errorAnimation 5s ease-in-out forwards;
 }
+
 .success {
     background: green !important;
 }
+
 .error::before {
     font: var(--fa-font-solid);
     content: "\f06a";
     color: white;
 }
-.spinner {
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+.placeholder {
+    position: absolute;
+    left: -45%;
+    height: 100%;
+    width: 45%;
+    background-image: linear-gradient(to left, rgba(251, 251, 251, .05), rgba(251, 251, 251, .3), rgba(251, 251, 251, .6), rgba(251, 251, 251, .3), rgba(251, 251, 251, .05));
+    animation: loading 1s infinite;
+    z-index: 45;
+    display: block !important;
+    border: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
 }
-.spinner::before {
-    content: "";
-    height: 60px;
-    width: 60px;
-    border-radius: 50%;
-    border-top: 5px solid black !important;
-    border: 5px solid transparent;
-    animation: spin 1s linear infinite;
+
+.load_container {
+    position: relative;
+    border-radius: 5px !important;
+    background: lightgrey;
+    display: block !important;
+    border: none !important;
+    overflow: hidden;
 }
+
+@keyframes loading {
+    0% {
+        left: -45%;
+    }
+
+    100% {
+        left: 100%;
+    }
+}
+
 @keyframes spin {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
 }
+
 @keyframes errorAnimation {
     0% {
         opacity: 0;
@@ -101,15 +130,20 @@ body > main {
         transform: translateY(-10px)
     }
 }
+
 @media screen and (max-width: 800px) {
     .error_container {
         width: 80vw;
     }
 }
+
 @media screen and (max-width: 250px) {
-    body *:not(main), main * {
+
+    body *:not(main),
+    main * {
         display: none !important;
     }
+
     main::before {
         content: "We are unable to display this page on your screen as is too small";
         flex: 1;
