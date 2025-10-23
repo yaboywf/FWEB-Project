@@ -1,6 +1,8 @@
 import express from 'express';
 import { checkRequiredKeys, verify } from '../middleware.js';
 import Pair from '../database/pairs.js';
+import Attained from '../database/attained.js';
+import { Types } from 'mongoose';
 
 const router = express.Router();
 
@@ -44,6 +46,36 @@ router.get('/pairs', verify, async (req, res) => {
         { $unwind: { path: "$receiver_info", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$module_info", preserveNullAndEmptyArrays: true } },
     ])
+
+    const uniqueModules = [...new Set(pairs.map(p => p.module_info?._id?.toString()))];
+    if (uniqueModules.length >= 3) {
+        await Attained.updateOne(
+            {
+                student_id: studentId,
+                achievement_id: new Types.ObjectId("68f9a37ae52d1f0ea134392f"),
+            },
+            { $setOnInsert: { achieved_date: new Date() } },
+            { upsert: true }
+        );
+    }
+
+    const sessionCounts = {};
+    for (const p of pairs) {
+        const other = p.sender_id === studentId ? p.receiver_id : p.sender_id;
+        sessionCounts[other] = (sessionCounts[other] || 0) + 1;
+    }
+
+    const sameStudent = Object.values(sessionCounts).some(count => count >= 3);
+    if (sameStudent) {
+        await Attained.updateOne(
+            {
+                student_id: studentId,
+                achievement_id: new Types.ObjectId("68f99971e52d1f0ea134392b"),
+            },
+            { $setOnInsert: { achieved_date: new Date() } },
+            { upsert: true }
+        );
+    }
 
     return res.json(pairs);
 })

@@ -1,8 +1,9 @@
 import express from "express";
 import { verify, checkRequiredKeys } from "../middleware.js";
 import User from "../database/users.js";
+import Achievement from "../database/achievements.js";
+import Attained from "../database/attained.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -11,6 +12,16 @@ router.get("/information", verify, checkRequiredKeys('query', ["id"]), async (re
     if (!account) return res.status(404).json({ message: "Account not found" });
 
     return res.json(account);
+})
+
+router.get("/all-achievements", verify, async (req, res) => {
+    const achievements = await Achievement.find({ student_id: req.user.student_id }).sort({ difficulty: 1 });
+    return res.json(achievements);
+})
+
+router.get("/attained-achievements", verify, async (req, res) => {
+    const achievements = await Attained.find({ student_id: req.user.student_id });
+    return res.json(achievements);
 })
 
 router.put("/update", verify, checkRequiredKeys('body', ["diploma", "year_of_study"]), async (req, res) => {

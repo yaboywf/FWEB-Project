@@ -5,7 +5,6 @@ const UserSchema = new Schema(
         student_id: {
             type: String,
             required: true,
-            unique: true,
             set: v => v?.toUpperCase(),
             validate: {
                 validator: function (value) {

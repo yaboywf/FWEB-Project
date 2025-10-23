@@ -5,6 +5,7 @@ import { useUser } from "../general/UserProvider"
 import axios from "redaxios"
 import { useEffect, useState, useMemo } from "react"
 import showMessage from "../general/Message"
+import Placeholder from "../general/Placeholder"
 import { useNavigate, useLocation } from "react-router-dom"
 
 const ProfilePage = () => {
@@ -12,9 +13,13 @@ const ProfilePage = () => {
     const navigate = useNavigate();
     const { user, setUser, userImage, setUserImage, userProficiencies, setUserProficiencies } = useUser();
     const [allProficiencies, setAllProficiencies] = useState([]);
+    const [allAchievements, setAllAchievements] = useState([]);
+    const [attained, setAttained] = useState([]);
     const [image, setImage] = useState(userImage || "favicon.webp");
     const [year, setYear] = useState(user.year_of_study || 1);
     const [diploma, setDiploma] = useState(user.diploma || "");
+    const [loading, setLoading] = useState(true);
+    const difficulty = { 1: "Easy", 2: "Medium", 3: "Hard" };
 
     useEffect(() => {
         if (location.hash) {
@@ -30,9 +35,25 @@ const ProfilePage = () => {
     }, [user.year_of_study, user.diploma, userImage]);
 
     useEffect(() => {
-        axios.get(`${REQ}/api/proficiency/all-modules`, { withCredentials: true })
-            .then(res => setAllProficiencies(res.data))
-            .catch(err => console.error(err));
+        const getData = async () => {
+            try {
+                const resp = await axios.get(`${REQ}/api/proficiency/all-modules`, { withCredentials: true });
+                setAllProficiencies(resp.data);
+
+                const resp2 = await axios.get(`${REQ}/api/account/all-achievements`, { withCredentials: true })
+                setAllAchievements(resp2.data);
+
+                const resp3 = await axios.get(`${REQ}/api/account/attained-achievements`, { withCredentials: true })
+                setAttained(resp3.data);
+
+                setLoading(false);
+            } catch (err) {
+                console.error(err);
+                showMessage(err.data.message);
+            }
+        }
+
+        getData()
     }, []);
 
     const category = useMemo(() => {
@@ -149,16 +170,19 @@ const ProfilePage = () => {
                 <form id="general_form" noValidate onSubmit={updateProfile}>
                     <h2>User Information</h2>
                     <div>
+                        {loading ? <>
+                        <Placeholder width={150} height={150} /><span></span></> : <>
                         <input type="file" name="profile_picture" id="profile_picture" accept="image/*" onChange={changeProfilePicture} />
                         <label htmlFor="profile_picture" id="profile_picture_label" style={{ background: `url(${image}) center/cover no-repeat` }}></label>
+                        </>}
 
                         <p>Name:</p>
-                        <p>{user.name}</p>
+                        {loading ? <Placeholder width={150} /> : <p>{user.name}</p>}
                         <p>Admission Number:</p>
-                        <p>{user.student_id}</p>
+                        {loading ? <Placeholder width={150} /> : <p>{user.student_id}</p>}
 
                         <label htmlFor="diploma">Diploma</label>
-                        <input type="text" name="diploma" id="diploma" placeholder="Enter Your Diploma" autoComplete="off" value={diploma || ""} onChange={(e) => setDiploma(e.target.value)} required />
+                        {loading ? <Placeholder width={200} /> : <input type="text" name="diploma" id="diploma" placeholder="Enter Your Diploma" autoComplete="off" value={diploma || ""} onChange={(e) => setDiploma(e.target.value)} required />}
 
                         <p>Year of Study</p>
                         <div>
@@ -175,13 +199,40 @@ const ProfilePage = () => {
                 </form>
 
                 <div>
-                    <h2>Achievement</h2>
+                    <h2>Achievements</h2>
+                    <div className={styles.achievements_container}>
+                        {loading && Array.from({ length: 5 }).map((_, i) => <Placeholder key={`achievement_${i}`} width={170} height={200} />)}
+                        {!loading && allAchievements.map(achievement => {
+                            const a = attained.find(a => a.achievement_id === achievement._id);
+                            
+                            return (
+                                <div key={achievement._id} className={styles.achievement}>
+                                    <div className={styles.inner}>
+                                        <div className={styles.front}>
+                                            <img src={achievement.image} alt={achievement.name} className={!a ? styles["not-attained"] : ""} />
+                                            <span>
+                                                {achievement.name}
+                                                <br />
+                                                <span className={styles[difficulty[achievement.difficulty].toLowerCase()]}>{difficulty[achievement.difficulty]}</span>
+                                                {a && <br />}
+                                                {a && <span>Attained on {new Date(a.achieved_date).toLocaleString("en-GB", { day: "numeric", month: "short", year: "2-digit" })}</span>}
+                                            </span>
+                                        </div>
+                                        <div className={styles.back}>
+                                            <p>{achievement.description}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
                 </div>
 
                 <div>
                     <h2 id="modules_proficiency">Modules Proficiency</h2>
                     <h3>Mentor Others</h3>
                     <div className={styles.profile_proficiency}>
+                        {loading && Array.from({ length: 3 }).map((_, i) => <Placeholder key={`proficiency_s${i}`} width={200} />)}
                         {category[1] && category[1].length !== 0 && category[1].map(proficiency => (
                             <span key={proficiency._id} onClick={() => deleteProficiency(proficiency._id)}>{proficiency.module_id.module}</span>
                         ))}
@@ -195,6 +246,7 @@ const ProfilePage = () => {
 
                     <h3>Knowledge Wishlist</h3>
                     <div className={styles.profile_proficiency}>
+                        {loading && Array.from({ length: 3 }).map((_, i) => <Placeholder key={`proficiency_w${i}`} width={200} />)}
                         {category[2] && category[2].length !== 0 && category[2].map(proficiency => (
                             <span key={proficiency._id} onClick={() => deleteProficiency(proficiency._id)}>{proficiency.module_id.module}</span>
                         ))}

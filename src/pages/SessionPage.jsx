@@ -20,7 +20,8 @@ const SessionPage = () => {
     const [day, setDay] = useState();
     const [endDate, setEndDate] = useState("");
     const [time, setTime] = useState({ start: "", end: "" });
-    const loading = !accountInfo.name || modules.length === 0;
+    const [userLoading, setUserLoading] = useState(true);
+    const [moduleLoading, setModuleLoading] = useState(true);
 
     useEffect(() => {
         const getData = async () => {
@@ -33,9 +34,12 @@ const SessionPage = () => {
                     const resp = await axios.get(`${REQ}/api/account/information?id=${encodeURIComponent(adminNum.toUpperCase())}`, { withCredentials: true })
                     setAccountInfo(resp.data);
                     setType("create");
+                    setUserLoading(false);
                     await fetchProficiencies(adminNum);
+                    setModuleLoading(false);
                 } else {
                     const resp = await axios.get(`${REQ}/api/request/sent?id=${encodeURIComponent(pairId)}`, { withCredentials: true });
+                    setUserLoading(false)
                     await fetchProficiencies(resp.data.receiver_info.student_id);
                     setSelectedModule(resp.data.module_id);
                     setDay(resp.data.day);
@@ -43,6 +47,7 @@ const SessionPage = () => {
                     setAccountInfo(resp.data.receiver_info);
                     setTime({ start: resp.data.start_time, end: resp.data.end_time });
                     setType("edit");
+                    setModuleLoading(false);
                 }
             } catch (err) {
                 console.error(err);
@@ -148,11 +153,11 @@ const SessionPage = () => {
                 <div>
                     <h2>Student</h2>
                     <div className={styles1.student_info}>
-                        <img src={loading ? null : accountInfo.image ? accountInfo.image : "favicon.webp"} />
+                        <img src={userLoading ? null : accountInfo.image ? accountInfo.image : "favicon.webp"} />
                         <div>
-                            {loading ? <Placeholder width={200} /> : <p data-year={accountInfo.year_of_study || "?"}>{accountInfo.name}</p>}
-                            {loading ? <Placeholder width={200} /> : <a href={`mailto:${accountInfo.student_id}@student.tp.edu.sg`}>{accountInfo.student_id}@student.tp.edu.sg</a>}
-                            {loading ? <Placeholder width={200} /> : <p>{accountInfo.diploma}</p>}
+                            {userLoading ? <Placeholder width={200} /> : <p data-year={accountInfo.year_of_study || "?"}>{accountInfo.name}</p>}
+                            {userLoading ? <Placeholder width={200} /> : <a href={`mailto:${accountInfo.student_id}@student.tp.edu.sg`}>{accountInfo.student_id}@student.tp.edu.sg</a>}
+                            {userLoading ? <Placeholder width={200} /> : <p>{accountInfo.diploma}</p>}
                         </div>
                     </div>
                 </div>
@@ -160,7 +165,8 @@ const SessionPage = () => {
                 <div>
                     <h2>Matchable Module</h2>
                     <div className={styles.module}>
-                        {loading && Array.from({ length: 3 }).map((_, i) => <Placeholder key={`module_${i}`} width={200} />)}
+                        {moduleLoading && Array.from({ length: 3 }).map((_, i) => <Placeholder key={`module_${i}`} width={200} />)}
+                        {!moduleLoading && modules.length === 0 && <p>No matchable modules found</p>}
                         {modules.map(m => (
                             <Fragment key={m.id}>
                                 <input type="radio" id={m.id} value={m.id} checked={selectedModule === m.id} name="module" onChange={() => setSelectedModule(m.id)} required />
