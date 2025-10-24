@@ -7,8 +7,9 @@
 	.pair {
 		width: 100%;
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-columns: 1fr 150px 1fr;
 		justify-content: space-between;
+		gap: 10px;
 		align-items: center;
 		padding: 10px;
 		position: relative;
@@ -33,12 +34,12 @@
 			}
 		}
 
-		i {
+		div > i {
 			font-size: 40px;
 			margin-bottom: 10px;
 		}
 
-		span {
+		> span {
 			grid-column: span 3;
 			padding: 5px 10px;
 			margin-left: auto;

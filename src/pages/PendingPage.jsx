@@ -4,22 +4,15 @@ import Nav from "../general/Nav"
 import axios from "redaxios";
 import REQ from "../general/Request";
 import styles from '../styles/pending.module.scss'
-import styles1 from '../styles/student.module.scss'
 import Placeholder from "../general/Placeholder";
+import Student from "../general/Student";
 import { useNavigate } from "react-router-dom";
 import showMessage from "../general/Message";
 
 const PlaceholderTemplate = () => {
     return (
         <div className={styles.request}>
-            <div className={`${styles.student_info} ${styles1.student_info}`}>
-                <img />
-                <div>
-                    <Placeholder width={200} />
-                    <Placeholder width={150} />
-                    <Placeholder width={200} />
-                </div>
-            </div>
+            <Student loading={true} classes={styles.student_info} />
             <div className={styles.request_info}>
                 <Placeholder width={300} />
                 <Placeholder width={300} />
@@ -92,14 +85,7 @@ const PendingPage = () => {
                     {!loading && category.received.length === 0 && <p>No pending requests</p>}
                     {category.received && category.received.map(request => (
                         <div className={styles.request} key={request._id}>
-                            <div className={`${styles.student_info} ${styles1.student_info}`}>
-                                <img src={request.sender_info.image ?? "favicon.webp"} alt="Profile Picture" />
-                                <div>
-                                    <p data-year={request.sender_info.year_of_study || "?"}>{request.sender_info.name}</p>
-                                    <a href={`mailto:${request.sender_info.student_id}@student.tp.edu.sg`}>{request.sender_info.student_id}@student.tp.edu.sg</a>
-                                    <p>{request.sender_info.diploma}</p>
-                                </div>
-                            </div>
+                            <Student student={request.sender_info} classes={styles.student_info} />
                             <div className={styles.request_info}>
                                 <p>{request.module_info.module}</p>
                                 <p>{dayNumberToName(request.day)} | {request.start_time} - {request.end_time}</p>
@@ -119,14 +105,7 @@ const PendingPage = () => {
                     {!loading && category.sent.length === 0 && <p>No pending requests</p>}
                     {category.sent && category.sent.map(request => (
                         <div className={styles.request} key={request._id}>
-                            <div className={`${styles.student_info} ${styles1.student_info}`}>
-                                <img src={request.receiver_info.image ?? "favicon.webp"} alt="Profile Picture" />
-                                <div>
-                                    <p data-year={`${request.receiver_info.year_of_study}`}>{request.receiver_info.name || "Deleted User"}</p>
-                                    <a href={`mailto:${request.receiver_info.student_id}@student.tp.edu.sg`}>{request.receiver_info.student_id}@student.tp.edu.sg</a>
-                                    <p>{request.receiver_info.diploma}</p>
-                                </div>
-                            </div>
+                            <Student student={request.receiver_info} classes={styles.student_info} />
                             <div className={styles.request_info}>
                                 <p>{request.module_info.module}</p>
                                 <p>{dayNumberToName(request.day)} | {request.start_time} - {request.end_time}</p>

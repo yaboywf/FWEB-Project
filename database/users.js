@@ -49,6 +49,10 @@ const UserSchema = new Schema(
         },
         image: {
             type: String,
+        },
+        rating: {
+            type: Array,
+            default: []
         }
     }
 );

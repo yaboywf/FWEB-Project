@@ -3,7 +3,7 @@ import axios from "redaxios";
 import { useEffect, useState } from "react";
 import showMessage from "../general/Message";
 import styles from '../styles/explore.module.scss'
-import styles1 from '../styles/student.module.scss'
+import Student from "../general/Student";
 import '../styles/general.scss'
 import REQ from "../general/Request";
 import Placeholder from "../general/Placeholder";
@@ -69,14 +69,7 @@ const ExplorePage = () => {
             <div className={styles.container}>
                 {loading && Array.from({ length: 6 }).map((_, i) => (
                     <div key={i}>
-                        <div className={styles1.student_info}>
-                            <img />
-                            <div>
-                                <Placeholder width={200} />
-                                <Placeholder width={150} />
-                                <Placeholder width={200} />
-                            </div>
-                        </div>
+                        <Student loading={true} />
                         <div className={styles.student_skills}>
                             {Array.from({ length: 3 }).map((_, i) => (
                                 <Placeholder key={`proficiency_${i}`}></Placeholder>
@@ -88,14 +81,7 @@ const ExplorePage = () => {
 
                 {filteredStudents.map(student => (
                     <div key={student._id}>
-                        <div className={styles1.student_info}>
-                            <img src={student.image ? student.image : "favicon.webp"} />
-                            <div>
-                                <p data-year={student.year_of_study || "?"}>{student.name}</p>
-                                <a href={`mailto:${student.student_id}@student.tp.edu.sg`}>{student.student_id}@student.tp.edu.sg</a>
-                                <p>{student.diploma}</p>
-                            </div>
-                        </div>
+                        <Student student={student} />
                         <div className={styles.student_skills}>
                             {student.proficiencies.map(proficiency => (
                                 <div key={proficiency._id} className={proficiency.type === 1 ? styles.strength : styles.weakness}>{proficiency.module_id.module.split("(")[1].replace(")", "").toUpperCase()}</div>

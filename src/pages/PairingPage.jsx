@@ -3,21 +3,15 @@ import Nav from "../general/Nav"
 import REQ from "../general/Request"
 import axios from "redaxios"
 import styles from '../styles/pair.module.scss'
-import styles1 from '../styles/student.module.scss'
 import showMessage from "../general/Message"
 import Placeholder from "../general/Placeholder"
+import Student from "../general/Student"
+import { useUser } from "../general/UserProvider"
 
 const PlaceholderTemplate = () => {
     return (
         <div className={styles.pair}>
-            <div className={styles1.student_info}>
-                <img />
-                <div>
-                    <Placeholder width={200} />
-                    <Placeholder width={150} />
-                    <Placeholder width={200} />
-                </div>
-            </div>
+            <Student loading={true} />
 
             <div className={styles.pair_info}>
                 <i className="fa-solid fa-link"></i>
@@ -26,19 +20,13 @@ const PlaceholderTemplate = () => {
                 <Placeholder width={60} height={18} />
             </div>
 
-            <div className={styles1.student_info}>
-                <img />
-                <div>
-                    <Placeholder width={200} />
-                    <Placeholder width={150} />
-                    <Placeholder width={200} />
-                </div>
-            </div>
+            <Student loading={true} />
         </div>
     )
 }
 
 const PairingPage = () => {
+    const { user } = useUser();
     const [pairings, setPairings] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -78,13 +66,43 @@ const PairingPage = () => {
         return daysDifference;
     }
 
-    const handleUnlink = async (pairId) => {
+    const handleUnlink = async (pair) => {
         const confirm = prompt("Please enter 'confirm' to unlink this pair");
-        if (confirm.toLowerCase() !== "confirm") return;
+        if (confirm?.toLowerCase() !== "confirm") return;
         try {
-            await axios.delete(`${REQ}/api/pair/delete?id=${pairId}`, { withCredentials: true });
+            console.log("Unlinking pair:", pair);
+            await axios.delete(`${REQ}/api/pair/delete?id=${pair._id}`, { withCredentials: true });
             showMessage("Pair unlinked successfully", "success");
-            setPairings(prev => prev.filter(pair => pair._id !== pairId));
+            setPairings(prev => prev.filter(pair => pair._id !== pair._id));
+
+            if (pair.learner) {
+                let rating = null;
+                while (true) {
+                    const rate = prompt("Please rate your learning experience with this student from 1 to 5:");
+
+                    if (rate === null) {
+                        rating = null;
+                        break;
+                    }
+
+                    const parsed = parseInt(rate);
+                    if (!isNaN(parsed) && parsed >= 1 && parsed <= 5) {
+                        rating = parsed;
+                        break;
+                    }
+
+                    alert("Please enter a number between 1 and 5.");
+                }
+
+                if (rating !== null) {
+                    const otherUser = pair.sender_id === user.student_id ? pair.receiver_id : pair.sender_id;
+                    await axios.post(`${REQ}/api/account/rating`, {
+                        student_id: otherUser,
+                        rating: rating
+                    }, { withCredentials: true });
+                    showMessage("Rating submitted successfully", "success");
+                }
+            }
         } catch (err) {
             console.error(err);
             showMessage("Failed to unlink pair");
@@ -99,15 +117,8 @@ const PairingPage = () => {
                 {loading && Array.from({ length: 2 }).map((_, index) => <PlaceholderTemplate key={`placeholder_${index}`} />)}
                 {pairings && pairings.map(pair => (
                     <div className={styles.pair} key={pair._id}>
-                        <span onClick={() => handleUnlink(pair._id)}>Unlink</span>
-                        <div className={styles1.student_info}>
-                            <img src={pair.sender_info.image ?? "favicon.webp"} alt="Profile Picture" />
-                            <div>
-                                <p data-year={pair.sender_info.year_of_study}>{pair.sender_info.name}</p>
-                                <a href={`mailto:${pair.sender_info.student_id}@student.tp.edu.sg`}>{pair.sender_info.student_id}@student.tp.edu.sg</a>
-                                <p>{pair.sender_info.diploma}</p>
-                            </div>
-                        </div>
+                        <span onClick={() => handleUnlink(pair)}>Unlink</span>
+                        <Student student={pair.sender_info} />
 
                         <div className={styles.pair_info}>
                             <i className="fa-solid fa-link"></i>
@@ -116,14 +127,7 @@ const PairingPage = () => {
                             <p title={pair.module_info.module}>{extractModuleName(pair.module_info.module)}</p>
                         </div>
 
-                        <div className={styles1.student_info}>
-                            <img src={pair.receiver_info.image ?? "favicon.webp"} alt="Profile Picture" />
-                            <div>
-                                <p data-year={pair.receiver_info.year_of_study}>{pair.receiver_info.name}</p>
-                                <a href={`mailto:${pair.receiver_info.student_id}@student.tp.edu.sg`}>{pair.receiver_info.student_id}@student.tp.edu.sg</a>
-                                <p>{pair.receiver_info.diploma}</p>
-                            </div>
-                        </div>
+                        <Student student={pair.receiver_info} />
                     </div>
                 ))}
             </div >

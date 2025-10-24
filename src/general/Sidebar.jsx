@@ -86,7 +86,7 @@ const Sidebar = () => {
             <div>
                 <div className={styles.category}>
                     <div>
-                        <div id="strength">Mentor Others</div>
+                        <div id={styles.strength}>Mentor Others</div>
                         <i className="fa-solid fa-edit" tabIndex="0" onClick={() => navigate("/profile#modules_proficiency")}></i>
                     </div>
                     {loading && Array.from({ length: 3 }).map((_, index) => <Placeholder key={`strength_${index}`} width={200} />)}
@@ -99,7 +99,7 @@ const Sidebar = () => {
                 </div>
                 <div className={styles.category}>
                     <div>
-                        <div id="weakness">Knowledge Wishlist</div>
+                        <div id={styles.weakness}>Knowledge Wishlist</div>
                         <i className="fa-solid fa-edit" tabIndex="0" onClick={() => navigate("/profile#modules_proficiency")} ></i>
                     </div>
                     {loading && Array.from({ length: 3 }).map((_, index) => <Placeholder key={`strength_${index}`} width={200} />)}

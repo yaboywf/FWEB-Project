@@ -1,6 +1,7 @@
 import express from 'express';
 import { checkRequiredKeys, verify } from '../middleware.js';
 import Pair from '../database/pairs.js';
+import Proficiency from '../database/proficiency.js';
 import Attained from '../database/attained.js';
 import { Types } from 'mongoose';
 
@@ -46,6 +47,11 @@ router.get('/pairs', verify, async (req, res) => {
         { $unwind: { path: "$receiver_info", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$module_info", preserveNullAndEmptyArrays: true } },
     ])
+
+    for (const pair of pairs) {
+        const prof = await Proficiency.findOne({ student_id: req.user.student_id, module: new Types.ObjectId(pair.module_id), type: 2 });
+        pair.learner = !!prof;
+    }
 
     const uniqueModules = [...new Set(pairs.map(p => p.module_info?._id?.toString()))];
     if (uniqueModules.length >= 3) {

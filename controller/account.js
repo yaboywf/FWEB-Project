@@ -24,6 +24,18 @@ router.get("/attained-achievements", verify, async (req, res) => {
     return res.json(achievements);
 })
 
+router.post("/rating", verify, checkRequiredKeys('body', ["student_id", "rating"]), async (req, res) => {
+    if (req.user.student_id === req.body.student_id) return res.status(400).json({ message: "Cannot rate yourself" });
+    if (req.body.rating < 1 || req.body.rating > 5) return res.status(400).json({ message: "Rating must be between 1 and 5" });
+
+    await User.findOneAndUpdate(
+        { student_id: req.body.student_id },
+        { $push: { rating: req.body.rating } },
+    );
+
+    return res.json({ message: "Rating submitted successfully" });
+})
+
 router.put("/update", verify, checkRequiredKeys('body', ["diploma", "year_of_study"]), async (req, res) => {
     try {
         const { diploma, year_of_study, image } = req.body;
