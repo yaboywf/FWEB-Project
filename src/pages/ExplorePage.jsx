@@ -78,7 +78,6 @@ const ExplorePage = () => {
                     </div>
                 ))}
 
-
                 {filteredStudents.map(student => (
                     <div key={student._id}>
                         <Student student={student} />

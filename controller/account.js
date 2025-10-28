@@ -8,9 +8,10 @@ const router = express.Router();
 
 router.get("/information", verify, checkRequiredKeys('query', ["id"]), async (req, res) => {
     const account = await User.findOne({ student_id: req.query.id });
+    await account?.save();
     if (!account) return res.status(404).json({ message: "Account not found" });
 
-    return res.json(account);
+    return res.json(account.toObject());
 })
 
 router.get("/all-achievements", verify, async (req, res) => {

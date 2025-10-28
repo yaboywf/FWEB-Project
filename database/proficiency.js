@@ -38,4 +38,25 @@ const ProficiencySchema = new Schema(
     }
 );
 
+ProficiencySchema.post("init", function () {
+    const schemaKeys = Object.keys(this.schema.paths);
+
+    for (const key of Object.keys(this._doc)) {
+        if (!schemaKeys.includes(key)) {
+            delete this._doc[key];
+        }
+    }
+});
+
+ProficiencySchema.pre("save", function (next) {
+    const schemaKeys = Object.keys(this.schema.paths);
+
+    for (const key of Object.keys(this._doc)) {
+        if (!schemaKeys.includes(key)) {
+            delete this._doc[key];
+        }
+    }
+    next();
+});
+
 export default model("Proficiency", ProficiencySchema);

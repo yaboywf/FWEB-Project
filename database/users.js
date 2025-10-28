@@ -44,13 +44,47 @@ const UserSchema = new Schema(
         },
         image: {
             type: String,
+            default: null
         },
         rating: {
-            type: Array,
+            type: [Number],
             default: []
         }
     }
 );
 
 UserSchema.index({ student_id: 1 }, { unique: true });
+
+UserSchema.post("init", function (doc) {
+    const schemaPaths = Object.keys(UserSchema.paths);
+
+    for (const key of Object.keys(doc._doc)) {
+        if (!schemaPaths.includes(key) && key !== "_id") {
+            delete doc._doc[key];
+        }
+    }
+
+    for (const key of schemaPaths) {
+        const path = UserSchema.path(key);
+        if (path.options && "default" in path.options) {
+            if (doc[key] === undefined) {
+                doc[key] = typeof path.options.default === "function"
+                    ? path.options.default()
+                    : path.options.default;
+            }
+        }
+    }
+});
+
+UserSchema.pre("save", function (next) {
+    const schemaPaths = Object.keys(UserSchema.paths);
+
+    for (const key of Object.keys(this._doc)) {
+        if (!schemaPaths.includes(key) && key !== "_id") {
+            delete this._doc[key];
+        }
+    }
+    next();
+});
+
 export default model("User", UserSchema);

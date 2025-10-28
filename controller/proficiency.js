@@ -14,6 +14,9 @@ router.get("/all-modules", verify, async (req, res) => {
 
 router.get("/user-proficiency", verify, checkRequiredKeys('query', ["id"]), async (req, res) => {
     const proficiency = await Proficiency.find({ student_id: req.query.id }).populate("module_id");
+    for (const prof of proficiency) {
+        await prof.save();
+    }
     return res.json(proficiency);
 })
 
@@ -45,11 +48,15 @@ router.get("/matchable-accounts", verify, checkRequiredKeys('query', ["strength"
     const studentIds = [...new Set(data.map(item => item.student_id.toUpperCase()))];
     if (studentIds.length === 0) return res.status(200).json([]);
 
-    const users = await User.find({ student_id: { $in: studentIds } }).select("-password").lean();
+    const users = await User.find({ student_id: { $in: studentIds } }).select("-password");
     const proficiencies = await Proficiency.find({ student_id: { $in: studentIds } }).populate("module_id").sort({ type: 1, module: 1 }).lean();
 
+    for (const user of users) {
+        await user.save();
+    }
+
     const result = users.map((user) => ({
-        ...user,
+        ...user.toObject(),
         proficiencies: proficiencies.filter(p => p.student_id.toUpperCase() === user.student_id.toUpperCase())
     }));
 
