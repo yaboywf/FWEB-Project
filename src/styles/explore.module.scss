@@ -38,7 +38,8 @@
     padding: 0 20px 10px 20px;
 
     .weakness {
-        background: #cec080;
+        background: #c8421c;
+        color: white;
 
         &::before {
             font: var(--fa-font-solid);
@@ -48,7 +49,8 @@
     }
 
     .strength {
-        background: #accbdf;
+        background: #023151;
+        color: white;
 
         &::before {
             font: var(--fa-font-solid);
