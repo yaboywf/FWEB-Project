@@ -113,8 +113,7 @@ router.get("/callback", async (req, res) => {
             } else {
                 user.image = null;
             }
-        } catch (err) {
-            console.error("Could not fetch photo");
+        } catch {
             user.image = null;
         }
 

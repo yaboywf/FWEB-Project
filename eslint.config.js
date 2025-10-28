@@ -6,10 +6,14 @@ import { defineConfig } from "eslint/config";
 export default defineConfig([
   {
     files: ["**/*.{js,mjs,cjs,jsx}"],
+    ignores: ["dist/**"],
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        ...globals.node, // ✅ enable Node.js globals like process
+      },
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
