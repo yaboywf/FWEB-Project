@@ -1,13 +1,12 @@
 import styles from "../styles/register.module.scss";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import showMessage from "../general/Message";
 import axios from "redaxios";
 import REQ from "../general/Request";
 
 const Register = () => {
     const navigate = useNavigate();
-    const [showPassword, setShowPassword] = useState(false);
+    const [searchParams] = useSearchParams();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -16,7 +15,8 @@ const Register = () => {
         try {
             const form = new FormData(e.target);
             const formObject = Object.fromEntries(form);
-            if (formObject.password.length < 6) return showMessage("Password must be at least 6 characters long");
+            formObject.student_id = searchParams.get("id");
+            formObject.name = searchParams.get("name");
 
             const resp = await axios.post(`${REQ}/api/auth/register`, formObject);
             showMessage(resp.data.message, "success");
@@ -34,32 +34,13 @@ const Register = () => {
             <form id="signupForm" noValidate onSubmit={handleSubmit}>
                 <img src="/logo.webp" alt="Logo" />
 
-                <label htmlFor="admin_number">Admission Number:</label>
-                <div>
-                    <i className="fa-solid fa-id-card"></i>
-                    <input type="text" id="admin_number" name="student_id" placeholder="Enter Admission Number" autoComplete="off" required />
-                </div>
-
-                <label htmlFor="name">Name:</label>
-                <div>
-                    <i className="fa-solid fa-user"></i>
-                    <input type="text" id="name" name="name" placeholder="Enter Your Name" autoComplete="name" required />
-                </div>
-
-                <label htmlFor="password">Password:</label>
-                <div>
-                    <i className="fa-solid fa-lock"></i>
-                    <input type={showPassword ? "text" : "password"} id="password" name="password" placeholder="Password" autoComplete="new-password" required />
-                    <i className="fa-solid fa-eye-slash" id="eyeIcon" onClick={() => setShowPassword(!showPassword)}></i>
-                </div>
-
                 <label htmlFor="diploma">Diploma:</label>
                 <div>
                     <i className="fa-solid fa-graduation-cap"></i>
                     <input type="text" name="diploma" id="diploma" placeholder="Enter Your Diploma" autoComplete="off" required />
                 </div>
 
-                <p>Year of Study</p>
+                <p>Year of Study:</p>
                 <div>
                     <input type="radio" name="year_of_study" id="y1" value="1" required />
                     <label htmlFor="y1">Year 1</label>
@@ -70,7 +51,6 @@ const Register = () => {
                 </div>
 
                 <button type="submit">Create</button>
-                <span onClick={() => navigate("/")}>Back to login</span>
             </form>
         </div>
     )

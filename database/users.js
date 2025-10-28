@@ -42,11 +42,6 @@ const UserSchema = new Schema(
             enum: [1, 2, 3],
             required: true
         },
-        password: {
-            type: String,
-            required: true,
-            minlength: 6
-        },
         image: {
             type: String,
         },

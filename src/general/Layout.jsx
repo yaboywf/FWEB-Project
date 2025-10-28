@@ -9,7 +9,7 @@ import REQ from "./Request";
 import { useUser } from "./UserProvider";
 
 const Layout = () => {
-    const { setUser, setUserImage } = useUser();
+    const { setUser } = useUser();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -17,9 +17,6 @@ const Layout = () => {
             try {
                 const response = await axios.get(`${REQ}/api/auth/verify`, { withCredentials: true });
                 if (response.data.user) setUser(response.data.user);
-
-                const response2 = await axios.get(`${REQ}/api/account/information?id=${response.data.user.student_id}`, { withCredentials: true });
-                if (response2.data) setUserImage(response2.data.image);
             } catch (error) {
                 if (error.status === 401) navigate("/");
                 else console.error(error);

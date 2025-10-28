@@ -12,16 +12,10 @@ const Student = ({ student = {}, loading = false, classes = "" }) => {
 
     return (
         <div className={styles.student_info + " " + classes}>
-            <img src={
-                loading
-                    ? null
-                    : student.image
-                        ? student.image
-                        : "favicon.webp"
-            } />
+            {student.image ? <img data-empty={!student.image} src={loading ? null : student.image || null} /> : <div data-placeholder className={styles.no_image}></div>}
             <div>
-                {loading ? <Placeholder width={200} /> : <p data-year={student.year_of_study || "?"}>{student.name}</p>}
-                {loading ? <Placeholder width={150} /> : <a href={`https://teams.microsoft.com/l/chat/0/0?users=${student.student_id}@student.tp.edu.sg`} target="_blank" rel="noopener noreferrer">{student.student_id}@student.tp.edu.sg</a>}
+                {loading ? <Placeholder width={200} /> : <p data-year={student.year_of_study || "?"} title={`${student.name} (Y${student.year_of_study || "?"})`}>{student.name}</p>}
+                {loading ? <Placeholder width={150} /> : <a href={`mailto:${student.student_id}@student.tp.edu.sg`} target="_blank" rel="noopener noreferrer">{student.student_id}@student.tp.edu.sg</a>}
                 {loading ? <Placeholder width={200} /> : <p>{student.diploma}</p>}
                 {loading ? <Placeholder width={100} /> :
                     <span className={styles.rating}>

@@ -9,14 +9,14 @@ import Placeholder from "../general/Placeholder";
 
 const Sidebar = () => {
     const navigate = useNavigate();
-    const { user, userImage, setUserProficiencies, userProficiencies } = useUser();
+    const { user, setUserProficiencies, userProficiencies } = useUser();
     const [showAside, setShowAside] = useState(false);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProficiencies = async () => {
             if (!user?.student_id) return;
-            if (Object.keys(userProficiencies).length > 0) return setLoading(false);
+            if (userProficiencies && Object.keys(userProficiencies).length > 0) return setLoading(false);
 
             try {
                 const response = await axios.get(`${REQ}/api/proficiency/user-proficiency?id=${user.student_id}`, { withCredentials: true });
@@ -111,7 +111,7 @@ const Sidebar = () => {
                     </ul>
                 </div>
             </div>
-            {loading ? <Placeholder width={200} /> : <a onClick={() => navigate("/profile")} style={{ '--before-background': `url("${userImage}")` }} className={styles.user}>{user.name}</a>}
+            {loading ? <Placeholder width={200} /> : <a onClick={() => navigate("/profile")} data-empty={!user.image} style={{  "--before-background": user.image ? `url(${user.image})` : "none" }} className={styles.user}>{user.name}</a>}
         </aside>
     );
 }

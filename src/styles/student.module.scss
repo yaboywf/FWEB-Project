@@ -15,6 +15,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
     }
 
     div:not(div[data-placeholder]) {
@@ -28,6 +29,9 @@
     p:nth-of-type(1) {
         font-size: 20px;
         font-weight: bold;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
 
         &::after {
             content: "(Y" attr(data-year) ")";
@@ -55,6 +59,24 @@
         span {
             margin-left: 5px;
             letter-spacing: 1px;
+        }
+    }
+
+    .no_image {
+        width: 80px;
+        height: 80px;
+        flex-shrink: 0;
+        border: 1px solid black;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 40px;
+        color: lightgrey;
+
+        &::before {
+            content: "\f007";
+            font: var(--fa-font-solid);
         }
     }
 }

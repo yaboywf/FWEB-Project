@@ -46,6 +46,11 @@ router.get('/pairs', verify, async (req, res) => {
         { $unwind: { path: "$sender_info", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$receiver_info", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$module_info", preserveNullAndEmptyArrays: true } },
+        {
+            $addFields: {
+                created_at: { $toDate: "$_id" }
+            }
+        }
     ])
 
     for (const pair of pairs) {

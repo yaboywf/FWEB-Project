@@ -1,10 +1,10 @@
 .register {
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-columns: 70% 30%;
     width: 100%;
 
     .bg {
-        background: url(/register.webp) center/cover no-repeat;
+        background: url(login.webp) center/cover no-repeat;
         padding: 10px;
         mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 93%, rgba(0, 0, 0, 0));
         -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 1) 93%, rgba(0, 0, 0, 0));
@@ -24,12 +24,6 @@
             font-size: 14px;
             background: transparent;
             outline: none;
-
-            &[type="number"]::-webkit-inner-spin-button,
-            &[type="number"]::-webkit-outer-spin-button {
-                -webkit-appearance: none;
-                appearance: none;
-            }
 
             &[type="radio"] {
                 display: none;
@@ -91,14 +85,6 @@
             font-size: 13px;
             cursor: pointer;
             margin-left: auto;
-        }
-
-        .fa-eye-slash,
-        .fa-eye {
-            cursor: pointer;
-            width: 30px;
-            display: flex !important;
-            justify-content: center;
         }
     }
 }

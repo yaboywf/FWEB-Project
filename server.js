@@ -3,7 +3,6 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
-import path from "path";
 
 import proficiencyRoutes from "./controller/proficiency.js";
 import accountRoutes from "./controller/account.js";
@@ -32,10 +31,6 @@ app.use("/api/account", accountRoutes);
 app.use("/api/proficiency", proficiencyRoutes);
 app.use("/api/pair", pairRoutes);
 app.use("/api/request", requestRoutes);
-app.use(express.static(process.cwd() + '/dist'));
-app.get(/.*/, (_, res) => {
-    res.sendFile(process.cwd() + '/dist/index.html');
-});
 
 app.listen(3000, (err) => {
     if (err) console.error(err);

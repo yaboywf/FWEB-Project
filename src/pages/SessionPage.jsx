@@ -153,7 +153,7 @@ const SessionPage = () => {
                 <div>
                     <h2>Student</h2>
                     <div className={styles1.student_info}>
-                        <img src={userLoading ? null : accountInfo.image ? accountInfo.image : "favicon.webp"} />
+                        <img src={userLoading ? null : accountInfo.image ? accountInfo.image : "favicon.png"} />
                         <div>
                             {userLoading ? <Placeholder width={200} /> : <p data-year={accountInfo.year_of_study || "?"}>{accountInfo.name}</p>}
                             {userLoading ? <Placeholder width={200} /> : <a href={`https://teams.microsoft.com/l/chat/0/0?users=${accountInfo.student_id}@student.tp.edu.sg`} target="_blank" rel="noopener noreferrer">{accountInfo.student_id}@student.tp.edu.sg</a>}

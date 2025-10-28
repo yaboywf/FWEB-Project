@@ -84,7 +84,7 @@ const ExplorePage = () => {
                         <Student student={student} />
                         <div className={styles.student_skills}>
                             {student.proficiencies.map(proficiency => (
-                                <div key={proficiency._id} className={proficiency.type === 1 ? styles.strength : styles.weakness}>{proficiency.module_id.module.split("(")[1].replace(")", "").toUpperCase()}</div>
+                                <div key={proficiency._id} title={`${proficiency.type === 1 ? "Can Mentor:" : "Want to Learn:"} ${proficiency.module_id.module}`} className={proficiency.type === 1 ? styles.strength : styles.weakness}>{proficiency.module_id.module.split("(")[1].replace(")", "").toUpperCase()}</div>
                             ))}
 
                             <i className="fa-solid fa-link" onClick={() => navigate(`/session?adminNum=${student.student_id}`)}></i>

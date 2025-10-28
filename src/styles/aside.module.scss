@@ -61,10 +61,19 @@
             background-color: #c4c4c4;
         }
 
+        &[data-empty="true"]::before {
+            content: "\f007";
+            font: var(--fa-font-solid);
+            color: grey;
+            font-size: 12px;
+        }
+
         &::before {
             content: "";
             width: 20px;
-            display: block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             height: 20px;
             border: 1px solid black;
             border-radius: 50%;

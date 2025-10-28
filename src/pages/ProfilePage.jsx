@@ -11,11 +11,10 @@ import { useNavigate, useLocation } from "react-router-dom"
 const ProfilePage = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { user, setUser, userImage, setUserImage, userProficiencies, setUserProficiencies } = useUser();
+    const { user, setUser, userProficiencies, setUserProficiencies } = useUser();
     const [allProficiencies, setAllProficiencies] = useState([]);
     const [allAchievements, setAllAchievements] = useState([]);
     const [attained, setAttained] = useState([]);
-    const [image, setImage] = useState(userImage || "favicon.webp");
     const [year, setYear] = useState(user.year_of_study || 1);
     const [diploma, setDiploma] = useState(user.diploma || "");
     const [loading, setLoading] = useState(true);
@@ -31,8 +30,7 @@ const ProfilePage = () => {
     useEffect(() => {
         setYear(user.year_of_study);
         setDiploma(user.diploma);
-        setImage(userImage || "favicon.webp");
-    }, [user.year_of_study, user.diploma, userImage]);
+    }, [user.year_of_study, user.diploma]);
 
     useEffect(() => {
         const getData = async () => {
@@ -70,49 +68,12 @@ const ProfilePage = () => {
         return allProficiencies.filter(m => !existingIds.has(m._id?.toString()));
     }, [userProficiencies, allProficiencies]);
 
-    const toBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = (event) => resolve(event.target.result);
-            reader.onerror = (err) => reject(err);
-            reader.readAsDataURL(file);
-        });
-    }
-
-    const changeProfilePicture = async (e) => {
-        const file = e.target.files[0];
-        const base64File = await toBase64(file);
-        setImage(base64File);
-    }
-
     const logout = async (needMessage = true) => {
         document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=None; Secure;";
         setUserProficiencies(null);
-        setUserImage(null);
         setUser(null);
         if (needMessage) showMessage("Logged out successfully", "success");
         navigate("/");
-    }
-
-    const changePassword = async (e) => {
-        e.preventDefault();
-
-        const form = new FormData(e.target);
-        const formObject = Object.fromEntries(form);
-        if (!formObject.current_password) return showMessage("Please enter your current password", "error");
-        if (!formObject.new_password) return showMessage("Please enter your new password", "error");
-        if (!formObject.confirm_password) return showMessage("Please confirm your new password", "error");
-        if (formObject.new_password !== formObject.confirm_password) return showMessage("Passwords do not match", "error");
-
-        try {
-            await axios.post(`${REQ}/api/account/change-password`, formObject, { withCredentials: true });
-            showMessage("Password changed successfully", "success");
-            showMessage("Please login with your new password", "success");
-            logout();
-        } catch (err) {
-            console.error(err);
-            showMessage(err.data.message);
-        }
     }
 
     const addProficiency = async (e, type) => {
@@ -150,10 +111,8 @@ const ProfilePage = () => {
                 year_of_study: year
             }
 
-            if (image !== userImage) data.image = image;
             await axios.put(`${REQ}/api/account/update`, data, { withCredentials: true });
             setUser(prev => ({ ...prev, ...data }))
-            setUserImage(image);
             showMessage("Profile updated successfully. Please login again to see the changes.", "success");
             logout(false);
         } catch (err) {
@@ -172,8 +131,7 @@ const ProfilePage = () => {
                     <div>
                         {loading ? <>
                         <Placeholder width={150} height={150} /><span></span></> : <>
-                        <input type="file" name="profile_picture" id="profile_picture" accept="image/*" onChange={changeProfilePicture} />
-                        <label htmlFor="profile_picture" id="profile_picture_label" style={{ background: `url(${image}) center/cover no-repeat` }}></label>
+                        <span className={styles["profile-picture"]} data-empty={!user.image} style={{ background: `url(${user.image ?? ""}) center/contain no-repeat` }}></span>
                         </>}
 
                         <p>Name:</p>
@@ -258,21 +216,6 @@ const ProfilePage = () => {
                         </select>
                     </div>
                 </div>
-
-                <form id="password_form" noValidate onSubmit={changePassword}>
-                    <h2>Change Password</h2>
-                    <div>
-                        <input type="text" name="username" id="username" hidden autoComplete="username" />
-                        <label htmlFor="current_password">Current Password</label>
-                        <input type="password" name="current_password" id="current_password" placeholder="Enter Current Password" autoComplete="current-password" />
-                        <label htmlFor="new_password">New Password</label>
-                        <input type="password" name="new_password" id="new_password" placeholder="Enter New Password" autoComplete="new-password" />
-                        <label htmlFor="confirm_password">Confirm Password</label>
-                        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm New Password" autoComplete="off" />
-                    </div>
-
-                    <button type="submit">Save</button>
-                </form>
             </div>
         </>
     )

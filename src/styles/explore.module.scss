@@ -39,10 +39,22 @@
 
     .weakness {
         background: #cec080;
+
+        &::before {
+            font: var(--fa-font-solid);
+            content: "\f19d";
+            margin-right: 5px;
+        }
     }
 
     .strength {
         background: #accbdf;
+
+        &::before {
+            font: var(--fa-font-solid);
+            content: "\f51c";
+            margin-right: 5px;
+        }
     }
 
     >div:not(div[data-spinner]) {
@@ -69,6 +81,7 @@
     }
 
     i {
+        flex-shrink: 0;
         aspect-ratio: 1;
         margin-left: auto;
         display: flex;
@@ -77,6 +90,7 @@
         align-items: center;
         border-radius: 50%;
         padding: 5px;
+        width: max-content;
         background: lightgrey;
     }
 }
