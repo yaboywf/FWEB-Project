@@ -38,7 +38,7 @@ router.post("/register", checkRequiredKeys('body', ["student_id", "name", "year_
 
 router.get("/login", async (req, res) => {
     try {
-        const returnUrl = req.query.return_url || "https://fweb-project.onrender.com" ||  "http://localhost:5173";
+        const returnUrl = req.query.return_url || "https://localhost:5173";
 
         const authUrl = await msalClient.getAuthCodeUrl({
             scopes,
