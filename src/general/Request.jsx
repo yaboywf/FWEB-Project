@@ -1,2 +1,2 @@
-const REQ = "http://localhost:3000";
+const REQ = "https://fweb-project.onrender.com";
 export default REQ;

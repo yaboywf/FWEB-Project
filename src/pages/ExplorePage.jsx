@@ -26,6 +26,7 @@ const ExplorePage = () => {
 
                 const matchableAccounts = await axios.get(`${REQ}/api/proficiency/matchable-accounts?strength=${encodeURIComponent(strength.join(','))}&weakness=${encodeURIComponent(weakness.join(','))}`, { withCredentials: true });
                 setStudents(matchableAccounts.data);
+                console.log(matchableAccounts.data);
                 setFilteredStudents(matchableAccounts.data);
                 setLoading(false);
             } catch (err) {

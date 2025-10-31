@@ -13,7 +13,7 @@ const LoginPage = () => {
 
     useEffect(() => {
         const listener = (event) => {
-            if (event.origin !== "http://localhost:3000") return;
+            if (event.origin !== "https://fweb-project.onrender.com") return;
             const data = event.data;
 
             if (data.success) {
@@ -34,7 +34,7 @@ const LoginPage = () => {
     }, [navigate, setUser]);
 
     const handleLogin = useCallback(() => {
-        window.open("http://localhost:3000/api/auth/login", "mslogin", "width=500,height=600");
+        window.open("https://fweb-project.onrender.com/api/auth/login", "mslogin", "width=500,height=600");
     }, []);
 
     return (

@@ -1,0 +1,39 @@
+[{
+  "_id": {
+    "$oid": "68f9d909cd5995af6911f432"
+  },
+  "achievement_id": {
+    "$oid": "68f9986fe52d1f0ea1343929"
+  },
+  "student_id": "2402133I",
+  "__v": 0,
+  "achieved_date": {
+    "$date": "2025-10-23T07:28:10.246Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68f9d909cd5995af6911f433"
+  },
+  "achievement_id": {
+    "$oid": "68f9986fe52d1f0ea1343929"
+  },
+  "student_id": "2523841F",
+  "__v": 0,
+  "achieved_date": {
+    "$date": "2025-10-23T07:28:10.258Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "68f9e504cd5995af6911f449"
+  },
+  "student_id": "2403222I",
+  "achievement_id": {
+    "$oid": "68f9a37ae52d1f0ea134392f"
+  },
+  "__v": 0,
+  "achieved_date": {
+    "$date": "2025-10-23T08:19:17.270Z"
+  }
+}]

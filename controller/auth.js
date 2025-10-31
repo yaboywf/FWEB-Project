@@ -38,7 +38,7 @@ router.post("/register", checkRequiredKeys('body', ["student_id", "name", "year_
 
 router.get("/login", async (req, res) => {
     try {
-        const returnUrl = req.query.return_url || "http://localhost:5173";
+        const returnUrl = req.query.return_url || "https://fweb-project.onrender.com" ||  "http://localhost:5173";
 
         const authUrl = await msalClient.getAuthCodeUrl({
             scopes,
@@ -129,7 +129,7 @@ router.get("/callback", async (req, res) => {
                 diploma: user.diploma
             },
             process.env.JWT_SECRET,
-            { expiresIn: "7d", audience: "https://localhost:5173", issuer: "http://localhost:3000" }
+            { expiresIn: "7d", audience: "https://localhost:5173", issuer: "https://fweb-project.onrender.com" }
         );
 
         res.send(`

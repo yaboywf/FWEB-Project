@@ -31,12 +31,14 @@ export default defineConfig(({ mode }) => {
 				}
 				: {}
 		},
-		server: {
-			port: 5173,
-			https: {
-				key: './localhost-key.pem',
-				cert: './localhost.pem',
-			},
-		}
+		server: isProd
+			? {}
+			: {
+				port: 5173,
+				https: {
+					key: './localhost-key.pem',
+					cert: './localhost.pem',
+				},
+			}
 	}
 })
