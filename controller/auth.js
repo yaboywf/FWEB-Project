@@ -45,7 +45,6 @@ router.get("/login", async (req, res) => {
             redirectUri: process.env.AZURE_REDIRECT_URI,
             responseMode: "query",
             prompt: "select_account",
-            // pass return URL as state for callback
             state: encodeURIComponent(returnUrl),
         });
         res.redirect(authUrl);
@@ -132,17 +131,16 @@ router.get("/callback", async (req, res) => {
             { expiresIn: "7d", audience: "https://localhost:5173", issuer: "https://fweb-project.onrender.com" }
         );
 
-        res.send(`
-            <script>
-                window.opener.postMessage(${JSON.stringify({
-            success: true,
-            accessToken: c.token,
-            token: sessionJwt,
-            user
-        })}, "https://localhost:5173");
-                window.close();
-            </script>
-        `);
+        res.cookie("token", sessionJwt, {
+            httpOnly: true,
+            secure: true,
+            sameSite: "None",
+            domain: "fweb-project.onrender.com",
+            path: "/",
+        });
+
+        const redirectBack = decodeURIComponent(req.query.state) || "https://localhost:5173/explore";
+        return res.redirect(redirectBack);
     } catch (e) {
         console.error(e);
         res.status(400).send("Authentication error");

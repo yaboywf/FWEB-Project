@@ -12,29 +12,15 @@ const LoginPage = () => {
     }, [user, navigate]);
 
     useEffect(() => {
-        const listener = (event) => {
-            if (event.origin !== "https://fweb-project.onrender.com") return;
-            const data = event.data;
-
-            if (data.success) {
-                const { token, user } = data;
-                const sevenDays = 7 * 24 * 60 * 60 * 1000;
-                const expires = new Date(Date.now() + sevenDays).toUTCString();
-                document.cookie = `token=${token}; path=/; expires=${expires}; SameSite=None; Secure`;
-
-                setUser(user);
+        axios.get(`${REQ}/api/auth/verify`, { withCredentials: true })
+            .then(response => {
+                setUser(response.data.user);
                 navigate("/explore");
-            } else if (data.reason === "unregistered") {
-                navigate(`/register?id=${encodeURIComponent(data.student_id)}&email=${encodeURIComponent(data.email)}`);
-            }
-        };
-
-        window.addEventListener("message", listener);
-        return () => window.removeEventListener("message", listener);
-    }, [navigate, setUser]);
+            })
+    }, []);
 
     const handleLogin = useCallback(() => {
-        window.open("https://fweb-project.onrender.com/api/auth/login", "mslogin", "width=500,height=600");
+        window.location.href = `https://fweb-project.onrender.com/api/auth/login?return_url=${encodeURIComponent(window.location.origin + "/explore")}`;
     }, []);
 
     return (
