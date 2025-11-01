@@ -69,7 +69,7 @@ const ProfilePage = () => {
     }, [userProficiencies, allProficiencies]);
 
     const logout = async (needMessage = true) => {
-        await axios.post(`${REQ}/api/auth/logout`, { withCredentials: true });
+        await axios.post(`${REQ}/api/auth/logout`, {}, { withCredentials: true });
         setUserProficiencies(null);
         setUser(null);
         if (needMessage) showMessage("Logged out successfully", "success");

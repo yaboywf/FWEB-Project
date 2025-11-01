@@ -17,17 +17,11 @@ router.get("/user-proficiency", verify, checkRequiredKeys('query', ["id"]), asyn
     return res.json(proficiency);
 })
 
-router.get("/matchable-accounts", verify, checkRequiredKeys('query', ["strength", "weakness"]), async (req, res) => {
-    const strengths = req.query.strength.split(',') || [];
-    const weaknesses = req.query.weakness.split(',') || [];
+router.get("/matchable-accounts", verify, async (req, res) => {
+    const userProficiencies = await Proficiency.find({ student_id: req.user.student_id });
 
-    const strengthIds = strengths
-        .filter(id => Types.ObjectId.isValid(id))
-        .map(id => new Types.ObjectId(id));
-
-    const weaknessIds = weaknesses
-        .filter(id => Types.ObjectId.isValid(id))
-        .map(id => new Types.ObjectId(id));
+    const strengthIds = userProficiencies.filter(p => p.type === 1).map(p => p.module_id);
+    const weaknessIds = userProficiencies.filter(p => p.type === 2).map(p => p.module_id);
 
     const query = {
         $and: [

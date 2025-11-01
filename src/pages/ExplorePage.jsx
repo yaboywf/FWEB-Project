@@ -21,12 +21,9 @@ const ExplorePage = () => {
         async function getData() {
             try {
                 if (!user?.name || !userProficiencies || userProficiencies?.length === 0) return;
-                const strength = userProficiencies.filter(record => record.type === 1).map(record => record.module_id._id);
-                const weakness = userProficiencies.filter(record => record.type === 2).map(record => record.module_id._id);
-
-                const matchableAccounts = await axios.get(`${REQ}/api/proficiency/matchable-accounts?strength=${encodeURIComponent(strength.join(','))}&weakness=${encodeURIComponent(weakness.join(','))}`, { withCredentials: true });
+                
+                const matchableAccounts = await axios.get(`${REQ}/api/proficiency/matchable-accounts`, { withCredentials: true });
                 setStudents(matchableAccounts.data);
-                console.log(matchableAccounts.data);
                 setFilteredStudents(matchableAccounts.data);
                 setLoading(false);
             } catch (err) {
