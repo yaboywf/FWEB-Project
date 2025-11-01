@@ -14,10 +14,10 @@ const verify = (req, res, next) => {
     if (!token) return res.status(401).json({ message: 'Missing authentication token' });
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET, { issuer: "http://localhost:3000", audience: "http://localhost:5173" });
+        const decoded = jwt.verify(token, process.env.JWT_SECRET, { issuer: "https://fweb-project.onrender.com", audience: "https://teach-and-tackle.onrender.com" });
         req.user = decoded;
         next();
-    } catch (err) {
+    } catch {
         return res.status(403).json({ message: "Invalid or expired token." });
     }
 };

@@ -42,15 +42,15 @@ const UserSchema = new Schema(
             enum: [1, 2, 3],
             required: true
         },
-        password: {
-            type: String,
-            required: true,
-            minlength: 6
-        },
         image: {
             type: String,
+        },
+        rating: {
+            type: Array,
+            default: []
         }
     }
 );
 
+UserSchema.index({ student_id: 1 }, { unique: true });
 export default model("User", UserSchema);

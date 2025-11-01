@@ -1,6 +1,7 @@
 import express from "express";
 import { checkRequiredKeys, verify } from '../middleware.js';
 import Pair from '../database/pairs.js';
+import Attained from "../database/attained.js";
 import { Types } from "mongoose";
 
 const router = express.Router();
@@ -45,6 +46,18 @@ router.get('/requests', verify, async (req, res) => {
         { $unwind: { path: "$receiver_info", preserveNullAndEmptyArrays: true } },
         { $unwind: { path: "$module_info", preserveNullAndEmptyArrays: true } },
     ]);
+
+    const received = pairs.filter(pair => pair.receiver_id === studentId);
+    if (received.length >= 3) {
+        await Attained.updateOne(
+            {
+                student_id: studentId,
+                achievement_id: new Types.ObjectId("68f9a351e52d1f0ea134392e"),
+            },
+            { $setOnInsert: { achieved_date: new Date() } },
+            { upsert: true }
+        );
+    }
 
     return res.json(pairs);
 })
@@ -130,6 +143,48 @@ router.put('/update-status', verify, checkRequiredKeys('body', ["id"]), async (r
     }, { status: 2 });
 
     if (!pair) return res.status(404).json({ message: "Request not found or you are not authorized to update this pair" });
+
+    await Attained.updateOne(
+        {
+            student_id: pair.receiver_id,
+            achievement_id: new Types.ObjectId("68f9986fe52d1f0ea1343929"),
+        },
+        { $setOnInsert: { achieved_date: new Date() } },
+        { upsert: true }
+    );
+
+    await Attained.updateOne(
+        {
+            student_id: pair.sender_id,
+            achievement_id: new Types.ObjectId("68f9986fe52d1f0ea1343929"),
+        },
+        { $setOnInsert: { achieved_date: new Date() } },
+        { upsert: true }
+    );
+
+    const createdAt = pair._id.getTimestamp();
+    const now = new Date();
+    const difference = (now - createdAt) / (1000 * 60 * 60);
+    if (difference <= 24) {
+        await Attained.updateOne(
+            {
+                student_id: pair.sender_id,
+                achievement_id: new Types.ObjectId("68f998f6e52d1f0ea134392a"),
+            },
+            { $setOnInsert: { achieved_date: new Date() } },
+            { upsert: true }
+        );
+
+        await Attained.updateOne(
+            {
+                student_id: pair.receiver_id,
+                achievement_id: new Types.ObjectId("68f998f6e52d1f0ea134392a"),
+            },
+            { $setOnInsert: { achieved_date: new Date() } },
+            { upsert: true }
+        );
+    }
+
     return res.json({ message: "Request successfully updated" });
 })
 
