@@ -20,9 +20,9 @@ const LoginPage = () => {
             })
     }, []);
 
-    const handleLogin = useCallback(() => {
+    const handleLogin = () => {
         window.location.href = `https://fweb-project.onrender.com/api/auth/login?return_url=${encodeURIComponent(window.location.origin + "/explore")}`;
-    }, []);
+    };
 
     return (
         <div className={styles.login}>
