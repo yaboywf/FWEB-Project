@@ -69,7 +69,7 @@ const ProfilePage = () => {
     }, [userProficiencies, allProficiencies]);
 
     const logout = async (needMessage = true) => {
-        document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=None; Secure;";
+        await axios.post(`${REQ}/api/auth/logout`, { withCredentials: true });
         setUserProficiencies(null);
         setUser(null);
         if (needMessage) showMessage("Logged out successfully", "success");
