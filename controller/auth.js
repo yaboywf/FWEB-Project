@@ -63,7 +63,6 @@ router.post("/logout", verify, (req, res) => {
         httpOnly: true,
         sameSite: "none",
         secure: true,
-        domain: "fweb-project.onrender.com",
         path: "/",
     });
     return res.json({ message: "Logged out successfully" });
@@ -137,7 +136,6 @@ router.get("/callback", async (req, res) => {
             httpOnly: true,
             secure: true,
             sameSite: "None",
-            domain: "fweb-project.onrender.com",
             path: "/",
         });
 
