@@ -10,6 +10,11 @@ import { useUser } from "../general/UserProvider"
 const PlaceholderTemplate = () => {
     return (
         <div className={styles.pair}>
+            <div>
+                <Placeholder width={100} />
+                <Placeholder width={100} />
+                <Placeholder width={100} />
+            </div>
             <Student loading={true} />
 
             <div className={styles.pair_info}>

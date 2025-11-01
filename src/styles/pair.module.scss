@@ -77,7 +77,7 @@
 		grid-template-columns: 1fr !important;
 		gap: 10px;
 
-		div:first-of-type {
+		>div:first-of-type {
 			grid-column: span 1 !important;
 			margin-left: auto;
 		}
