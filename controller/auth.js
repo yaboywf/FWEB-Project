@@ -38,7 +38,7 @@ router.post("/register", checkRequiredKeys('body', ["student_id", "name", "year_
 
 router.get("/login", async (req, res) => {
     try {
-        const returnUrl = req.query.return_url || "https://localhost:5173";
+        const returnUrl = req.query.return_url || "https://teach-and-tackle.onrender.com";
 
         const authUrl = await msalClient.getAuthCodeUrl({
             scopes,
@@ -96,7 +96,7 @@ router.get("/callback", async (req, res) => {
 
         const user = await User.findOne({ student_id }).select("-password");
         if (!user) {
-            return res.redirect(`https://localhost:5173/register?student_id=${encodeURIComponent(student_id)}&name=${encodeURIComponent(profileResp.data.displayName || "")}`);
+            return res.redirect(`https://teach-and-tackle.onrender.com/register?student_id=${encodeURIComponent(student_id)}&name=${encodeURIComponent(profileResp.data.displayName || "")}`);
         }
 
         user.name = profileResp.data.displayName || "";
@@ -130,7 +130,7 @@ router.get("/callback", async (req, res) => {
                 diploma: user.diploma
             },
             process.env.JWT_SECRET,
-            { expiresIn: "7d", audience: "https://localhost:5173", issuer: "https://fweb-project.onrender.com" }
+            { expiresIn: "7d", audience: "https://teach-and-tackle.onrender.com/", issuer: "https://fweb-project.onrender.com" }
         );
 
         res.cookie("token", sessionJwt, {
@@ -141,7 +141,7 @@ router.get("/callback", async (req, res) => {
             path: "/",
         });
 
-        const redirectBack = decodeURIComponent(req.query.state) || "https://localhost:5173/explore";
+        const redirectBack = decodeURIComponent(req.query.state) || "https://teach-and-tackle.onrender.com/explore";
         return res.redirect(redirectBack);
     } catch (e) {
         console.error(e);

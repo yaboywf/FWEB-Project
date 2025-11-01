@@ -14,7 +14,7 @@ const verify = (req, res, next) => {
     if (!token) return res.status(401).json({ message: 'Missing authentication token' });
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET, { issuer: "https://fweb-project.onrender.com", audience: "https://localhost:5173" });
+        const decoded = jwt.verify(token, process.env.JWT_SECRET, { issuer: "https://fweb-project.onrender.com", audience: "https://teach-and-tackle.onrender.com" });
         req.user = decoded;
         next();
     } catch {
