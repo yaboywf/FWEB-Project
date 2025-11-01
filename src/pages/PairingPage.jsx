@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import Nav from "../general/Nav"
-import REQ from "../general/Request"
-import axios from "redaxios"
+import api from "../general/Request"
 import styles from '../styles/pair.module.scss'
 import showMessage from "../general/Message"
 import Placeholder from "../general/Placeholder"
@@ -33,7 +32,7 @@ const PairingPage = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const resp = await axios.get(`${REQ}/api/pair/pairs`, { withCredentials: true });
+                const resp = await api.get('/pair/pairs');
                 setPairings(resp.data);
                 setLoading(false);
             } catch (err) {
@@ -70,7 +69,7 @@ const PairingPage = () => {
         const confirm = prompt("Please enter 'confirm' to unlink this pair");
         if (confirm?.toLowerCase() !== "confirm") return;
         try {
-            await axios.delete(`${REQ}/api/pair/delete?id=${pair._id}`, { withCredentials: true });
+            await api.delete(`/pair/delete?id=${pair._id}`);
             showMessage("Pair unlinked successfully", "success");
             setPairings(prev => prev.filter(pair => pair._id !== pair._id));
 
@@ -95,10 +94,10 @@ const PairingPage = () => {
 
                 if (rating !== null) {
                     const otherUser = pair.sender_id === user.student_id ? pair.receiver_id : pair.sender_id;
-                    await axios.post(`${REQ}/api/account/rating`, {
+                    await api.post(`/account/rating`, {
                         student_id: otherUser,
                         rating: rating
-                    }, { withCredentials: true });
+                    });
                     showMessage("Rating submitted successfully", "success");
                 }
             }

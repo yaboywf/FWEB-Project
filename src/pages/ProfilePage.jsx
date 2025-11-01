@@ -1,8 +1,7 @@
 import Nav from "../general/Nav"
-import REQ from "../general/Request"
+import api from "../general/Request"
 import styles from '../styles/profile.module.scss'
 import { useUser } from "../general/UserProvider"
-import axios from "redaxios"
 import { useEffect, useState, useMemo } from "react"
 import showMessage from "../general/Message"
 import Placeholder from "../general/Placeholder"
@@ -35,13 +34,13 @@ const ProfilePage = () => {
     useEffect(() => {
         const getData = async () => {
             try {
-                const resp = await axios.get(`${REQ}/api/proficiency/all-modules`, { withCredentials: true });
+                const resp = await api.get(`/proficiency/all-modules`);
                 setAllProficiencies(resp.data);
 
-                const resp2 = await axios.get(`${REQ}/api/account/all-achievements`, { withCredentials: true })
+                const resp2 = await api.get(`/account/all-achievements`);
                 setAllAchievements(resp2.data);
 
-                const resp3 = await axios.get(`${REQ}/api/account/attained-achievements`, { withCredentials: true })
+                const resp3 = await api.get(`/account/attained-achievements`)
                 setAttained(resp3.data);
 
                 setLoading(false);
@@ -69,7 +68,7 @@ const ProfilePage = () => {
     }, [userProficiencies, allProficiencies]);
 
     const logout = async (needMessage = true) => {
-        await axios.post(`${REQ}/api/auth/logout`, {}, { withCredentials: true });
+        await api.post(`/auth/logout`, {});
         setUserProficiencies(null);
         setUser(null);
         if (needMessage) showMessage("Logged out successfully", "success");
@@ -80,7 +79,7 @@ const ProfilePage = () => {
         e.preventDefault();
         if (e.target.value === "") return
         try {
-            const resp = await axios.post(`${REQ}/api/proficiency/add`, { id: e.target.value, type }, { withCredentials: true });
+            const resp = await api.post(`/proficiency/add`, { id: e.target.value, type });
             showMessage("Proficiency added successfully", "success");
             setUserProficiencies(prev => [...prev, resp.data.proficiency]);
             e.target.value = "";
@@ -92,7 +91,7 @@ const ProfilePage = () => {
 
     const deleteProficiency = async (id) => {
         try {
-            await axios.delete(`${REQ}/api/proficiency/remove?id=${id}`, { withCredentials: true });
+            await api.delete(`/proficiency/remove?id=${id}`);
             showMessage("Proficiency deleted successfully", "success");
             setUserProficiencies(prev => prev.filter(p => p._id.toString() !== id));
         } catch (err) {
@@ -111,7 +110,7 @@ const ProfilePage = () => {
                 year_of_study: year
             }
 
-            await axios.put(`${REQ}/api/account/update`, data, { withCredentials: true });
+            await api.put(`/account/update`, data);
             setUser(prev => ({ ...prev, ...data }))
             showMessage("Profile updated successfully. Please login again to see the changes.", "success");
             logout(false);

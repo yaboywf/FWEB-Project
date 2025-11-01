@@ -1,11 +1,10 @@
 import Nav from "../general/Nav";
-import axios from "redaxios";
 import { useEffect, useState } from "react";
 import showMessage from "../general/Message";
 import styles from '../styles/explore.module.scss'
 import Student from "../general/Student";
 import '../styles/general.scss'
-import REQ from "../general/Request";
+import api from "../general/Request";
 import Placeholder from "../general/Placeholder";
 import { useUser } from "../general/UserProvider";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +21,7 @@ const ExplorePage = () => {
             try {
                 if (!user?.name || !userProficiencies || userProficiencies?.length === 0) return;
                 
-                const matchableAccounts = await axios.get(`${REQ}/api/proficiency/matchable-accounts`, { withCredentials: true });
+                const matchableAccounts = await api.get(`/proficiency/matchable-accounts`);
                 setStudents(matchableAccounts.data);
                 setFilteredStudents(matchableAccounts.data);
                 setLoading(false);

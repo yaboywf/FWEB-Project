@@ -1,8 +1,7 @@
 import styles from "../styles/register.module.scss";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import showMessage from "../general/Message";
-import axios from "redaxios";
-import REQ from "../general/Request";
+import api from "../general/Request";
 
 const Register = () => {
     const navigate = useNavigate();
@@ -18,7 +17,7 @@ const Register = () => {
             formObject.student_id = searchParams.get("id");
             formObject.name = searchParams.get("name");
 
-            const resp = await axios.post(`${REQ}/api/auth/register`, formObject);
+            const resp = await api.post(`/auth/register`, formObject);
             showMessage(resp.data.message, "success");
             navigate("/");
         } catch (err) {

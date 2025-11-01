@@ -2,8 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import Nav from "../general/Nav";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../general/UserProvider";
-import axios from "redaxios";
-import REQ from "../general/Request";
+import api from "../general/Request";
 import showMessage from "../general/Message";
 import Placeholder from "../general/Placeholder";
 import styles from '../styles/session.module.scss'
@@ -31,14 +30,14 @@ const SessionPage = () => {
 
             try {
                 if (adminNum) {
-                    const resp = await axios.get(`${REQ}/api/account/information?id=${encodeURIComponent(adminNum.toUpperCase())}`, { withCredentials: true })
+                    const resp = await api.get(`/account/information?id=${encodeURIComponent(adminNum.toUpperCase())}`)
                     setAccountInfo(resp.data);
                     setType("create");
                     setUserLoading(false);
                     await fetchProficiencies(adminNum);
                     setModuleLoading(false);
                 } else {
-                    const resp = await axios.get(`${REQ}/api/request/sent?id=${encodeURIComponent(pairId)}`, { withCredentials: true });
+                    const resp = await api.get(`/request/sent?id=${encodeURIComponent(pairId)}`);
                     setUserLoading(false)
                     await fetchProficiencies(resp.data.receiver_info.student_id);
                     setSelectedModule(resp.data.module_id);
@@ -60,7 +59,7 @@ const SessionPage = () => {
 
     const fetchProficiencies = async (adminNum) => {
         try {
-            const resp = await axios.get(`${REQ}/api/proficiency/user-proficiency?id=${encodeURIComponent(adminNum.toUpperCase())}`, { withCredentials: true });
+            const resp = await api.get(`/proficiency/user-proficiency?id=${encodeURIComponent(adminNum.toUpperCase())}`);
 
             const merged = resp.data
                 .filter(p => {
@@ -128,7 +127,7 @@ const SessionPage = () => {
             module_id: selectedModule,
         };
 
-        const method = type === "create" ? axios.post : axios.put;
+        const method = type === "create" ? api.post : api.put;
         const path = type === "create" ? `add` : `update-details`;
 
         const data = type === "create"
@@ -136,7 +135,7 @@ const SessionPage = () => {
             : { ...baseData, id: pairId };
 
         try {
-            const resp = await method(`${REQ}/api/request/${path}`, data, { withCredentials: true });
+            const resp = await method(`/request/${path}`, data);
             showMessage(resp.data.message, "success");
             navigate("/explore");
         } catch (err) {

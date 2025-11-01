@@ -1,11 +1,10 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "./Sidebar";
-import axios from "redaxios";
 import { useNavigate } from "react-router-dom";
 import '../styles/icons.css';
 import '../styles/general.scss';
 import { useEffect } from "react";
-import REQ from "./Request";
+import api from "./Request";
 import { useUser } from "./UserProvider";
 
 const Layout = () => {
@@ -15,7 +14,7 @@ const Layout = () => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`${REQ}/api/auth/verify`, { withCredentials: true });
+                const response = await api.get('/auth/verify');
                 if (response.data.user) setUser(response.data.user);
             } catch (error) {
                 if (error.status === 401) navigate("/");

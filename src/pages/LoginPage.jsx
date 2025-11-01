@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../general/UserProvider";
 import styles from "../styles/login.module.scss";
-import axios from "redaxios";
-import REQ from "../general/Request";
+import api from "../general/Request";
+
 const LoginPage = () => {
     const navigate = useNavigate();
     const { user, setUser } = useUser();
@@ -13,7 +13,7 @@ const LoginPage = () => {
     }, [user, navigate]);
 
     useEffect(() => {
-        axios.get(`${REQ}/api/auth/verify`, { withCredentials: true })
+        api.get(`/auth/verify`)
             .then(response => {
                 setUser(response.data.user);
                 navigate("/explore");

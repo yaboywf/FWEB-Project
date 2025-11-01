@@ -137,6 +137,7 @@ router.get("/callback", async (req, res) => {
             secure: true,
             sameSite: "None",
             path: "/",
+            maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
         });
 
         const redirectBack = decodeURIComponent(req.query.state) || "https://teach-and-tackle.onrender.com/explore";

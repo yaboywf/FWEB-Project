@@ -1,8 +1,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { useUser } from "../general/UserProvider";
 import Nav from "../general/Nav"
-import axios from "redaxios";
-import REQ from "../general/Request";
+import api from "../general/Request";
 import styles from '../styles/pending.module.scss'
 import Placeholder from "../general/Placeholder";
 import Student from "../general/Student";
@@ -33,7 +32,7 @@ const PendingPage = () => {
 
     useEffect(() => {
         const getData = async () => {
-            const resp = await axios.get(`${REQ}/api/request/requests`, { withCredentials: true });
+            const resp = await api.get(`/request/requests`);
             setRequests(resp.data);
             setLoading(false);
         }
@@ -54,7 +53,7 @@ const PendingPage = () => {
 
     const deleteRequest = async (requestId) => {
         try {
-            await axios.delete(`${REQ}/api/request/remove?id=${requestId}`, { withCredentials: true });
+            await api.delete(`/request/remove?id=${requestId}`);
             showMessage("Request deleted successfully", "success");
             setRequests(prev => prev.filter(request => request._id !== requestId));
         } catch (err) {
@@ -65,7 +64,7 @@ const PendingPage = () => {
 
     const acceptRequest = async (requestId) => {
         try {
-            await axios.put(`${REQ}/api/request/update-status`, { id: requestId }, { withCredentials: true });
+            await api.put(`/request/update-status`, { id: requestId });
             showMessage("Request accepted successfully", "success");
             setRequests(prev => prev.filter(request => request._id !== requestId));
         } catch (err) {

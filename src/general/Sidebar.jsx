@@ -3,8 +3,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useUser } from "../general/UserProvider";
 import { useNavigate } from "react-router-dom";
 import showMessage from "../general/Message";
-import REQ from "./Request";
-import axios from "redaxios";
+import api from "./Request";
 import Placeholder from "../general/Placeholder";
 
 const Sidebar = () => {
@@ -19,7 +18,7 @@ const Sidebar = () => {
             if (userProficiencies && Object.keys(userProficiencies).length > 0) return setLoading(false);
 
             try {
-                const response = await axios.get(`${REQ}/api/proficiency/user-proficiency?id=${user.student_id}`, { withCredentials: true });
+                const response = await api.get(`/proficiency/user-proficiency?id=${user.student_id}`);
                 setUserProficiencies(response.data);
                 setLoading(false);
             } catch (error) {
