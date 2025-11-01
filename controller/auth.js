@@ -94,9 +94,7 @@ router.get("/callback", async (req, res) => {
         });
 
         const user = await User.findOne({ student_id }).select("-password");
-        if (!user) {
-            return res.redirect(`https://teach-and-tackle.onrender.com/register?student_id=${encodeURIComponent(student_id)}&name=${encodeURIComponent(profileResp.data.displayName || "")}`);
-        }
+        if (!user) return res.redirect(`https://teach-and-tackle.onrender.com/register?student_id=${encodeURIComponent(student_id)}&name=${encodeURIComponent(profileResp.data.displayName || "")}`);
 
         user.name = profileResp.data.displayName || "";
         await user.save();
@@ -129,7 +127,7 @@ router.get("/callback", async (req, res) => {
                 diploma: user.diploma
             },
             process.env.JWT_SECRET,
-            { expiresIn: "7d", audience: "https://teach-and-tackle.onrender.com/", issuer: "https://fweb-project.onrender.com" }
+            { expiresIn: "7d", audience: "https://teach-and-tackle.onrender.com", issuer: "https://fweb-project.onrender.com" }
         );
 
         res.cookie("token", sessionJwt, {
