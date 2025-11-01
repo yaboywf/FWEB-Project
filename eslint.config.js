@@ -12,7 +12,7 @@ export default defineConfig([
       sourceType: "module",
       globals: {
         ...globals.browser,
-        ...globals.node, // ✅ enable Node.js globals like process
+        ...globals.node,
       },
       parserOptions: {
         ecmaFeatures: { jsx: true },
@@ -33,7 +33,7 @@ export default defineConfig([
     },
     settings: {
       react: {
-        version: "detect", // Auto-detects React version
+        version: "detect",
       },
     },
   },
