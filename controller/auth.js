@@ -96,17 +96,7 @@ router.get("/callback", async (req, res) => {
 
         const user = await User.findOne({ student_id }).select("-password");
         if (!user) {
-            return res.send(`
-                <script>
-                window.opener.postMessage(${JSON.stringify({
-                success: false,
-                reason: "unregistered",
-                student_id,
-                name: profileResp.data.displayName || "",
-            })}, "https://localhost:5173");
-                window.close();
-                </script>
-            `);
+            return res.redirect(`https://localhost:5173/register?student_id=${encodeURIComponent(student_id)}&name=${encodeURIComponent(profileResp.data.displayName || "")}`);
         }
 
         user.name = profileResp.data.displayName || "";
