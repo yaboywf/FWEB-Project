@@ -30,7 +30,7 @@ const LoginPage = () => {
             <div>
                 <img src="logo.webp" alt="Logo" />
                 <button onClick={handleLogin}>
-                    <svg width="32" height="32" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="15" height="15" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
                         <rect x="1" y="1" width="9" height="9" fill="#F25022" />
                         <rect x="12" y="1" width="9" height="9" fill="#7FBA00" />
                         <rect x="1" y="12" width="9" height="9" fill="#00A4EF" />
