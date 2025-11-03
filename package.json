@@ -30,7 +30,7 @@
     "concurrently": "^9.2.1",
     "eslint": "^9.39.0",
     "eslint-plugin-react": "^7.37.5",
-    "globals": "^16.4.0",
+    "globals": "^16.5.0",
     "rollup-plugin-visualizer": "^6.0.5",
     "vite": "npm:rolldown-vite@7.1.20",
     "vite-plugin-eslint": "^1.8.1"
