@@ -13,7 +13,6 @@ router.get("/all-modules", verify, async (req, res) => {
 })
 
 router.get("/user-proficiency", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
-    if (!Types.ObjectId.isValid(req.query.id)) return res.status(400).send("Invalid or missing ID");
     const proficiency = await Proficiency.find({ student_id: { $eq: req.query.id } }).populate("module_id");
     return res.json(proficiency);
 })
