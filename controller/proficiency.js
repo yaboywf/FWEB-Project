@@ -7,7 +7,7 @@ import { Types } from "mongoose";
 
 const router = express.Router();
 
-router.get("/all-modules", verify, async (req, res) => {
+router.get("/all-modules", verify, writeLimiter, async (req, res) => {
     const modules = await Module.find();
     return res.json(modules);
 })
