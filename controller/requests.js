@@ -119,8 +119,10 @@ router.post('/add', verify, checkRequiredKeys('body', ["receiver_id", "end_date"
 })
 
 router.delete('/remove', verify, checkRequiredKeys('query', ["id"]), async (req, res) => {
+    if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
+
     const pair = await Pair.findOneAndDelete({
-        _id: req.query.id,
+        _id: new Types.ObjectId(req.query.id),
         status: 1,
         $or: [
             { sender_id: req.user.student_id },
@@ -133,8 +135,10 @@ router.delete('/remove', verify, checkRequiredKeys('query', ["id"]), async (req,
 })
 
 router.put('/update-status', verify, checkRequiredKeys('body', ["id"]), async (req, res) => {
+    if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
+
     const pair = await Pair.findOneAndUpdate({
-        _id: req.body.id,
+        _id: new Types.ObjectId(req.body.id),
         status: 1,
         $or: [
             { sender_id: req.user.student_id },
@@ -190,6 +194,8 @@ router.put('/update-status', verify, checkRequiredKeys('body', ["id"]), async (r
 
 router.put('/update-details', verify, checkRequiredKeys('body', ["id", "module_id", "day", "start_time", "end_time", "end_date"]), async (req, res) => {
     const body = req.body;
+    if (!Types.ObjectId.isValid(body.id)) return res.status(400).send("Invalid or missing ID");
+
     const pair = await Pair.findOneAndUpdate({
         _id: new Types.ObjectId(body.id),
         status: 1,

@@ -92,8 +92,10 @@ router.get('/pairs', verify, async (req, res) => {
 })
 
 router.delete('/delete', verify, checkRequiredKeys('query', ["id"]), async (req, res) => {
+    if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
+
     const pair = await Pair.findOneAndDelete({
-        _id: req.query.id,
+        _id: new Types.ObjectId(req.query.id),
         status: 2,
         $or: [
             { sender_id: req.user.student_id },

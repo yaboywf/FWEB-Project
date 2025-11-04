@@ -28,7 +28,7 @@ router.post("/rating", verify, checkRequiredKeys('body', ["student_id", "rating"
     if (req.body.rating < 1 || req.body.rating > 5) return res.status(400).json({ message: "Rating must be between 1 and 5" });
 
     await User.findOneAndUpdate(
-        { student_id: req.body.student_id },
+        { student_id: { $eq: req.body.student_id } },
         { $push: { rating: req.body.rating } },
     );
 
@@ -39,7 +39,7 @@ router.put("/update", verify, checkRequiredKeys('body', ["diploma", "year_of_stu
     try {
         const { diploma, year_of_study } = req.body;
         const updatedAccount = await User.findOneAndUpdate(
-            { student_id: req.user.student_id },
+            { student_id: { $eq: req.user.student_id } },
             {
                 diploma,
                 year_of_study,
