@@ -6,6 +6,7 @@ import '../styles/general.scss';
 import { useEffect } from "react";
 import api from "./Request";
 import { useUser } from "./UserProvider";
+import showMessage from "./Message";
 
 const Layout = () => {
     const { setUser } = useUser();
@@ -18,6 +19,7 @@ const Layout = () => {
                 if (response.data.user) setUser(response.data.user);
             } catch (error) {
                 if (error.status === 401) navigate("/");
+                if (error.status === 503) showMessage(error.data.message);
                 else console.error(error);
             }
         }
