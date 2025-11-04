@@ -125,7 +125,6 @@ const PairingPage = () => {
             return toYYYYMMDD(date) + "T" + pad(H) + pad(M) + "00";
         };
 
-        // RFC 5545 line folding helper (CRLF + one space)
         const foldLine = (str, limit = 75) =>
             str.replace(new RegExp(`(.{1,${limit}})(?=.)`, "g"), "$1\r\n ");
 
@@ -168,7 +167,7 @@ const PairingPage = () => {
             "END:VCALENDAR"
         ];
 
-        const ics = icsLines.join("\r\n"); // CRLF line endings per RFC 5545
+        const ics = icsLines.join("\r\n");
         const blob = new Blob([ics], { type: "text/calendar" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);

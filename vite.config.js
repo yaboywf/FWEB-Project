@@ -16,7 +16,7 @@ export default defineConfig(({ mode }) => {
 				brotliSize: true,
 			}),
 			eslint({
-				cache: false, // optional
+				cache: false,
 				include: ["src/**/*.js", "src/**/*.jsx"],
 				exclude: ["node_modules"],
 			}),
