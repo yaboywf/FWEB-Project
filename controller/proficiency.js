@@ -13,7 +13,8 @@ router.get("/all-modules", verify, async (req, res) => {
 })
 
 router.get("/user-proficiency", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
-    const proficiency = await Proficiency.find({ student_id: req.query.id }).populate("module_id");
+    if (!Types.ObjectId.isValid(req.query.id)) return res.status(400).send("Invalid or missing ID");
+    const proficiency = await Proficiency.find({ student_id: { $eq: req.query.id } }).populate("module_id");
     return res.json(proficiency);
 })
 
@@ -52,6 +53,7 @@ router.get("/matchable-accounts", verify, writeLimiter, async (req, res) => {
 
 router.post("/add", verify, writeLimiter, checkRequiredKeys('body', ["type", "id"]), async (req, res) => {
     const { type, id } = req.body;
+    if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
 
     const mod = await Module.findById(id);
     if (!mod) return res.status(404).json({ message: "Module not found" });
