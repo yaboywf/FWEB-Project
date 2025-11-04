@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import rateLimit from "express-rate-limit";
 dotenv.config({ debug: false });
 
 /**
@@ -41,4 +42,17 @@ const checkRequiredKeys = (source, keys) => {
     }
 }
 
-export { verify, checkRequiredKeys };
+const limitByUser = (req, res, next) => {
+    req.ip = req.user.student_id;
+    next();
+};
+
+const writeLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 30,
+    message: { message: "Too many actions — slow down." },
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+export { verify, checkRequiredKeys, limitByUser, writeLimiter };
