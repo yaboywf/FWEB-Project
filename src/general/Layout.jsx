@@ -19,7 +19,7 @@ const Layout = () => {
                 if (response.data.user) setUser(response.data.user);
             } catch (error) {
                 if (error.status === 401) navigate("/");
-                if (error.status === 503) showMessage(error.data.message);
+                if (error.status === 429) showMessage(error.data.message);
                 else console.error(error);
             }
         }
