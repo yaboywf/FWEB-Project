@@ -3,11 +3,13 @@ import { verify, checkRequiredKeys, writeLimiter } from "../middleware.js";
 import User from "../database/users.js";
 import Achievement from "../database/achievements.js";
 import Attained from "../database/attained.js";
+import { Types } from "mongoose";
 
 const router = express.Router();
 
 router.get("/information", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
-    const account = await User.findOne({ student_id: req.query.id });
+    if (!Types.ObjectId.isValid(req.query.id)) return res.status(400).send("Invalid or missing ID");
+    const account = await User.findOne({ student_id: { $eq: req.query.id } });
     if (!account) return res.status(404).json({ message: "Account not found" });
 
     return res.json(account);

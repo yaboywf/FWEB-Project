@@ -1,5 +1,5 @@
 import express from 'express';
-import { checkRequiredKeys, verify } from '../middleware.js';
+import { checkRequiredKeys, verify, writeLimiter } from '../middleware.js';
 import Pair from '../database/pairs.js';
 import Proficiency from '../database/proficiency.js';
 import Attained from '../database/attained.js';
@@ -7,7 +7,7 @@ import { Types } from 'mongoose';
 
 const router = express.Router();
 
-router.get('/pairs', verify, async (req, res) => {
+router.get('/pairs', verify, writeLimiter, async (req, res) => {
     const studentId = req.user.student_id;
     const pairs = await Pair.aggregate([
         {
@@ -91,7 +91,7 @@ router.get('/pairs', verify, async (req, res) => {
     return res.json(pairs);
 })
 
-router.delete('/delete', verify, checkRequiredKeys('query', ["id"]), async (req, res) => {
+router.delete('/delete', verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
     if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
 
     const pair = await Pair.findOneAndDelete({
