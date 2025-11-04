@@ -1,5 +1,5 @@
 import express from "express";
-import { checkRequiredKeys, verify, limitByUser, writeLimiter } from '../middleware.js';
+import { checkRequiredKeys, verify, writeLimiter } from '../middleware.js';
 import Pair from '../database/pairs.js';
 import Attained from "../database/attained.js";
 import { Types } from "mongoose";
@@ -135,7 +135,7 @@ router.delete('/remove', verify, checkRequiredKeys('query', ["id"]), async (req,
 })
 
 router.put('/update-status', verify, checkRequiredKeys('body', ["id"]), async (req, res) => {
-    if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
+    if (!Types.ObjectId.isValid(req.body.id)) return res.status(400).send("Invalid or missing ID");
 
     const pair = await Pair.findOneAndUpdate({
         _id: new Types.ObjectId(req.body.id),
@@ -192,7 +192,7 @@ router.put('/update-status', verify, checkRequiredKeys('body', ["id"]), async (r
     return res.json({ message: "Request successfully updated" });
 })
 
-router.put('/update-details', verify, limitByUser, writeLimiter, checkRequiredKeys('body', ["id", "module_id", "day", "start_time", "end_time", "end_date"]), async (req, res) => {
+router.put('/update-details', verify, writeLimiter, checkRequiredKeys('body', ["id", "module_id", "day", "start_time", "end_time", "end_date"]), async (req, res) => {
     const body = req.body;
     if (!Types.ObjectId.isValid(body.id)) return res.status(400).send("Invalid or missing ID");
 

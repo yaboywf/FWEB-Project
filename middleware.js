@@ -42,17 +42,13 @@ const checkRequiredKeys = (source, keys) => {
     }
 }
 
-const limitByUser = (req, res, next) => {
-    req.ip = req.user.student_id;
-    next();
-};
-
 const writeLimiter = rateLimit({
     windowMs: 60 * 1000,
     max: 30,
     message: { message: "Too many actions — slow down." },
     standardHeaders: true,
     legacyHeaders: false,
+    keyGenerator: (req) => req.user?.student_id || req.ip
 });
 
-export { verify, checkRequiredKeys, limitByUser, writeLimiter };
+export { verify, checkRequiredKeys, writeLimiter };
