@@ -6,7 +6,7 @@ import { Types } from "mongoose";
 
 const router = express.Router();
 
-router.get('/requests', verify, async (req, res) => {
+router.get('/requests', verify, writeLimiter, async (req, res) => {
     const studentId = req.user.student_id;
     const pairs = await Pair.aggregate([
         {
@@ -62,7 +62,7 @@ router.get('/requests', verify, async (req, res) => {
     return res.json(pairs);
 })
 
-router.get('/sent', verify, checkRequiredKeys('query', ["id"]), async (req, res) => {
+router.get('/sent', verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
     const pairs = await Pair.aggregate([
         {
             $match: {
@@ -103,7 +103,7 @@ router.get('/sent', verify, checkRequiredKeys('query', ["id"]), async (req, res)
     return res.json(pairs[0]);
 })
 
-router.post('/add', verify, checkRequiredKeys('body', ["receiver_id", "end_date", "module_id", "day", "start_time", "end_time"]), async (req, res) => {
+router.post('/add', verify, writeLimiter, checkRequiredKeys('body', ["receiver_id", "end_date", "module_id", "day", "start_time", "end_time"]), async (req, res) => {
     await Pair.create({
         sender_id: req.user.student_id,
         receiver_id: req.body.receiver_id,
@@ -118,7 +118,7 @@ router.post('/add', verify, checkRequiredKeys('body', ["receiver_id", "end_date"
     return res.json({ message: "Request successfully created" });
 })
 
-router.delete('/remove', verify, checkRequiredKeys('query', ["id"]), async (req, res) => {
+router.delete('/remove', verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
     if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
 
     const pair = await Pair.findOneAndDelete({
@@ -134,7 +134,7 @@ router.delete('/remove', verify, checkRequiredKeys('query', ["id"]), async (req,
     return res.json({ message: "Pair successfully deleted" });
 })
 
-router.put('/update-status', verify, checkRequiredKeys('body', ["id"]), async (req, res) => {
+router.put('/update-status', verify, writeLimiter, checkRequiredKeys('body', ["id"]), async (req, res) => {
     if (!Types.ObjectId.isValid(req.body.id)) return res.status(400).send("Invalid or missing ID");
 
     const pair = await Pair.findOneAndUpdate({
