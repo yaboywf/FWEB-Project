@@ -199,7 +199,10 @@ router.put('/update-details', verify, writeLimiter, checkRequiredKeys('body', ["
     const day = Number(body.day);
     if (isNaN(day)) return res.status(400).send("Invalid day");
     if (typeof body.start_time !== 'string' || typeof body.end_time !== 'string') return res.status(400).send("Invalid time or date format");
-    
+    if (typeof body.end_date !== 'string' && typeof body.end_date !== 'number' && !(body.end_date instanceof Date)) {
+        return res.status(400).send('Invalid end_date');
+    }
+
     const pair = await Pair.findOneAndUpdate({
         _id: new Types.ObjectId(body.id),
         status: 1,

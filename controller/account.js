@@ -39,6 +39,10 @@ router.post("/rating", verify, writeLimiter, checkRequiredKeys('body', ["student
 router.put("/update", verify, writeLimiter, checkRequiredKeys('body', ["diploma", "year_of_study"]), async (req, res) => {
     try {
         const { diploma, year_of_study } = req.body;
+        if (typeof diploma !== "string" || typeof year_of_study !== "number") {
+            return res.status(400).json({ message: "Invalid input types for diploma or year_of_study" });
+        }
+
         const updatedAccount = await User.findOneAndUpdate(
             { student_id: { $eq: req.user.student_id } },
             {
