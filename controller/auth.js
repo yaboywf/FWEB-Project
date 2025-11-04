@@ -1,5 +1,5 @@
 import express from "express";
-import { checkRequiredKeys, verify, generalLimiter } from "../middleware.js";
+import { checkRequiredKeys, verify, writeLimiter } from "../middleware.js";
 import jwt from "jsonwebtoken";
 import User from "../database/users.js";
 import { ConfidentialClientApplication, LogLevel } from "@azure/msal-node";
@@ -36,7 +36,7 @@ router.post("/register", checkRequiredKeys('body', ["student_id", "name", "year_
     }
 });
 
-router.get("/login", generalLimiter, async (req, res) => {
+router.get("/login", writeLimiter, async (req, res) => {
     try {
         const returnUrl = req.query.return_url || "https://teach-and-tackle.onrender.com";
 
@@ -54,11 +54,11 @@ router.get("/login", generalLimiter, async (req, res) => {
     }
 });
 
-router.get("/verify", verify, (req, res) => {
+router.get("/verify", verify, writeLimiter, (req, res) => {
     return res.json({ user: req.user });
 });
 
-router.post("/logout", verify, (req, res) => {
+router.post("/logout", verify, writeLimiter, (req, res) => {
     res.clearCookie("token", {
         httpOnly: true,
         sameSite: "none",
@@ -69,7 +69,7 @@ router.post("/logout", verify, (req, res) => {
 });
 
 
-router.get("/callback", async (req, res) => {
+router.get("/callback", writeLimiter, async (req, res) => {
     try {
         const tokenResp = await msalClient.acquireTokenByCode({
             code: req.query.code,

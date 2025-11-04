@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import rateLimit from "express-rate-limit";
+import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 dotenv.config({ debug: false });
 
 /**
@@ -48,16 +48,10 @@ const writeLimiter = rateLimit({
     message: { message: "Too many actions — slow down." },
     standardHeaders: true,
     legacyHeaders: false,
-    keyGenerator: (req) => req.user?.student_id || req.ip
+    keyGenerator: (req) => {
+        if (req.user?.student_id) return req.user.student_id;
+        return ipKeyGenerator(req);
+    },
 });
 
-const generalLimiter = rateLimit({
-    windowMs: 60 * 1000,
-    max: 30,
-    message: { message: "Too many actions — slow down." },
-    standardHeaders: true,
-    legacyHeaders: false,
-    keyGenerator: (req) => req.ip
-});
-
-export { verify, checkRequiredKeys, writeLimiter, generalLimiter };
+export { verify, checkRequiredKeys, writeLimiter };
