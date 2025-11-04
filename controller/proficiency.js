@@ -1,5 +1,5 @@
 import express from "express";
-import { verify, checkRequiredKeys } from "../middleware.js";
+import { verify, checkRequiredKeys, writeLimiter } from "../middleware.js";
 import Proficiency from "../database/proficiency.js";
 import Module from "../database/modules.js";
 import User from "../database/users.js";
@@ -12,12 +12,12 @@ router.get("/all-modules", verify, async (req, res) => {
     return res.json(modules);
 })
 
-router.get("/user-proficiency", verify, checkRequiredKeys('query', ["id"]), async (req, res) => {
+router.get("/user-proficiency", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
     const proficiency = await Proficiency.find({ student_id: req.query.id }).populate("module_id");
     return res.json(proficiency);
 })
 
-router.get("/matchable-accounts", verify, async (req, res) => {
+router.get("/matchable-accounts", verify, writeLimiter, async (req, res) => {
     const userProficiencies = await Proficiency.find({ student_id: req.user.student_id });
 
     const strengthIds = userProficiencies.filter(p => p.type === 1).map(p => p.module_id);
@@ -50,7 +50,7 @@ router.get("/matchable-accounts", verify, async (req, res) => {
     return res.status(200).json(result);
 })
 
-router.post("/add", verify, checkRequiredKeys('body', ["type", "id"]), async (req, res) => {
+router.post("/add", verify, writeLimiter, checkRequiredKeys('body', ["type", "id"]), async (req, res) => {
     const { type, id } = req.body;
 
     const mod = await Module.findById(id);
@@ -69,13 +69,14 @@ router.post("/add", verify, checkRequiredKeys('body', ["type", "id"]), async (re
     return res.status(200).json({ message: "Proficiency successfully created", proficiency: populated });
 })
 
-router.delete("/remove", verify, checkRequiredKeys('query', ["id"]), async (req, res) => {
+router.delete("/remove", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
     const { id } = req.query;
+    if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
 
-    const proficiency = await Proficiency.findOne({ student_id: req.user.student_id, _id: id });
+    const proficiency = await Proficiency.findOne({ student_id: { $eq: req.user.student_id }, _id: new Types.ObjectId(id) });
     if (!proficiency) return res.status(404).json({ message: "Proficiency not found" });
 
-    await Proficiency.deleteOne({ _id: id });
+    await Proficiency.deleteOne({ _id: { $eq: id } });
     return res.status(200).json({ message: "Proficiency successfully deleted" });
 })
 
