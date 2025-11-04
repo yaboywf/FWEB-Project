@@ -1,5 +1,5 @@
 import express from "express";
-import { checkRequiredKeys, verify } from "../middleware.js";
+import { checkRequiredKeys, verify, generalLimiter } from "../middleware.js";
 import jwt from "jsonwebtoken";
 import User from "../database/users.js";
 import { ConfidentialClientApplication, LogLevel } from "@azure/msal-node";
@@ -36,7 +36,7 @@ router.post("/register", checkRequiredKeys('body', ["student_id", "name", "year_
     }
 });
 
-router.get("/login", async (req, res) => {
+router.get("/login", generalLimiter, async (req, res) => {
     try {
         const returnUrl = req.query.return_url || "https://teach-and-tackle.onrender.com";
 

@@ -51,4 +51,13 @@ const writeLimiter = rateLimit({
     keyGenerator: (req) => req.user?.student_id || req.ip
 });
 
-export { verify, checkRequiredKeys, writeLimiter };
+const generalLimiter = rateLimit({
+    windowMs: 60 * 1000,
+    max: 30,
+    message: { message: "Too many actions — slow down." },
+    standardHeaders: true,
+    legacyHeaders: false,
+    keyGenerator: (req) => req.ip
+});
+
+export { verify, checkRequiredKeys, writeLimiter, generalLimiter };

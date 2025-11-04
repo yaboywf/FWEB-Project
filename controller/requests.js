@@ -195,7 +195,11 @@ router.put('/update-status', verify, writeLimiter, checkRequiredKeys('body', ["i
 router.put('/update-details', verify, writeLimiter, checkRequiredKeys('body', ["id", "module_id", "day", "start_time", "end_time", "end_date"]), async (req, res) => {
     const body = req.body;
     if (!Types.ObjectId.isValid(body.id)) return res.status(400).send("Invalid or missing ID");
-
+    if (!Types.ObjectId.isValid(body.module_id)) return res.status(400).send("Invalid or missing module_id");
+    const day = Number(body.day);
+    if (isNaN(day)) return res.status(400).send("Invalid day");
+    if (typeof body.start_time !== 'string' || typeof body.end_time !== 'string') return res.status(400).send("Invalid time or date format");
+    
     const pair = await Pair.findOneAndUpdate({
         _id: new Types.ObjectId(body.id),
         status: 1,
@@ -205,7 +209,7 @@ router.put('/update-details', verify, writeLimiter, checkRequiredKeys('body', ["
         day: Number(body.day) || 0,
         start_time: body.start_time || "",
         end_time: body.end_time || "",
-        end_date: body.end_date || ""
+        end_date: body.end_date || new Date()
     });
 
     if (!pair) return res.status(404).json({ message: "Request not found or you are not authorized to update this pair" });
