@@ -135,13 +135,14 @@ router.get("/callback", async (req, res) => {
             secure: true,
             sameSite: "None",
             path: "/",
-            maxAge: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+            maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
-        const redirectBack = decodeURIComponent(req.query.state) || "https://teach-and-tackle.onrender.com/explore";
+        const redirectBack = req.query.state ? decodeURIComponent(req.query.state) : "https://teach-and-tackle.onrender.com/explore";
         return res.redirect(redirectBack);
     } catch (e) {
         console.error(e);
+        if (e.message.includes("AADSTS54005")) return res.redirect(`https://teach-and-tackle.onrender.com/login`);
         res.status(400).send("Authentication error");
     }
 });
