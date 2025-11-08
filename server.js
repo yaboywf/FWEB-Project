@@ -22,7 +22,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 app.use(cors({
-    origin: "https://teach-and-tackle.onrender.com",
+    origin: ["https://teach-and-tackle.onrender.com", "http://localhost:5173"],
     credentials: true,
 }));
 

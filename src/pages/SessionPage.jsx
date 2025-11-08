@@ -69,12 +69,22 @@ const SessionPage = () => {
                     return match && match.type !== p.type;
                 })
                 .map(p => {
-                    const existingPair = resp2.data.find(pair =>
-                        pair.sender_id === user.student_id &&
-                        pair.receiver_id === adminNum.toUpperCase() &&
-                        pair.module_id?._id === p.module_id?._id &&
-                        new Date(pair.end_date) >= today  // not expired
-                    );
+                    const existingPair = resp2.data.find(pair => {
+                        const cond1 = pair.sender_id === user.student_id;
+                        const cond2 = pair.receiver_id === adminNum.toUpperCase();
+                        const cond3 = String(pair.module_id?._id) === String(p.module_id?._id); // **Important string compare**
+                        const cond4 = new Date(pair.end_date) >= today;
+
+                        console.log("---- Checking Pair ----");
+                        console.log("pair.sender_id:", pair.sender_id, "vs", user.student_id, "=", cond1);
+                        console.log("pair.receiver_id:", pair.receiver_id, "vs", adminNum.toUpperCase(), "=", cond2);
+                        console.log("pair.module_id:", pair.module_id?._id, "vs", p.module_id?._id, "=", cond3);
+                        console.log("pair.end_date:", pair.end_date, ">= today", today.toISOString(), "=", cond4);
+                        console.log("Result:", cond1 && cond2 && cond3 && cond4);
+                        console.log("----------------------");
+
+                        return cond1 && cond2 && cond3 && cond4;
+                    });
 
                     return {
                         id: p.module_id?._id,
