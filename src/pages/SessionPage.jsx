@@ -76,14 +76,6 @@ const SessionPage = () => {
                         const cond3 = String(pair.module_id) === String(p.module_id?._id);
                         const cond4 = new Date(pair.end_date) >= today;
 
-                        console.log("---- Checking Pair ----");
-                        console.log("pair.sender_id:", pair.sender_id, "vs", user.student_id, "=", cond1);
-                        console.log("pair.receiver_id:", pair.receiver_id, "vs", adminNum.toUpperCase(), "=", cond2);
-                        console.log("pair.module_id:", pair.module_id, "vs", p.module_id?._id, "=", cond3);
-                        console.log("pair.end_date:", pair.end_date, ">= today", today.toISOString(), "=", cond4);
-                        console.log("Result:", cond1 && cond2 && cond3 && cond4);
-                        console.log("----------------------");
-
                         return cond1 && cond2 && cond3 && cond4;
                     });
 
