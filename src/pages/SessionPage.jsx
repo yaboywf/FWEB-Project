@@ -60,16 +60,28 @@ const SessionPage = () => {
     const fetchProficiencies = async (adminNum) => {
         try {
             const resp = await api.get(`/proficiency/user-proficiency?id=${encodeURIComponent(adminNum.toUpperCase())}`);
+            const resp2 = await api.get('/pair/pairs');
+            const today = new Date();
 
             const merged = resp.data
                 .filter(p => {
                     const match = userProficiencies.find(c => c.module_id?._id === p.module_id?._id);
                     return match && match.type !== p.type;
                 })
-                .map(p => ({
-                    id: p.module_id?._id,
-                    name: p.module_id?.module,
-                }));
+                .map(p => {
+                    const existingPair = resp2.data.find(pair =>
+                        pair.sender_id === user.student_id &&
+                        pair.receiver_id === adminNum.toUpperCase() &&
+                        pair.module_id?._id === p.module_id?._id &&
+                        new Date(pair.end_date) >= today  // not expired
+                    );
+
+                    return {
+                        id: p.module_id?._id,
+                        name: p.module_id?.module,
+                        alreadyPaired: Boolean(existingPair)
+                    };
+                });
 
             setModules(merged);
         } catch (err) {
@@ -169,7 +181,7 @@ const SessionPage = () => {
                         {modules.map(m => (
                             <Fragment key={m.id}>
                                 <input type="radio" id={m.id} value={m.id} checked={selectedModule === m.id} name="module" onChange={() => setSelectedModule(m.id)} required />
-                                <label htmlFor={m.id}>{m.name}</label>
+                                <label htmlFor={m.id}>{m.name} {m.alreadyPaired && <span style={{ color: 'red' }}> (Already Paired)</span>}</label>
                             </Fragment>
                         ))}
                     </div>
