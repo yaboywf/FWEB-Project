@@ -61,6 +61,7 @@ const SessionPage = () => {
         try {
             const resp = await api.get(`/proficiency/user-proficiency?id=${encodeURIComponent(adminNum.toUpperCase())}`);
             const resp2 = await api.get('/pair/pairs');
+            const resp3 = await api.get(`/request/requests`);
             const today = new Date();
 
             const merged = resp.data
@@ -72,13 +73,13 @@ const SessionPage = () => {
                     const existingPair = resp2.data.find(pair => {
                         const cond1 = pair.sender_id === user.student_id;
                         const cond2 = pair.receiver_id === adminNum.toUpperCase();
-                        const cond3 = String(pair.module_id?._id) === String(p.module_id?._id); // **Important string compare**
+                        const cond3 = String(pair.module_id) === String(p.module_id?._id);
                         const cond4 = new Date(pair.end_date) >= today;
 
                         console.log("---- Checking Pair ----");
                         console.log("pair.sender_id:", pair.sender_id, "vs", user.student_id, "=", cond1);
                         console.log("pair.receiver_id:", pair.receiver_id, "vs", adminNum.toUpperCase(), "=", cond2);
-                        console.log("pair.module_id:", pair.module_id?._id, "vs", p.module_id?._id, "=", cond3);
+                        console.log("pair.module_id:", pair.module_id, "vs", p.module_id?._id, "=", cond3);
                         console.log("pair.end_date:", pair.end_date, ">= today", today.toISOString(), "=", cond4);
                         console.log("Result:", cond1 && cond2 && cond3 && cond4);
                         console.log("----------------------");
@@ -86,10 +87,19 @@ const SessionPage = () => {
                         return cond1 && cond2 && cond3 && cond4;
                     });
 
+                    const alreadyRequested = resp3.data.find(req => {
+                        const cond1 = req.sender_id === user.student_id;
+                        const cond2 = req.receiver_id === adminNum.toUpperCase();
+                        const cond3 = String(req.module_id) === String(p.module_id?._id);
+
+                        return cond1 && cond2 && cond3;
+                    })
+
                     return {
                         id: p.module_id?._id,
                         name: p.module_id?.module,
-                        alreadyPaired: Boolean(existingPair)
+                        alreadyPaired: Boolean(existingPair),
+                        alreadyRequested: Boolean(alreadyRequested)
                     };
                 });
 
@@ -191,7 +201,7 @@ const SessionPage = () => {
                         {modules.map(m => (
                             <Fragment key={m.id}>
                                 <input type="radio" id={m.id} value={m.id} checked={selectedModule === m.id} name="module" onChange={() => setSelectedModule(m.id)} required />
-                                <label htmlFor={m.id}>{m.name} {m.alreadyPaired && <span style={{ color: 'red' }}> (Already Paired)</span>}</label>
+                                <label htmlFor={m.id}>{m.name} {m.alreadyPaired && <span style={{ color: 'red' }}> (Already Paired)</span>} {m.alreadyRequested && <span style={{ color: 'red' }}> (Already Requested)</span>}</label>
                             </Fragment>
                         ))}
                     </div>
