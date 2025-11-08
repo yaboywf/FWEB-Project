@@ -25,6 +25,7 @@ const Layout = () => {
         }
 
         fetchUserData();
+        console.log("Hi cher, if u see this, plz gimme good grade :)");
     }, [])
 
     return (
