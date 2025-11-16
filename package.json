@@ -22,6 +22,7 @@
     "preact": "^10.27.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-markdown": "^10.1.0",
     "react-router-dom": "^7.9.5",
     "redaxios": "^0.5.1",
     "sass": "^1.93.3"

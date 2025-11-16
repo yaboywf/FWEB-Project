@@ -4,10 +4,10 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 
-import proficiencyRoutes from "./controller/proficiency.js";
+import { router as proficiencyRoutes } from "./controller/proficiency.js";
 import accountRoutes from "./controller/account.js";
 import authRoutes from "./controller/auth.js";
-import pairRoutes from "./controller/pairs.js";
+import { router as pairRoutes } from "./controller/pairs.js";
 import requestRoutes from "./controller/requests.js";
 
 dotenv.config({ debug: false });

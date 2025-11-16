@@ -4,7 +4,8 @@ import User from "../database/users.js";
 import Achievement from "../database/achievements.js";
 import Attained from "../database/attained.js";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import Proficiency from "../database/proficiency.js";
+import { proficiencies, modules, matches } from "./proficiency.js";
+import { pairs } from "./pairs.js";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -28,10 +29,14 @@ Rules:
 const router = express.Router();
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-router.get("/information", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
+const userInformation = async (req) => {
     const account = await User.findOne({ student_id: { $eq: req.query.id } });
     if (!account) return res.status(404).json({ message: "Account not found" });
+    return account;
+}
 
+router.get("/information", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
+    const account = await userInformation(req);
     return res.json(account);
 })
 
@@ -83,7 +88,11 @@ router.put("/update", verify, writeLimiter, checkRequiredKeys('body', ["diploma"
 router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message"]), async (req, res) => {
     try {
         const { message } = req.body;
-        const proficiencies = await Proficiency.find({ student_id: { $eq: req.query.id } }).populate("module_id");
+        const proficiencies = await proficiencies(req);
+        const modules = await modules();
+        const matches = await matches(req);
+        const pairs = await pairs(req);
+        const userInfo = await userInformation(req);
 
         const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
         const contents = [
@@ -96,13 +105,31 @@ router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message"]),
             {
                 role: "user",
                 parts: [
+                    { text: `Suitable user with complimenting modules: ${JSON.stringify(matches) ?? "Unknown"}` }
+                ]
+            },
+            {
+                role: "user",
+                parts: [
+                    { text: `All modules offered in Teach and Tackle: ${JSON.stringify(modules) ?? "Unknown"}` }
+                ]
+            },
+            {
+                role: "user",
+                parts: [
+                    { text: `Pairs that the user is already in: ${JSON.stringify(pairs) ?? "Unknown"}` }
+                ]
+            },
+            {
+                role: "user",
+                parts: [
                     { text: `User module: ${JSON.stringify(proficiencies) ?? "Unknown"}` }
                 ]
             },
             {
                 role: "user",
                 parts: [
-                    { text: `User: ${JSON.stringify(req.user)}` }
+                    { text: `User: ${JSON.stringify(userInfo)}` }
                 ]
             },
             {

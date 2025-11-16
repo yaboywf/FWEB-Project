@@ -7,17 +7,17 @@ import { Types } from "mongoose";
 
 const router = express.Router();
 
-router.get("/all-modules", verify, writeLimiter, async (req, res) => {
+const modules = async () => {
     const modules = await Module.find();
-    return res.json(modules);
-})
+    return modules;
+}
 
-router.get("/user-proficiency", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
-    const proficiency = await Proficiency.find({ student_id: { $eq: req.query.id } }).populate("module_id");
-    return res.json(proficiency);
-})
+const proficiencies = async (req) => {
+    const proficiencies = await Proficiency.find({ student_id: { $eq: req.user.student_id } }).populate("module_id");
+    return proficiencies;
+}
 
-router.get("/matchable-accounts", verify, writeLimiter, async (req, res) => {
+const matches = async (req) => {
     const userProficiencies = await Proficiency.find({ student_id: req.user.student_id });
 
     const strengthIds = userProficiencies.filter(p => p.type === 1).map(p => p.module_id);
@@ -47,6 +47,21 @@ router.get("/matchable-accounts", verify, writeLimiter, async (req, res) => {
         proficiencies: proficiencies.filter(p => p.student_id.toUpperCase() === user.student_id.toUpperCase())
     }));
 
+    return result;
+}
+
+router.get("/all-modules", verify, writeLimiter, async (req, res) => {
+    const moduleData = await modules();
+    return res.json(moduleData);
+})
+
+router.get("/user-proficiency", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
+    const proficiencyData = await proficiencies(req);
+    return res.json(proficiencyData);
+})
+
+router.get("/matchable-accounts", verify, writeLimiter, async (req, res) => {
+    const result = await matches(req);
     return res.status(200).json(result);
 })
 
@@ -81,4 +96,4 @@ router.delete("/remove", verify, writeLimiter, checkRequiredKeys('query', ["id"]
     return res.status(200).json({ message: "Proficiency successfully deleted" });
 })
 
-export default router;
+export { router, modules, proficiencies, matches };

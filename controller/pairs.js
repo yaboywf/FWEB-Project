@@ -7,7 +7,7 @@ import { Types } from 'mongoose';
 
 const router = express.Router();
 
-router.get('/pairs', verify, writeLimiter, async (req, res) => {
+const pairs = async (req) => {
     const studentId = req.user.student_id;
     const pairs = await Pair.aggregate([
         {
@@ -88,7 +88,12 @@ router.get('/pairs', verify, writeLimiter, async (req, res) => {
         );
     }
 
-    return res.json(pairs);
+    return pairs;
+}
+
+router.get('/pairs', verify, writeLimiter, async (req, res) => {
+    const pairData = await pairs(req);
+    return res.json(pairData);
 })
 
 router.delete('/delete', verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
@@ -107,4 +112,4 @@ router.delete('/delete', verify, writeLimiter, checkRequiredKeys('query', ["id"]
     return res.json({ message: "Pair successfully deleted" });
 })
 
-export default router;
+export { router, pairs };
