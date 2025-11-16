@@ -97,7 +97,7 @@ router.get('/pairs', verify, writeLimiter, async (req, res) => {
 })
 
 router.delete('/delete', verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
-    if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
+    if (!Types.ObjectId.isValid(req.query.id)) return res.status(400).send("Invalid or missing ID");
 
     const pair = await Pair.findOneAndDelete({
         _id: new Types.ObjectId(req.query.id),
