@@ -29,14 +29,14 @@ Rules:
 const router = express.Router();
 const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
-const userInformation = async (req, res) => {
-    const account = await User.findOne({ student_id: { $eq: req.query.id } });
+const userInformation = async (req, res, id) => {
+    const account = await User.findOne({ student_id: { $eq: id } });
     if (!account) return res.status(404).json({ message: "Account not found" });
     return account;
 }
 
 router.get("/information", verify, writeLimiter, checkRequiredKeys('query', ["id"]), async (req, res) => {
-    const account = await userInformation(req, res);
+    const account = await userInformation(req, res, req.query.id);
     return res.json(account);
 })
 
@@ -92,7 +92,7 @@ router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message"]),
         const moduleData = await modules();
         const matcheData = await matches(req);
         const pairData = await pairs(req);
-        const userInfo = await userInformation(req, res);
+        const userInfo = await userInformation(req, res, req.user.student_id);
 
         const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
         const contents = [
