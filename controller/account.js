@@ -88,7 +88,7 @@ router.put("/update", verify, writeLimiter, checkRequiredKeys('body', ["diploma"
 router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message"]), async (req, res) => {
     try {
         const { message } = req.body;
-        const proficiencies = await proficiencies(req);
+        const proficienyData = await proficiencies(req);
         const modules = await modules();
         const matches = await matches(req);
         const pairs = await pairs(req);
@@ -123,7 +123,7 @@ router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message"]),
             {
                 role: "user",
                 parts: [
-                    { text: `User module: ${JSON.stringify(proficiencies) ?? "Unknown"}` }
+                    { text: `User module: ${JSON.stringify(proficienyData) ?? "Unknown"}` }
                 ]
             },
             {
