@@ -89,9 +89,9 @@ router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message"]),
     try {
         const { message } = req.body;
         const proficienyData = await proficiencies(req);
-        const modules = await modules();
-        const matches = await matches(req);
-        const pairs = await pairs(req);
+        const moduleData = await modules();
+        const matcheData = await matches(req);
+        const pairData = await pairs(req);
         const userInfo = await userInformation(req);
 
         const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
@@ -105,19 +105,19 @@ router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message"]),
             {
                 role: "user",
                 parts: [
-                    { text: `Suitable user with complimenting modules: ${JSON.stringify(matches) ?? "Unknown"}` }
+                    { text: `Suitable user with complimenting modules: ${JSON.stringify(matcheData) ?? "Unknown"}` }
                 ]
             },
             {
                 role: "user",
                 parts: [
-                    { text: `All modules offered in Teach and Tackle: ${JSON.stringify(modules) ?? "Unknown"}` }
+                    { text: `All modules offered in Teach and Tackle: ${JSON.stringify(moduleData) ?? "Unknown"}` }
                 ]
             },
             {
                 role: "user",
                 parts: [
-                    { text: `Pairs that the user is already in: ${JSON.stringify(pairs) ?? "Unknown"}` }
+                    { text: `Pairs that the user is already in: ${JSON.stringify(pairData) ?? "Unknown"}` }
                 ]
             },
             {
