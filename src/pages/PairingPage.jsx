@@ -192,11 +192,15 @@ const PairingPage = () => {
                                 Connect on Teams
                             </span>
                             <span onClick={() => handleDownload(pair)}>
-                                <i className="fa-solid fa-calendar"></i>
+                                <i className="fa-regular fa-calendar"></i>
                                 Add to Calendar
                             </span>
+                            <span>
+                                <i className="fa-regular fa-star-christmas"></i>
+                                Ask TackleBot
+                            </span>
                             <span onClick={() => handleUnlink(pair)}>
-                                <i className="fa-solid fa-link-slash"></i>
+                                <i className="fa-regular fa-link-slash"></i>
                                 Unlink
                             </span>
                         </div>

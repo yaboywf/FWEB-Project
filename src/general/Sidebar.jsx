@@ -86,7 +86,7 @@ const Sidebar = () => {
                 <div className={styles.category}>
                     <div>
                         <div id={styles.strength}>Mentor Others</div>
-                        <i className="fa-solid fa-edit" tabIndex="0" onClick={() => navigate("/profile#modules_proficiency")}></i>
+                        <i className="fa-regular fa-edit" tabIndex="0" onClick={() => navigate("/profile#modules_proficiency")}></i>
                     </div>
                     {loading && Array.from({ length: 3 }).map((_, index) => <Placeholder key={`strength_${index}`} width={200} />)}
                     <ul id="strength_content">
@@ -99,7 +99,7 @@ const Sidebar = () => {
                 <div className={styles.category}>
                     <div>
                         <div id={styles.weakness}>Knowledge Wishlist</div>
-                        <i className="fa-solid fa-edit" tabIndex="0" onClick={() => navigate("/profile#modules_proficiency")} ></i>
+                        <i className="fa-regular fa-edit" tabIndex="0" onClick={() => navigate("/profile#modules_proficiency")} ></i>
                     </div>
                     {loading && Array.from({ length: 3 }).map((_, index) => <Placeholder key={`strength_${index}`} width={200} />)}
                     <ul id="weakness_content">
@@ -109,6 +109,7 @@ const Sidebar = () => {
                         ))}
                     </ul>
                 </div>
+                <button>TackleBot</button>
             </div>
             {loading ? <Placeholder width={200} /> : <a onClick={() => navigate("/profile")} data-empty={!user.image} style={{  "--before-background": user.image ? `url(${user.image})` : "none" }} className={styles.user}>{user.name}</a>}
         </aside>

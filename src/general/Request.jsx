@@ -1,7 +1,7 @@
 import axios from "redaxios";
 
 const api = axios.create({
-    baseURL: "https://fweb-project.onrender.com/api",
+    baseURL: import.meta.env.PROD === true ? "https://fweb-project.onrender.com/api" : "http://localhost:3000/api",
     withCredentials: true
 });
 
