@@ -85,9 +85,9 @@ router.put("/update", verify, writeLimiter, checkRequiredKeys('body', ["diploma"
     }
 })
 
-router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message"]), async (req, res) => {
+router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message", "history"]), async (req, res) => {
     try {
-        const { message } = req.body;
+        const { message, history } = req.body;
         const proficienyData = await proficiencies(req);
         const moduleData = await modules();
         const matcheData = await matches(req);
@@ -95,56 +95,35 @@ router.post("/ai", verify, writeLimiter, checkRequiredKeys('body', ["message"]),
         const userInfo = await userInformation(req, res, req.user.student_id);
 
         const model = ai.getGenerativeModel({ model: "gemini-2.5-flash" });
-        const contents = [
-            {
-                role: "user",
-                parts: [
-                    { text: SYSTEM_PROMPT }
-                ]
-            },
-            {
-                role: "user",
-                parts: [
-                    { text: `Suitable user with complimenting modules: ${JSON.stringify(matcheData) ?? "Unknown"}` }
-                ]
-            },
-            {
-                role: "user",
-                parts: [
-                    { text: `All modules offered in Teach and Tackle: ${JSON.stringify(moduleData) ?? "Unknown"}` }
-                ]
-            },
-            {
-                role: "user",
-                parts: [
-                    { text: `Pairs that the user is already in: ${JSON.stringify(pairData) ?? "Unknown"}` }
-                ]
-            },
-            {
-                role: "user",
-                parts: [
-                    { text: `User module: ${JSON.stringify(proficienyData) ?? "Unknown"}` }
-                ]
-            },
-            {
-                role: "user",
-                parts: [
-                    { text: `User: ${JSON.stringify(userInfo)}` }
-                ]
-            },
-            {
-                role: "user",
-                parts: [
-                    { text: message }
-                ]
-            }
-        ];
-        const result = await model.generateContent({ contents });
+
+        const SYSTEM_CONTEXT = `
+${SYSTEM_PROMPT}
+
+Matched users: ${JSON.stringify(matcheData)}
+All modules: ${JSON.stringify(moduleData)}
+Pairs: ${JSON.stringify(pairData)}
+User module: ${JSON.stringify(proficienyData)}
+User info: ${JSON.stringify(userInfo)}
+        `;
+        const chat = model.startChat({
+            history: [
+                {
+                    role: "user",
+                    parts: [{ text: SYSTEM_CONTEXT }]
+                },
+                ...history.map(msg => ({
+                    role: msg.user ? "user" : "model",
+                    parts: [{ text: msg.input }]
+                }))
+            ]
+        });
+
+        const result = await chat.sendMessage(message);
         const reply = result.response.text();
 
         res.json({ reply });
     } catch (err) {
-        res.status(500).json({ error: "AI error", detail: err.message });
+        res.status(500).json({ message: err.message });
     }
 });
 
