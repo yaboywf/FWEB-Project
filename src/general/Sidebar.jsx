@@ -109,7 +109,6 @@ const Sidebar = () => {
                         ))}
                     </ul>
                 </div>
-                <button>TackleBot</button>
             </div>
             {loading ? <Placeholder width={200} /> : <a onClick={() => navigate("/profile")} data-empty={!user.image} style={{  "--before-background": user.image ? `url(${user.image})` : "none" }} className={styles.user}>{user.name}</a>}
         </aside>

@@ -132,47 +132,6 @@
         }
     }
 
-    div>button {
-        margin-top: auto;
-        padding: 3px;
-        position: relative;
-        border-radius: 10px;
-        background: #fff;
-        z-index: 0;
-        cursor: pointer;
-        border: 1px solid transparent;
-
-        &::before {
-            font: var(--fa-font-regular);
-            content: "\f7d4";
-            margin-right: 10px;
-            background: linear-gradient(135deg, #8A2BE2, #4E9FFF, #00D4FF);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            display: inline-block;
-        }
-
-        &::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            top: 50%;
-            height: 22px;
-            translate: 0 -50%;
-            border: 1px solid transparent;
-            border-radius: inherit;
-            padding: 1px;
-            background: linear-gradient(135deg, #8A2BE2, #4E9FFF, #00D4FF);
-            z-index: -1;
-
-            mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0);
-            mask-composite: exclude;
-        }
-    }
-
 
     @media screen and (max-width: 800px) {
         position: absolute;
