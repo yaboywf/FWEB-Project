@@ -153,7 +153,6 @@ body {
     ul,
     ol {
         margin-left: 25px;
-        margin-top: 10px;
         font-size: 12px;
     }
 
@@ -205,6 +204,9 @@ body {
                 transform-origin: top left;
                 background: linear-gradient(to bottom right, #8A2BE2, #4E9FFF);
                 color: white;
+                display: flex;
+                flex-direction: column;
+                gap: 10px
             }
 
             &::before {
@@ -220,10 +222,8 @@ body {
             }
         }
 
-        p+p,
-        ul+p,
-        ol+p {
-            margin-top: 10px;
+        li+li {
+            margin-top: 5px;
         }
     }
 
@@ -398,6 +398,34 @@ body {
 @media screen and (max-width: 800px) {
     .error_container {
         width: 80vw;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .chat {
+        bottom: 80px;
+        right: 0;
+        width: 100vw !important;
+
+        .text {
+            width: 70%;
+            font-size: 10px !important;
+
+            ol, ul {
+                margin-left: 15px;
+            }
+        }
+
+        // &::before {
+        //     content: "";
+        //     width: 100vw;
+        //     height: 100vh;
+        //     background: rgba($color: #000000, $alpha: 0.4);
+        //     position: fixed;
+        //     top: 0;
+        //     left: 0;
+        //     z-index: -1;
+        // }
     }
 }
 

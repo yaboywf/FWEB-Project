@@ -84,7 +84,7 @@ _| |_ ___  ___  ___ | |_   ___ ._ _  _| |  _| |_ ___  ___ | |__| | ___
             <main>
                 <Outlet />
             </main>
-            <div id="chat" className={`chat ${aiVisible ? "visible" : ""}`} ref={chatRef}>
+            {user && <div id="chat" className={`chat ${aiVisible ? "visible" : ""}`} ref={chatRef}>
                 <div>
                     <p>TackleBot</p>
                     <i className="fa-solid fa-xmark" onClick={() => setAiVisible(!aiVisible)}></i>
@@ -113,7 +113,7 @@ _| |_ ___  ___  ___ | |_   ___ ._ _  _| |  _| |_ ___  ___ | |__| | ___
                     <input type="text" value={input || ""} onChange={(e) => setInput(e.target.value)} placeholder="Ask TackleBot..." />
                     <button onClick={onSubmit}></button>
                 </section>
-            </div>
+            </div>}
 
             <div className="ai_icon" onClick={() => setAiVisible(!aiVisible)}></div>
         </>
