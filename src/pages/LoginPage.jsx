@@ -21,7 +21,8 @@ const LoginPage = () => {
     }, []);
 
     const handleLogin = () => {
-        window.location.href = `https://fweb-project.onrender.com/api/auth/login?return_url=${encodeURIComponent(window.location.origin + "/explore")}`;
+        const isDev = import.meta.env.DEV;
+        window.location.href = `${isDev ? "http://localhost:3000" : "https://fweb-project.onrender.com"}/api/auth/login?return_url=${encodeURIComponent(window.location.origin + "/explore")}`;
     };
 
     return (

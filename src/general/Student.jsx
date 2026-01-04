@@ -1,5 +1,6 @@
 import Placeholder from "./Placeholder";
 import styles from "../styles/student.module.scss";
+import PropTypes from "prop-types";
 
 const Student = ({ student = {}, loading = false, classes = "" }) => {
     const ratingArray = student.rating?.length
@@ -29,5 +30,11 @@ const Student = ({ student = {}, loading = false, classes = "" }) => {
         </div>
     )
 }
+
+Student.propTypes = {
+    student: PropTypes.object,
+    loading: PropTypes.bool,
+    classes: PropTypes.string,
+};
 
 export default Student;

@@ -1,4 +1,5 @@
 import '../styles/general.scss'
+import PropTypes from "prop-types";
 
 const Placeholder = ({ height=20, width=50 }) => {
     return (
@@ -6,6 +7,11 @@ const Placeholder = ({ height=20, width=50 }) => {
             <div className='placeholder' />
         </div>
     )
+}
+
+Placeholder.propTypes = {
+    height: PropTypes.number,
+    width: PropTypes.number,
 }
 
 export default Placeholder

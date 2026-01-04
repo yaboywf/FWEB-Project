@@ -1,5 +1,6 @@
 import styles from '../styles/nav.module.scss'
 import { useNavigate } from 'react-router-dom';
+import PropTypes from "prop-types";
 
 const Nav = ({ active = "explore" }) => {
     const navigate = useNavigate();
@@ -12,5 +13,9 @@ const Nav = ({ active = "explore" }) => {
         </nav>
     )
 }
+
+Nav.propTypes = {
+    active: PropTypes.bool,
+};
 
 export default Nav;

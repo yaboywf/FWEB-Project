@@ -37,7 +37,7 @@ const matches = async (req) => {
 
     const data = await Proficiency.find(query).populate("module_id");
     const studentIds = [...new Set(data.map(item => item.student_id.toUpperCase()))];
-    if (studentIds.length === 0) return res.status(200).json([]);
+    if (studentIds.length === 0) return [];
 
     const users = await User.find({ student_id: { $in: studentIds } }).select("-password").lean();
     const proficiencies = await Proficiency.find({ student_id: { $in: studentIds } }).populate("module_id").sort({ type: 1, module: 1 }).lean();

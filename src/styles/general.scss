@@ -1,3 +1,5 @@
+@use "sass:list";
+
 * {
     margin: 0;
     padding: 0;
@@ -290,13 +292,13 @@ body {
 
         $colors: red, blue, green, purple;
 
-        @for $i from 1 through length($colors) {
+        @for $i from 1 through list.length($colors) {
             p:nth-child(#{$i}) {
                 cursor: pointer;
                 margin: 0 !important;
                 padding: 5px 10px;
                 border-radius: 10px;
-                border: 1px solid nth($colors, $i);
+                border: 1px solid list.nth($colors, $i);
             }
         }
     }
@@ -415,17 +417,6 @@ body {
                 margin-left: 15px;
             }
         }
-
-        // &::before {
-        //     content: "";
-        //     width: 100vw;
-        //     height: 100vh;
-        //     background: rgba($color: #000000, $alpha: 0.4);
-        //     position: fixed;
-        //     top: 0;
-        //     left: 0;
-        //     z-index: -1;
-        // }
     }
 }
 

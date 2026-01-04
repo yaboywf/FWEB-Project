@@ -127,13 +127,13 @@ router.get("/callback", writeLimiter, async (req, res) => {
                 diploma: user.diploma
             },
             process.env.JWT_SECRET,
-            { expiresIn: "7d", audience: "https://teach-and-tackle.onrender.com", issuer: "https://fweb-project.onrender.com" }
+            { expiresIn: "7d", audience: process.env.DEV ? `http://localhost:${process.env.FRONTEND_PORT}` : "https://teach-and-tackle.onrender.com", issuer: process.env.DEV ? `https://localhost:${process.env.BACKEND_PORT}` : "https://fweb-project.onrender.com" }
         );
 
         res.cookie("token", sessionJwt, {
             httpOnly: true,
-            secure: true,
-            sameSite: "None",
+            secure: process.env.DEV ? false : true,
+            sameSite: process.env.DEV ? "lax" : "None",
             path: "/",
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
