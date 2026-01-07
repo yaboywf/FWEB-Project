@@ -13,7 +13,8 @@ const modules = async () => {
 }
 
 const proficiencies = async (req) => {
-    const proficiencies = await Proficiency.find({ student_id: { $eq: req.user.student_id } }).populate("module_id");
+    const id = req.query.id || req.user.student_id;
+    const proficiencies = await Proficiency.find({ student_id: { $eq: id } }).populate("module_id");
     return proficiencies;
 }
 
