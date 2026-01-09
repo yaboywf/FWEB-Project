@@ -5,7 +5,7 @@ import '../styles/icons.css';
 import '../styles/general.scss';
 import { useEffect, useState, useRef } from "react";
 import api from "./Request";
-import { useUser } from "./UserProvider";
+import { useUser } from "./UserContext";
 import showMessage from "./Message";
 import ReactMarkdown from "react-markdown";
 import Placeholder from "./Placeholder";

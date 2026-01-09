@@ -129,6 +129,22 @@
     --fa: "\f127"
 }
 
+.fa-envelope::before {
+    --fa: "\f0e0"
+}
+
+.fa-rocket::before {
+    --fa: "\f135"
+}
+
+.fa-hourglass::before {
+    --fa: "\f254"
+}
+
+.fa-users::before {
+    --fa: "\f0c0"
+}
+
 .fa-star-christmas::before {
     --fa: "\f7d4";
     background: linear-gradient(135deg, #8A2BE2, #4E9FFF, #00D4FF);
@@ -138,4 +154,8 @@
 
 .fa-microsoft::before {
     --fa: "\f3ca"
+}
+
+.fa-teach::before {
+    --fa: "\f51c"
 }

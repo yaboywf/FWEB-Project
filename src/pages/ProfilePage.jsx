@@ -1,7 +1,7 @@
 import Nav from "../general/Nav"
 import api from "../general/Request"
 import styles from '../styles/profile.module.scss'
-import { useUser } from "../general/UserProvider"
+import { useUser } from "../general/UserContext"
 import { useEffect, useState, useMemo } from "react"
 import showMessage from "../general/Message"
 import Placeholder from "../general/Placeholder"
@@ -129,8 +129,8 @@ const ProfilePage = () => {
                     <h2>User Information</h2>
                     <div>
                         {loading ? <>
-                        <Placeholder width={150} height={150} /><span></span></> : <>
-                        <span className={styles["profile-picture"]} data-empty={!user.image} style={{ background: `url(${user.image ?? ""}) center/contain no-repeat` }}></span>
+                            <Placeholder width={150} height={150} /><span></span></> : <>
+                            <span className={styles["profile-picture"]} data-empty={!user.image} style={{ background: `url(${user.image ?? ""}) center/contain no-repeat` }}></span>
                         </>}
 
                         <p>Name:</p>
@@ -161,7 +161,7 @@ const ProfilePage = () => {
                         {loading && Array.from({ length: 5 }).map((_, i) => <Placeholder key={`achievement_${i}`} width={170} height={200} />)}
                         {!loading && allAchievements.map(achievement => {
                             const a = attained.find(a => a.achievement_id === achievement._id);
-                            
+
                             return (
                                 <div key={achievement._id} className={styles.achievement}>
                                     <div className={styles.inner}>

@@ -5,7 +5,7 @@ import styles from '../styles/pair.module.scss'
 import showMessage from "../general/Message"
 import Placeholder from "../general/Placeholder"
 import Student from "../general/Student"
-import { useUser } from "../general/UserProvider"
+import { useUser } from "../general/UserContext"
 
 const PlaceholderTemplate = () => {
     return (

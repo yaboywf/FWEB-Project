@@ -34,55 +34,90 @@
     overflow: auto;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 10px;
-    padding: 0 20px 10px 20px;
+    gap: 15px;
+    padding: 10px 20px;
 
-    .weakness {
-        background: #c8421c;
-        color: white;
+    .student {
+        transition: scale 0.2s ease;
+        display: flex;
+        gap: 10px;
+        max-width: 400px;
+        flex-direction: column;
 
-        &::before {
-            font: var(--fa-font-solid);
-            content: "\f19d";
-            margin-right: 5px;
+        &:hover {
+            scale: 1.05;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 5px;
+
+            button {
+                color: white;
+                margin-top: auto;
+                border: none;
+                border-radius: 20px;
+                outline: none;
+                height: 100%;
+                display: flex;
+                gap: 10px;
+                cursor: pointer;
+                align-items: center;
+                justify-content: center;
+                padding: 5px 10px;
+                background: linear-gradient(to right, blue, rgb(124, 39, 228));
+
+                &:not(:last-of-type) {
+                    aspect-ratio: 1;
+                }
+
+                &:last-of-type {
+                    flex: 1;
+                }
+            }
         }
     }
 
+    .weakness,
     .strength {
-        background: #023151;
+        display: flex;
+        height: max-content;
+        align-items: center;
+        padding: 3px 5px;
+        border-radius: 10px;
         color: white;
+        padding: 3px 8px;
+        width: max-content;
+    }
 
-        &::before {
-            font: var(--fa-font-solid);
-            content: "\f51c";
-            margin-right: 5px;
-        }
+    .strength {
+        background: #c8421c;
+    }
+
+    .weakness {
+        background: #023151;
     }
 
     >div:not(div[data-spinner]) {
         padding: 15px;
         border-radius: 20px;
-        border: 1px solid black;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        background: linear-gradient(to bottom, white 80%, rgba(134, 134, 248, 0.2));
     }
 }
 
 .student_skills {
     display: flex;
+    flex-direction: column;
+    background: rgba(223, 225, 239, 0.7);
     gap: 5px;
+    padding: 10px;
+    overflow: hidden;
+    border-radius: 10px;
     font-size: 12px;
-    border-top: 1px solid black;
-    padding-top: 8px;
-    margin-top: 8px;
+    flex: 1;
 
-    div {
-        display: flex;
-        align-items: center;
-        padding: 3px 5px;
-        border-radius: 10px;
-        border: 1px solid black;
-    }
-
-    i {
+    >i {
         flex-shrink: 0;
         aspect-ratio: 1;
         margin-left: auto;
@@ -94,5 +129,76 @@
         padding: 5px;
         width: max-content;
         background: lightgrey;
+    }
+
+    .toggles {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        width: 100%;
+
+        button {
+            font-size: 12px;
+            display: flex;
+            color: grey;
+            gap: 5px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            position: relative;
+            padding: 3px 10px;
+            padding-bottom: 5px;
+            text-align: center;
+            justify-content: center;
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                height: 2px;
+                width: 100%;
+                background: black;
+
+                transform: scaleX(0);
+                transform-origin: right;
+                transition: transform 200ms ease-in;
+            }
+
+            &:hover, &.selected {
+                color: black;
+            }
+
+            &:hover::after {
+                transform: scaleX(1);
+                transform-origin: left;
+                transition: transform 300ms ease-out;
+            }
+
+            &.selected::after {
+                width: 100%;
+                transform: scaleX(1);
+            }
+        }
+    }
+
+    .proficiencies {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        width: 200%;
+        transition: transform 0.2s ease-in-out;
+
+        div {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+    }
+}
+
+@media screen and (width <= 800px) {
+    .student {
+        max-width: none !important;
     }
 }

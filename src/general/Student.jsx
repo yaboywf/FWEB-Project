@@ -13,18 +13,22 @@ const Student = ({ student = {}, loading = false, classes = "" }) => {
 
     return (
         <div className={styles.student_info + " " + classes}>
-            {student.image ? <img data-empty={!student.image} src={loading ? null : student.image || null} /> : <div data-placeholder className={styles.no_image}></div>}
-            <div>
-                {loading ? <Placeholder width={200} /> : <p data-year={student.year_of_study || "?"} title={`${student.name} (Y${student.year_of_study || "?"})`}>{student.name}</p>}
-                {loading ? <Placeholder width={150} /> : <a href={`mailto:${student.student_id}@student.tp.edu.sg`} target="_blank" rel="noopener noreferrer">{student.student_id}@student.tp.edu.sg</a>}
-                {loading ? <Placeholder width={200} /> : <p>{student.diploma}</p>}
+            <div className={styles.student_details}>
+                {student.image ? <img data-empty={!student.image} src={loading ? null : student.image || null} /> : <div data-placeholder className={styles.no_image}></div>}
+                <div>
+                    {loading ? <Placeholder width={200} /> : <p title={student.name}>{student.name}</p>}
+                    {loading ? <Placeholder width={200} /> : <p title={student.diploma}>{student.diploma}</p>}
+                </div>
+            </div>
+            <div className={styles.student_additional}>
+                {loading ? <Placeholder width={100} /> : <p>{student.year_of_study || "?"} <span>Year</span></p>}
                 {loading ? <Placeholder width={100} /> :
-                    <span className={styles.rating}>
+                    <div className={styles.rating}>
                         {[...Array(full)].map((_, i) => <i key={"f" + i} className="fa-solid fa-star"></i>)}
                         {half && <i className="fa-solid fa-star-half-stroke"></i>}
                         {[...Array(empty)].map((_, i) => <i key={"e" + i} className="fa-regular fa-star"></i>)}
-                        <span>{ratingArray.toFixed(1) || "0"}/5.0</span>
-                    </span>
+                        <p><span>Rated by {student.rating?.length || 0} people</span></p>
+                    </div>
                 }
             </div>
         </div>

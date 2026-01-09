@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { useUser } from "../general/UserProvider";
+import { useUser } from "../general/UserContext";
 import Nav from "../general/Nav"
 import api from "../general/Request";
 import styles from '../styles/pending.module.scss'
@@ -44,7 +44,7 @@ const PendingPage = () => {
         const received = requests.filter(request => request.receiver_id === user.student_id);
         const sent = requests.filter(request => request.sender_id === user.student_id);
         return { received, sent };
-    }, [requests])
+    }, [requests, user])
 
     const dayNumberToName = (day) => {
         const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];

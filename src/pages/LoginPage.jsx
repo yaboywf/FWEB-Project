@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../general/UserProvider";
+import { useUser } from "../general/UserContext";
 import styles from "../styles/login.module.scss";
 import api from "../general/Request";
 

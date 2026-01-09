@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import Nav from "../general/Nav";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useUser } from "../general/UserProvider";
+import { useUser } from "../general/UserContext";
 import api from "../general/Request";
 import showMessage from "../general/Message";
 import Placeholder from "../general/Placeholder";

@@ -335,6 +335,30 @@ body {
     }
 }
 
+.error_page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;
+    margin: auto;
+    align-items: center;
+    background: white;
+    height: 100vh;
+
+    &:has(+ footer) {
+        height: 100% !important;
+    }
+
+    p {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    pre {
+        color: red;
+    }
+}
+
 @keyframes loading {
     0% {
         left: -45%;

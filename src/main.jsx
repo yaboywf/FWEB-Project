@@ -3,9 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { UserProvider } from "./general/UserProvider";
 
-import NotFound from './general/NotFound'
-import Layout from './general/Layout'
-import Sidebar from './general/Sidebar';
+import NotFound from './general/NotFound';
+import ErrorBoundary from './general/Error';
+import Layout from './general/Layout';
 
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
@@ -19,7 +19,7 @@ createRoot(document.body).render(
 	<StrictMode>
 		<Router>
 			<UserProvider>
-				<Suspense fallback={<Sidebar />}>
+				<Suspense fallback={<ErrorBoundary />}>
 					<div className="error_container"></div>
 					<>
 						<Routes>
