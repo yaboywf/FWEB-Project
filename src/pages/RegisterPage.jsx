@@ -14,7 +14,7 @@ const Register = () => {
         try {
             const form = new FormData(e.target);
             const formObject = Object.fromEntries(form);
-            formObject.student_id = searchParams.get("id");
+            formObject.student_id = searchParams.get("student_id");
             formObject.name = searchParams.get("name");
 
             const resp = await api.post(`/auth/register`, formObject);
