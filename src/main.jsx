@@ -6,6 +6,7 @@ import { UserProvider } from "./general/UserProvider";
 import NotFound from './general/NotFound';
 import ErrorBoundary from './general/Error';
 import Layout from './general/Layout';
+import Sidebar from './general/Sidebar';
 
 const RegisterPage = lazy(() => import('./pages/RegisterPage'))
 const LoginPage = lazy(() => import('./pages/LoginPage'))
@@ -18,29 +19,31 @@ const SessionCreatePage = lazy(() => import('./pages/SessionCreatePage'))
 const ChatBot = lazy(() => import('./pages/ChatBotPage'))
 
 createRoot(document.body).render(
-	<StrictMode>
-		<Router>
-			<UserProvider>
-				<Suspense fallback={<ErrorBoundary />}>
-					<div className="error_container"></div>
-					<>
-						<Routes>
-							<Route path="/register" element={<RegisterPage />} />
-							<Route path="/" element={<LoginPage />} />
-							<Route element={<Layout />}>
-								<Route path="/explore" element={<ExplorePage />} />
-								<Route path="/settings" element={<ProfilePage />} />
-								<Route path="/pending" element={<PendingPage />} />
-								<Route path="/pairing" element={<PairingPage />} />
-								<Route path="/session/edit/:pairId" element={<SessionEditPage />} />
-								<Route path="/session/create/:adminNum" element={<SessionCreatePage />} />
-								<Route path="/tacklebot" element={<ChatBot />} />
-							</Route>
-							<Route path="*" element={<NotFound />} />
-						</Routes>
-					</>
-				</Suspense>
-			</UserProvider>
-		</Router>
-	</StrictMode>,
+    <StrictMode>
+        <ErrorBoundary>
+            <Router>
+                <UserProvider>
+                    <Suspense fallback={<Sidebar />}>
+                        <div className="error_container"></div>
+                        <>
+                            <Routes>
+                                <Route path="/register" element={<RegisterPage />} />
+                                <Route path="/" element={<LoginPage />} />
+                                <Route element={<Layout />}>
+                                    <Route path="/explore" element={<ExplorePage />} />
+                                    <Route path="/settings" element={<ProfilePage />} />
+                                    <Route path="/pending" element={<PendingPage />} />
+                                    <Route path="/pairing" element={<PairingPage />} />
+                                    <Route path="/session/edit/:pairId" element={<SessionEditPage />} />
+                                    <Route path="/session/create/:adminNum" element={<SessionCreatePage />} />
+                                    <Route path="/tacklebot" element={<ChatBot />} />
+                                </Route>
+                                <Route path="*" element={<NotFound />} />
+                            </Routes>
+                        </>
+                    </Suspense>
+                </UserProvider>
+            </Router>
+        </ErrorBoundary>
+    </StrictMode>,
 );

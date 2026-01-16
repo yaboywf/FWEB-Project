@@ -20,7 +20,7 @@ class ErrorBoundary extends Component {
         if (this.state.hasError) {
             return (
                 <div className='error_page'>
-                    <img src="error.png" alt="An Error Has Occurred" width={"200px"} height={"200px"}/>
+                    <img src="/logo.png" alt="An Error Has Occurred" width={"200px"} style={{ marginBottom: 30 }}/>
                     <h2>An Error Has Occurred</h2>
                     <p>Please notify the developer and try again later</p>
                     <br />
