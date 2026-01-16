@@ -15,7 +15,7 @@ const verify = (req, res, next) => {
     if (!token) return res.status(401).json({ message: 'Missing authentication token' });
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET, { issuer: process.env.DEV ? `https://localhost:${process.env.BACKEND_PORT}` : "https://fweb-project.onrender.com", audience: process.env.DEV ? `http://localhost:${process.env.FRONTEND_PORT}` : "https://teach-and-tackle.onrender.com" });
+        const decoded = jwt.verify(token, process.env.JWT_SECRET, { issuer: process.env.DEV ? `http://localhost:${process.env.BACKEND_PORT}` : "https://fweb-project.onrender.com", audience: process.env.DEV ? `http://localhost:${process.env.FRONTEND_PORT}` : "https://teach-and-tackle.onrender.com" });
         req.user = decoded;
         next();
     } catch {

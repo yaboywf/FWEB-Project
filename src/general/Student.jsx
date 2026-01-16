@@ -16,13 +16,13 @@ const Student = ({ student = {}, loading = false, classes = "" }) => {
             <div className={styles.student_details}>
                 {student.image ? <img data-empty={!student.image} src={loading ? null : student.image || null} /> : <div data-placeholder className={styles.no_image}></div>}
                 <div>
-                    {loading ? <Placeholder width={200} /> : <p title={student.name}>{student.name}</p>}
-                    {loading ? <Placeholder width={200} /> : <p title={student.diploma}>{student.diploma}</p>}
+                    {loading ? <Placeholder width={200} height={17} /> : <p title={student.name}>{student.name}</p>}
+                    {loading ? <Placeholder width={200} height={12} styles={{ marginTop: '5px' }} /> : <p title={student.diploma}>{student.diploma}</p>}
                 </div>
             </div>
             <div className={styles.student_additional}>
-                {loading ? <Placeholder width={100} /> : <p>{student.year_of_study || "?"} <span>Year</span></p>}
-                {loading ? <Placeholder width={100} /> :
+                {loading ? <Placeholder width={100} height={40} styles={{ margin: 'auto' }} /> : <p>{student.year_of_study || "?"} <span>Year</span></p>}
+                {loading ? <Placeholder width={100} height={40} styles={{ margin: 'auto' }} /> :
                     <div className={styles.rating}>
                         {[...Array(full)].map((_, i) => <i key={"f" + i} className="fa-solid fa-star"></i>)}
                         {half && <i className="fa-solid fa-star-half-stroke"></i>}

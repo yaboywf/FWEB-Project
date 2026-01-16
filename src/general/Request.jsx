@@ -6,4 +6,32 @@ const api = axios.create({
     withCredentials: true
 });
 
-export default api;
+function request(method, url, dataOrConfig, maybeConfig) {
+    const controller = new AbortController();
+
+    let config;
+
+    if (["get", "delete"].includes(method)) {
+        config = {
+            ...(dataOrConfig || {}),
+            signal: controller.signal,
+        };
+    } else {
+        config = {
+            ...(maybeConfig || {}),
+            signal: controller.signal,
+        };
+    }
+
+    const request =
+        method === "get" || method === "delete"
+            ? api[method](url, config)
+            : api[method](url, dataOrConfig, config);
+
+    return {
+        request,
+        abort: () => controller.abort(),
+    };
+}
+
+export default request;

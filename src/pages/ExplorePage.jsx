@@ -1,5 +1,4 @@
-import Nav from "../general/Nav";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import showMessage from "../general/Message";
 import styles from '../styles/explore.module.scss'
 import Student from "../general/Student";
@@ -14,64 +13,76 @@ const ExplorePage = () => {
     const { user, userProficiencies } = useUser();
     const [loading, setLoading] = useState(true);
     const [students, setStudents] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [searchYear, setSearchYear] = useState("All");
     const [moduleTab, setModuleTab] = useState({});
-    const [filteredStudents, setFilteredStudents] = useState([]);
 
     useEffect(() => {
+        if (!user?.name || !userProficiencies || userProficiencies?.length === 0) return;
+        const { request, abort } = api('get', `/proficiency/matchable-accounts`);
+
         async function getData() {
             try {
-                if (!user?.name || !userProficiencies || userProficiencies?.length === 0) return;
+                const resp = await request;
+                const data = resp.data;
+                setStudents(data);
 
-                const matchableAccounts = await api.get(`/proficiency/matchable-accounts`);
-                setStudents(matchableAccounts.data);
+                setModuleTab(prev => {
+                    const updated = { ...prev };
 
-                for (const student of matchableAccounts.data) {
-                    if (student.proficiencies.filter(p => p.type === 1).length === 0) {
-                        setModuleTab(prev => ({ ...prev, [student._id]: 2 }));
-                        continue;
+                    for (const student of data) {
+                        const hasType1 = student.proficiencies?.some(p => p.type === 1);
+                        if (!hasType1) updated[student._id] = 2;
                     }
-                }
 
-                setFilteredStudents(matchableAccounts.data);
+                    return updated;
+                });
+
                 setLoading(false);
             } catch (err) {
-                console.error(err);
-                showMessage("Failed to fetch matchable accounts");
+                if (err.name !== "AbortError") {
+                    console.error(err);
+                    showMessage("Failed to fetch matchable accounts");
+                }
             }
         }
 
         getData();
-    }, [userProficiencies, user])
 
-    const filter = (searchTerm) => {
-        if (loading) return;
-        if (!searchTerm.trim()) {
-            setFilteredStudents(students);
-            return;
-        }
+        return abort;
+    }, [userProficiencies, navigate])
+
+    const filteredStudents = useMemo(() => {
+        if (loading) return [];
 
         const lower = searchTerm.toLowerCase();
-        const filtered = students.filter(student => {
-            const profMods = student.proficiencies.map(p => p.module_id.module).join(" ");
+        return students.filter(student => {
+            const profMods = (student.proficiencies || []).map(p => p.module_id.module).join(" ");
+            const matchYear = String(student.year_of_study) === String(searchYear) || searchYear === "All";
+
             return (
-                student.name.toLowerCase().includes(lower) ||
-                student.diploma.toLowerCase().includes(lower) ||
-                String(student.year_of_study).includes(lower) ||
-                profMods.toLowerCase().includes(lower)
+                (student.name.toLowerCase().includes(lower) ||
+                    student.diploma.toLowerCase().includes(lower) ||
+                    profMods.toLowerCase().includes(lower)) &&
+                matchYear
             );
         });
+    }, [searchTerm, searchYear, students, loading]);
 
-        setFilteredStudents(filtered);
-    }
-
-    const selectTab = (studentId, tab) => {
-        setModuleTab(prev => ({ ...prev, [studentId]: tab }));
-    }
+    const selectTab = (studentId, tab) => setModuleTab(prev => ({ ...prev, [studentId]: tab }));
 
     return (
         <>
-            <div className={styles.search}>
-                <input type="search" onChange={(e) => filter(e.target.value)} placeholder="Search for a student" id="searchBar" autoComplete="off" />
+            <div className={styles.sort}>
+                <div className={styles.search}>
+                    <input type="search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search for a student" id="searchBar" autoComplete="off" />
+                </div>
+                <select value={searchYear} onChange={(e) => setSearchYear(e.target.value)}>
+                    <option value="All">All Years</option>
+                    <option value="1">Year 1</option>
+                    <option value="2">Year 2</option>
+                    <option value="3">Year 3</option>
+                </select>
             </div>
 
             <div className={styles.container}>
@@ -86,9 +97,13 @@ const ExplorePage = () => {
                     </div>
                 ))}
 
+                {!loading && filteredStudents.length === 0 && <div className={styles.not_found}>
+                    <img src="/not_found.png" alt="Owl" />
+                    <p>No results found</p>
+                </div>}
 
-                {filteredStudents.map(student => (
-                    <div key={student._id} className={styles.student}>
+                {!loading && filteredStudents.map((student, index) => (
+                    <div key={student._id} className={styles.student} style={{ animationDelay: `${index * 0.15}s` }}>
                         <Student student={student} />
                         <div className={styles.student_skills}>
                             <div className={styles.toggles}>
@@ -129,7 +144,7 @@ const ExplorePage = () => {
                                 </svg>
                             </button>
 
-                            <button onClick={() => navigate(`/session?adminNum=${student.student_id}`)}>
+                            <button onClick={() => navigate(`/session/create/${student.student_id}`)}>
                                 <i className="fa-solid fa-link"></i>
                                 Request
                             </button>

@@ -3,7 +3,7 @@ import { checkRequiredKeys, verify, writeLimiter } from "../middleware.js";
 import jwt from "jsonwebtoken";
 import User from "../database/users.js";
 import { ConfidentialClientApplication, LogLevel } from "@azure/msal-node";
-import axios from "redaxios";
+import axios from "axios";
 
 const router = express.Router();
 
@@ -54,8 +54,9 @@ router.get("/login", writeLimiter, async (req, res) => {
     }
 });
 
-router.get("/verify", verify, writeLimiter, (req, res) => {
-    return res.json({ user: req.user });
+router.get("/verify", verify, writeLimiter, async (req, res) => {
+    const user = await User.find({ student_id: req.user.student_id }).select("-password").limit(1);
+    return res.json(user[0]);
 });
 
 router.post("/logout", verify, writeLimiter, (req, res) => {
@@ -67,7 +68,6 @@ router.post("/logout", verify, writeLimiter, (req, res) => {
     });
     return res.json({ message: "Logged out successfully" });
 });
-
 
 router.get("/callback", writeLimiter, async (req, res) => {
     try {
@@ -94,10 +94,10 @@ router.get("/callback", writeLimiter, async (req, res) => {
         });
 
         const user = await User.findOne({ student_id }).select("-password");
-        if (!user) return res.redirect(`https://teach-and-tackle.onrender.com/register?student_id=${encodeURIComponent(student_id)}&name=${encodeURIComponent(profileResp.data.displayName || "")}`);
+        const returnUrl = process.env.DEV ? `http://localhost:${process.env.FRONTEND_PORT}` : "https://teach-and-tackle.onrender.com";
+        if (!user) return res.redirect(`${returnUrl}/register?student_id=${encodeURIComponent(student_id)}&name=${encodeURIComponent(profileResp.data.displayName || "")}`);
 
         user.name = profileResp.data.displayName || "";
-        await user.save();
 
         try {
             const photoResp = await axios.get("https://graph.microsoft.com/v1.0/me/photo/$value", {
@@ -105,14 +105,14 @@ router.get("/callback", writeLimiter, async (req, res) => {
                 responseType: "arraybuffer",
             });
 
-            if (photoResp.status === 200) {
-                const photoBase64 = Buffer.from(photoResp.data).toString("base64");
-                user.image = `data:image/jpeg;base64,${photoBase64}`;
-            } else {
+            const photoBase64 = Buffer.from(photoResp.data).toString("base64");
+            user.image = `data:image/jpeg;base64,${photoBase64}`;
+        } catch (err) {
+            if (err.response?.status === 404) {
                 user.image = null;
-            }
-        } catch {
-            user.image = null;
+            } else {
+                console.error("Photo fetch failed:", err.message)
+            };
         }
 
         await user.save();
@@ -127,7 +127,7 @@ router.get("/callback", writeLimiter, async (req, res) => {
                 diploma: user.diploma
             },
             process.env.JWT_SECRET,
-            { expiresIn: "7d", audience: process.env.DEV ? `http://localhost:${process.env.FRONTEND_PORT}` : "https://teach-and-tackle.onrender.com", issuer: process.env.DEV ? `https://localhost:${process.env.BACKEND_PORT}` : "https://fweb-project.onrender.com" }
+            { expiresIn: "7d", audience: returnUrl, issuer: process.env.DEV ? `http://localhost:${process.env.BACKEND_PORT}` : "https://fweb-project.onrender.com" }
         );
 
         res.cookie("token", sessionJwt, {
@@ -142,7 +142,7 @@ router.get("/callback", writeLimiter, async (req, res) => {
         return res.redirect(redirectBack);
     } catch (e) {
         console.error(e);
-        if (e.message.includes("AADSTS54005")) return res.redirect(`https://teach-and-tackle.onrender.com/login`);
+        if (e.message.includes("AADSTS54005")) return res.redirect(req.query.state ? decodeURIComponent(req.query.state) : "https://teach-and-tackle.onrender.com");
         res.status(400).send("Authentication error");
     }
 });

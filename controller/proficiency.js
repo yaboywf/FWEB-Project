@@ -97,4 +97,16 @@ router.delete("/remove", verify, writeLimiter, checkRequiredKeys('query', ["id"]
     return res.status(200).json({ message: "Proficiency successfully deleted" });
 })
 
+router.put("/update", verify, writeLimiter, checkRequiredKeys('body', ["id"]), async (req, res) => {
+    const { id } = req.body;
+    if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
+
+    const proficiency = await Proficiency.findOne({ student_id: req.user.student_id, _id: id });
+    if (!proficiency) return res.status(404).json({ message: "Proficiency not found" });
+
+    proficiency.type = Number(proficiency.type) === 1 ? 2 : 1;
+    await proficiency.save();
+    return res.status(200).json({ message: "Proficiency successfully updated" });
+})
+
 export { router, modules, proficiencies, matches };

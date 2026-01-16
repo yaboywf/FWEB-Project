@@ -5,26 +5,46 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-	globalIgnores(['dist']),
-	{
-		files: ['**/*.{js,jsx}'],
-		extends: [
-			js.configs.recommended,
-			reactHooks.configs.flat.recommended,
-			reactRefresh.configs.vite,
-		],
-		languageOptions: {
-			ecmaVersion: 2020,
-			globals: globals.browser,
-			parserOptions: {
-				ecmaVersion: 'latest',
-				ecmaFeatures: { jsx: true },
-				sourceType: 'module',
-			},
-		},
-		rules: {
-			"react-hooks/exhaustive-deps": "off",
-			'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-		},
-	},
+    globalIgnores(['dist']),
+
+    // ======================
+    // Frontend (React / Browser)
+    // ======================
+    {
+        files: ['src/**/*.{js,jsx}'],
+        extends: [
+            js.configs.recommended,
+            reactHooks.configs.flat.recommended,
+            reactRefresh.configs.vite,
+        ],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            globals: globals.browser,
+            parserOptions: {
+                ecmaFeatures: { jsx: true },
+            },
+        },
+        rules: {
+            'react-hooks/exhaustive-deps': 'off',
+            'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+        },
+    },
+
+    // ======================
+    // Backend (Node.js)
+    // ======================
+    {
+        files: [
+            'server.js',
+            'middleware.js',
+            'controller/**/*.js',
+        ],
+        extends: [js.configs.recommended],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            globals: globals.node,
+        },
+    },
 ])

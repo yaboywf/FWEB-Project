@@ -1,9 +1,9 @@
 import '../styles/general.scss'
 import PropTypes from "prop-types";
 
-const Placeholder = ({ height=20, width=50 }) => {
+const Placeholder = ({ height=20, width=50, styles={} }) => {
     return (
-        <div className='load_container' data-placeholder style={{ height: `${height}px`, width: `${width}px` }}>
+        <div className='load_container' data-placeholder style={{ height: `${height}px`, width: `${width}px`, ...styles }}>
             <div className='placeholder' />
         </div>
     )

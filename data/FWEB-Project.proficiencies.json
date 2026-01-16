@@ -1,173 +1,197 @@
-[{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d36"
-  },
-  "student_id": "2523841F",
-  "type": 1,
-  "module_id": {
-    "$oid": "68f5f16973471938e00d8a60"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d37"
-  },
-  "student_id": "2402133I",
-  "type": 1,
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a38"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d39"
-  },
-  "student_id": "2403222I",
-  "type": 1,
-  "module_id": {
-    "$oid": "68f5ec5073471938e00d8a4f"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d38"
-  },
-  "student_id": "2416579C",
-  "type": 2,
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a37"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d3d"
-  },
-  "student_id": "2402133I",
-  "type": 2,
-  "module_id": {
-    "$oid": "68f5ec5073471938e00d8a4f"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d3f"
-  },
-  "student_id": "2403880D",
-  "type": 2,
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a38"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d40"
-  },
-  "student_id": "2518293D",
-  "type": 2,
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a39"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d35"
-  },
-  "student_id": "2402133I",
-  "type": 2,
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a3b"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d3b"
-  },
-  "student_id": "2412374G",
-  "type": 1,
-  "module_id": {
-    "$oid": "68f5f25973471938e00d8a7d"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d3c"
-  },
-  "student_id": "2412374G",
-  "type": 2,
-  "module_id": {
-    "$oid": "68f5f23c73471938e00d8a77"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d43"
-  },
-  "student_id": "2304781B",
-  "type": 1,
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a3b"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d3a"
-  },
-  "student_id": "2523841F",
-  "type": 2,
-  "module_id": {
-    "$oid": "68f5f1d073471938e00d8a6b"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d41"
-  },
-  "student_id": "2412374G",
-  "type": 1,
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a37"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f34c3b21c1f2451ef17d42"
-  },
-  "student_id": "2416579C",
-  "type": 2,
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a3a"
-  }
-},
-{
-  "_id": {
-    "$oid": "68f5fb65849a544f596f1e17"
-  },
-  "student_id": "2402133I",
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a3a"
-  },
-  "type": 1,
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "68f5fbb1ad644350520cf4e7"
-  },
-  "student_id": "2402133I",
-  "module_id": {
-    "$oid": "68f5f23c73471938e00d8a77"
-  },
-  "type": 1,
-  "__v": 0
-},
-{
-  "_id": {
-    "$oid": "68f78d69477810dbffa5d52a"
-  },
-  "student_id": "2402133I",
-  "module_id": {
-    "$oid": "68f5e88773471938e00d8a37"
-  },
-  "type": 2,
-  "__v": 0
-}]
+[
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d36"
+        },
+        "student_id": "2523841F",
+        "type": 1,
+        "module_id": {
+            "$oid": "68f5f16973471938e00d8a60"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d37"
+        },
+        "student_id": "2402133I",
+        "type": 1,
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a38"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d38"
+        },
+        "student_id": "2416579C",
+        "type": 2,
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a37"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d3d"
+        },
+        "student_id": "2402133I",
+        "type": 2,
+        "module_id": {
+            "$oid": "68f5ec5073471938e00d8a4f"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d3f"
+        },
+        "student_id": "2403880D",
+        "type": 2,
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a38"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d40"
+        },
+        "student_id": "2518293D",
+        "type": 2,
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a39"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d35"
+        },
+        "student_id": "2402133I",
+        "type": 2,
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a3b"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d3b"
+        },
+        "student_id": "2412374G",
+        "type": 1,
+        "module_id": {
+            "$oid": "68f5f25973471938e00d8a7d"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d3c"
+        },
+        "student_id": "2412374G",
+        "type": 2,
+        "module_id": {
+            "$oid": "68f5f23c73471938e00d8a77"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d43"
+        },
+        "student_id": "2304781B",
+        "type": 1,
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a3b"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d3a"
+        },
+        "student_id": "2523841F",
+        "type": 2,
+        "module_id": {
+            "$oid": "68f5f1d073471938e00d8a6b"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d41"
+        },
+        "student_id": "2412374G",
+        "type": 1,
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a37"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f34c3b21c1f2451ef17d42"
+        },
+        "student_id": "2416579C",
+        "type": 2,
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a3a"
+        }
+    },
+    {
+        "_id": {
+            "$oid": "68f5fb65849a544f596f1e17"
+        },
+        "student_id": "2402133I",
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a3a"
+        },
+        "type": 1,
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "68f5fbb1ad644350520cf4e7"
+        },
+        "student_id": "2402133I",
+        "module_id": {
+            "$oid": "68f5f23c73471938e00d8a77"
+        },
+        "type": 1,
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "690f18070e288f5a4bbd2e35"
+        },
+        "module_id": {
+            "$oid": "68f5e88773471938e00d8a38"
+        },
+        "type": 2,
+        "student_id": "2403222I"
+    },
+    {
+        "_id": {
+            "$oid": "695ddfb356508d0e94b360e1"
+        },
+        "student_id": "2402133I",
+        "module_id": {
+            "$oid": "68f34c3b21c1f2451ef17d36"
+        },
+        "type": 2,
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "69671bfd1f4ec70aac503fff"
+        },
+        "student_id": "2403222I",
+        "module_id": {
+            "$oid": "69009877873b195f93e1fe76"
+        },
+        "type": 1,
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "69671bff1f4ec70aac504007"
+        },
+        "student_id": "2403222I",
+        "module_id": {
+            "$oid": "6965fd9ac89904f467389a1a"
+        },
+        "type": 1,
+        "__v": 0
+    }
+]

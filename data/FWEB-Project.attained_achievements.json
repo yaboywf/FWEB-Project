@@ -36,4 +36,17 @@
   "achieved_date": {
     "$date": "2025-10-23T08:19:17.270Z"
   }
+},
+{
+  "_id": {
+    "$oid": "6967839fee750543f76d4add"
+  },
+  "student_id": "2403880D",
+  "achievement_id": {
+    "$oid": "68f9986fe52d1f0ea1343929"
+  },
+  "__v": 0,
+  "achieved_date": {
+    "$date": "2026-01-14T11:53:03.379Z"
+  }
 }]

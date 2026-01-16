@@ -2,65 +2,127 @@
   "_id": {
     "$oid": "68f5e88773471938e00d8a38"
   },
-  "module": "Agile Methodology and Design Thinking (AMDT)"
+  "module": "Agile Methodology and Design Thinking (AMDT)",
+  "category": "IT",
+  "code": "CIT2C23"
 },
 {
   "_id": {
     "$oid": "68f5e88773471938e00d8a3a"
   },
-  "module": "Database Application Development (DBAV)"
+  "module": "Database Application Development (DBAV)",
+  "category": "IT",
+  "code": "CIA1C06"
 },
 {
   "_id": {
     "$oid": "68f5e88773471938e00d8a3b"
   },
-  "module": "Application Development Project (ADEV)"
+  "module": "Application Development Project (ADEV)",
+  "category": "IT",
+  "code": "CIT1C21"
 },
 {
   "_id": {
     "$oid": "68f5e88773471938e00d8a37"
   },
-  "module": "Computational Thinking (COMT)"
+  "module": "Computational Thinking (COMT)",
+  "category": "IT",
+  "code": "CIT1C18"
 },
 {
   "_id": {
     "$oid": "68f5e88773471938e00d8a39"
   },
-  "module": "IoT Application Development (ITAD)"
+  "module": "IoT Application Development (ITAD)",
+  "category": "IT",
+  "code": "CMC2C16"
 },
 {
   "_id": {
     "$oid": "68f5ec5073471938e00d8a4f"
   },
-  "module": "Network and Cloud Technology (NECT)"
+  "module": "Network and Cloud Technology (NECT)",
+  "category": "IT",
+  "code": "CCF1C04"
 },
 {
   "_id": {
     "$oid": "68f5f1d073471938e00d8a6b"
   },
-  "module": "Mobile App Development (MBAP)"
+  "module": "Mobile App Development (MBAP)",
+  "category": "IT",
+  "code": "CIT2C18"
 },
 {
   "_id": {
     "$oid": "68f5f23c73471938e00d8a77"
   },
-  "module": "Full Stack Web Development (FWEB)"
+  "module": "Full Stack Web Development (FWEB)",
+  "category": "IT",
+  "code": "CIT2C20"
 },
 {
   "_id": {
     "$oid": "68f5f25973471938e00d8a7d"
   },
-  "module": "Data Structures and Algorithms (DSAG)"
+  "module": "Data Structures and Algorithms (DSAG)",
+  "category": "IT",
+  "code": "CIT1C14"
 },
 {
   "_id": {
     "$oid": "68f34c3b21c1f2451ef17d36"
   },
-  "module": "Logic and Mathematics"
+  "module": "Logic and Mathematics (LOMA)",
+  "category": "IT",
+  "code": "CIA1C07"
 },
 {
   "_id": {
     "$oid": "69009877873b195f93e1fe76"
   },
-  "module": "Cloud Application Development (CADV)"
+  "module": "Cloud Application Development (CADV)",
+  "category": "IT",
+  "code": "CIT2C24"
+},
+{
+  "_id": {
+    "$oid": "6965d862c89904f467389a16"
+  },
+  "module": "Practicum 1 (P1)",
+  "category": "HSS",
+  "code": "GED1001"
+},
+{
+  "_id": {
+    "$oid": "6965d862c89904f467389a19"
+  },
+  "module": "Child Development 1 (CD1)",
+  "category": "HSS",
+  "code": "GED1101"
+},
+{
+  "_id": {
+    "$oid": "6965fd9ac89904f467389a1a"
+  },
+  "module": "Motor Skills Development (MSD)",
+  "category": "HSS",
+  "code": "GED1105"
+},
+{
+  "_id": {
+    "$oid": "696600e4c89904f467389a1b"
+  },
+  "module": "Computer Programming for Problem Solving (CPPS)",
+  "category": "ENG",
+  "code": "ESE1006"
+},
+{
+  "_id": {
+    "$oid": "69660115c89904f467389a1c"
+  },
+  "module": "Electronic Devices & Circuits (ETDC)",
+  "category": "ENG",
+  "code": "EEE1002"
 }]

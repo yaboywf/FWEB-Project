@@ -145,6 +145,10 @@
     --fa: "\f0c0"
 }
 
+.fa-lightbulb::before {
+    --fa: "\f0eb"
+}
+
 .fa-star-christmas::before {
     --fa: "\f7d4";
     background: linear-gradient(135deg, #8A2BE2, #4E9FFF, #00D4FF);
@@ -152,8 +156,40 @@
     color: transparent;
 }
 
+.fa-plane {
+    --fa: "\f1d8"
+}
+
+.fa-rotate-right {
+    --fa: "\f2f9"
+}
+
+.fa-book {
+    --fa: "\f518"
+}
+
+.fa-right-from-bracket::before {
+    --fa: "\f2f5"
+}
+
+.fa-gear::before {
+    --fa: "\f013"
+}
+
+.fa-arrow-right::before {
+    --fa: "\f061"
+}
+
+.fa-arrow-left::before {
+    --fa: "\f060"
+}
+
 .fa-microsoft::before {
     --fa: "\f3ca"
+}
+
+.fa-info-circle::before {
+    --fa: "\f05a"
 }
 
 .fa-teach::before {

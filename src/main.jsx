@@ -13,7 +13,9 @@ const ExplorePage = lazy(() => import('./pages/ExplorePage'))
 const ProfilePage = lazy(() => import('./pages/ProfilePage'))
 const PendingPage = lazy(() => import('./pages/PendingPage'))
 const PairingPage = lazy(() => import('./pages/PairingPage'))
-const SessionPage = lazy(() => import('./pages/SessionPage'))
+const SessionEditPage = lazy(() => import('./pages/SessionEditPage'))
+const SessionCreatePage = lazy(() => import('./pages/SessionCreatePage'))
+const ChatBot = lazy(() => import('./pages/ChatBotPage'))
 
 createRoot(document.body).render(
 	<StrictMode>
@@ -27,10 +29,12 @@ createRoot(document.body).render(
 							<Route path="/" element={<LoginPage />} />
 							<Route element={<Layout />}>
 								<Route path="/explore" element={<ExplorePage />} />
-								<Route path="/profile" element={<ProfilePage />} />
+								<Route path="/settings" element={<ProfilePage />} />
 								<Route path="/pending" element={<PendingPage />} />
 								<Route path="/pairing" element={<PairingPage />} />
-								<Route path="/session" element={<SessionPage />} />
+								<Route path="/session/edit/:pairId" element={<SessionEditPage />} />
+								<Route path="/session/create/:adminNum" element={<SessionCreatePage />} />
+								<Route path="/tacklebot" element={<ChatBot />} />
 							</Route>
 							<Route path="*" element={<NotFound />} />
 						</Routes>
