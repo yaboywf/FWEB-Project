@@ -112,4 +112,19 @@ router.delete('/delete', verify, writeLimiter, checkRequiredKeys('query', ["id"]
     return res.json({ message: "Pair successfully deleted" });
 })
 
+router.get('/stats', verify, writeLimiter, async (req, res) => {
+    const modules = {};
+    const pairs = await Pair.find({ status: 2 }).select({ module_id: 1, status: 1 });
+
+    pairs.forEach(p => {
+        if (modules[p.module_id]) {
+            modules[p.module_id]++;
+        } else {
+            modules[p.module_id] = 1;
+        }
+    })
+
+    return res.json(modules);
+})
+
 export { router, pairs };

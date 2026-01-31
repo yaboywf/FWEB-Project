@@ -1,40 +1,50 @@
-import js from "@eslint/js";
-import globals from "globals";
-import pluginReact from "eslint-plugin-react";
-import { defineConfig } from "eslint/config";
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  {
-    files: ["**/*.{js,mjs,cjs,jsx}"],
-    ignores: ["dist/**"],
-    languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
-      globals: {
-        ...globals.browser,
-        ...globals.node,
-      },
-      parserOptions: {
-        ecmaFeatures: { jsx: true },
-      },
-    },
-    plugins: {
-      react: pluginReact,
-    },
-    rules: {
-      ...js.configs.recommended.rules,
-      ...pluginReact.configs.flat.recommended.rules,
+    globalIgnores(['dist']),
 
-      "react/react-in-jsx-scope": "off",
-      "react/prop-types": "off",
-      
-      "react/jsx-uses-react": "off",
-      "react/jsx-uses-vars": "warn",
+    // ======================
+    // Frontend (React / Browser)
+    // ======================
+    {
+        files: ['src/**/*.{js,jsx}'],
+        extends: [
+            js.configs.recommended,
+            reactHooks.configs.flat.recommended,
+            reactRefresh.configs.vite,
+        ],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            globals: globals.browser,
+            parserOptions: {
+                ecmaFeatures: { jsx: true },
+            },
+        },
+        rules: {
+            'react-hooks/exhaustive-deps': 'off',
+            'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+        },
     },
-    settings: {
-      react: {
-        version: "detect",
-      },
+
+    // ======================
+    // Backend (Node.js)
+    // ======================
+    {
+        files: [
+            'server.js',
+            'middleware.js',
+            'controller/**/*.js',
+        ],
+        extends: [js.configs.recommended],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'module',
+            globals: globals.node,
+        },
     },
-  },
-]);
+])

@@ -1,0 +1,318 @@
+@use "sass:list";
+@use "sass:color";
+
+.intro {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+    align-items: center;
+
+    .sublogo {
+        width: 150px;
+        height: 150px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        i {
+            font-size: 100px;
+        }
+
+        .waves {
+            filter: blur(3px) brightness(0.7);
+            margin-top: 50px;
+            position: absolute;
+            inset: 0;
+        }
+
+        .wave {
+            width: 1000px;
+            height: 100px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background: url("/wave.png") center / 1000px 100px;
+            animation: wave 2s linear infinite;
+
+            &:nth-child(2) {
+                animation-direction: reverse;
+            }
+
+            @for $i from 1 through 3 {
+                &:nth-child(#{$i}) {
+                    animation-delay: $i * 0.2s;
+                    opacity: 0.2 + $i * 0.2;
+                }
+            }
+        }
+    }
+
+    .heading {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-weight: bold;
+        font-size: 36px;
+    }
+
+    .subheading {
+        color: grey;
+        font-size: 16px;
+        margin-bottom: 30px;
+    }
+
+    .suggestion {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        $color: rgb(130, 177, 235);
+        $lighter-color: color.adjust($color, $lightness: 20%);
+
+
+        p {
+            cursor: pointer;
+            width: 330px;
+            padding: 8px 10px;
+            font-size: 12px;
+            border-radius: 10px;
+            border: 1px solid $color;
+            opacity: 0;
+            animation: fadeUp 0.2s ease-in-out forwards;
+
+            &::before {
+                font: var(--fa-font-regular);
+                content: "\f0eb";
+                margin-right: 5px;
+            }
+
+            &:hover {
+                background: $lighter-color;
+            }
+
+            @for $i from 1 through 4 {
+                &:nth-of-type(#{$i}) {
+                    animation-delay: $i * 0.1s;
+                }
+            }
+        }
+    }
+
+    .powered {
+        color: grey;
+        font-size: 10px;
+        margin-top: 20px;
+    }
+}
+
+.chat {
+    padding: 0 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: auto;
+
+    ul,
+    ol {
+        margin-left: 25px;
+        line-height: 1.3;
+    }
+
+    .text {
+        font-size: 14px;
+        max-width: 450px;
+        padding: 5px 10px;
+        border-radius: 10px;
+        border: 1px solid grey;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        animation: appear 0.2s ease-in-out;
+
+        pre {
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-width: 100%;
+        }
+
+        code {
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+    }
+
+    .user,
+    .ai {
+        display: flex;
+
+        &[data-last="true"] {
+            margin-bottom: 220px;
+        }
+    }
+
+    .user {
+        margin-left: auto;
+
+        .text {
+            color: white;
+            background: linear-gradient(to right, #023151, #c8421c);
+            transform-origin: top right;
+        }
+
+        &[data-empty="true"]::after {
+            content: "\f007";
+            font: var(--fa-font-solid);
+            color: grey;
+            font-size: 12px;
+        }
+
+        &::after {
+            content: "";
+            width: 20px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            background: var(--before-background) center/cover no-repeat;
+        }
+    }
+
+    .ai {
+        .text {
+            transform-origin: top left;
+            background: linear-gradient(to bottom right, #8A2BE2, #4E9FFF);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        &::before {
+            height: max-content;
+            font: var(--fa-font-regular);
+            content: "\f7d4";
+            margin-right: 5px;
+            background: linear-gradient(135deg, #8A2BE2, #4E9FFF, #00D4FF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+        }
+    }
+
+    .top {
+        position: sticky;
+        top: 20px;
+        display: flex;
+        gap: 5px;
+        font-weight: bold;
+        align-items: center;
+        margin-left: -100px;
+    }
+
+    li+li {
+        margin-top: 5px;
+    }
+
+    .input {
+        position: sticky;
+        bottom: 50px;
+        margin-top: auto;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    input {
+        position: sticky;
+        bottom: 10px;
+        padding: 8px 10px;
+        outline: none;
+        border: 1px solid lightgrey;
+        border-radius: 10px;
+        width: 500px;
+    }
+
+    button {
+        flex-shrink: 0;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px;
+        height: 35px;
+        outline: none;
+        border: 1px solid lightgrey;
+        cursor: pointer;
+        background: white;
+        overflow: hidden;
+
+        &::before {
+            font: var(--fa-font-regular);
+            content: "\f1d8";
+            color: grey;
+        }
+
+        &:hover {
+            color: black;
+
+            &::before {
+                background: linear-gradient(135deg, #8A2BE2, #4E9FFF, #00D4FF);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                display: inline-block;
+                animation: fly 1s infinite;
+            }
+        }
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes wave {
+    0% {
+        background-position: 1000px;
+    }
+
+    100% {
+        background-position: 0px;
+    }
+}
+
+@keyframes fly {
+    0% {
+        translate: -200% 200%;
+    }
+
+    50% {
+        translate: 0 0;
+    }
+
+    75% {
+        translate: 0 0;
+    }
+
+    100% {
+        translate: 200% -200%;
+    }
+}

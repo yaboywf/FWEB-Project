@@ -13,7 +13,8 @@ const modules = async () => {
 }
 
 const proficiencies = async (req) => {
-    const proficiencies = await Proficiency.find({ student_id: { $eq: req.user.student_id } }).populate("module_id");
+    const id = req.query.id || req.user.student_id;
+    const proficiencies = await Proficiency.find({ student_id: { $eq: id } }).populate("module_id");
     return proficiencies;
 }
 
@@ -37,7 +38,7 @@ const matches = async (req) => {
 
     const data = await Proficiency.find(query).populate("module_id");
     const studentIds = [...new Set(data.map(item => item.student_id.toUpperCase()))];
-    if (studentIds.length === 0) return res.status(200).json([]);
+    if (studentIds.length === 0) return [];
 
     const users = await User.find({ student_id: { $in: studentIds } }).select("-password").lean();
     const proficiencies = await Proficiency.find({ student_id: { $in: studentIds } }).populate("module_id").sort({ type: 1, module: 1 }).lean();
@@ -94,6 +95,18 @@ router.delete("/remove", verify, writeLimiter, checkRequiredKeys('query', ["id"]
 
     await Proficiency.deleteOne({ _id: { $eq: id } });
     return res.status(200).json({ message: "Proficiency successfully deleted" });
+})
+
+router.put("/update", verify, writeLimiter, checkRequiredKeys('body', ["id"]), async (req, res) => {
+    const { id } = req.body;
+    if (!Types.ObjectId.isValid(id)) return res.status(400).send("Invalid or missing ID");
+
+    const proficiency = await Proficiency.findOne({ student_id: req.user.student_id, _id: id });
+    if (!proficiency) return res.status(404).json({ message: "Proficiency not found" });
+
+    proficiency.type = Number(proficiency.type) === 1 ? 2 : 1;
+    await proficiency.save();
+    return res.status(200).json({ message: "Proficiency successfully updated" });
 })
 
 export { router, modules, proficiencies, matches };

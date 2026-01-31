@@ -1,22 +1,79 @@
 .error_page {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    display: flex;
-    width: 100%;
+    position: relative;
 
-    img {
-        width: 200px;
-        margin-bottom: 20px;
+    .blob {
+        position: fixed;
+        aspect-ratio: 1;
+        height: 200vh;
+        top: -80%;
+        left: 60%;
+        background: linear-gradient(to bottom right, blue, rgb(124, 39, 228));
+        border-radius: 50%;
+        overflow: hidden;
+
+        img {
+            position: absolute;
+            rotate: 63deg;
+            width: 28%;
+            height: auto;
+            left: -12%;
+            top: 77%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
     }
 
-    p:last-of-type {
-        padding: 5px 10px;
-        border: 1px solid black;
-        border-radius: 10px;
-        text-decoration: none;
-        color: black;
-        cursor: pointer;
+    >img {
+        width: 100px;
+        top: 10px;
+        left: 10px;
+        z-index: 3;
+        position: absolute;
+    }
+
+    .content {
+        width: 55%;
+        top: 0;
+        padding: 100px;
+
+        h1 {
+            font-size: 150px;
+            letter-spacing: 20px;
+            background: linear-gradient(135deg, #8A2BE2, #4E9FFF, #00D4FF);
+            background-clip: text;
+            color: transparent;
+        }
+
+        h2 {
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        button {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            outline: none;
+            background: #4E9FFF;
+            color: white;
+            cursor: pointer;
+        }
+    }
+}
+
+@media screen and (width <= 800px) {
+    .blob {
+        display: none;
+    }
+
+    .content {
+        width: 100vw !important;
     }
 }

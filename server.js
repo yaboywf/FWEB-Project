@@ -10,13 +10,26 @@ import authRoutes from "./controller/auth.js";
 import { router as pairRoutes } from "./controller/pairs.js";
 import requestRoutes from "./controller/requests.js";
 
-dotenv.config({ debug: false });
+dotenv.config({ debug: false, quiet: true });
 const app = express();
 
 mongoose.set("strictQuery", true);
-mongoose.connect(process.env.DB_CONNECT)
-    .then(() => console.log("Connected to DB!"))
-    .catch((err) => console.error(err));
+const DB_URI = process.env.DB_CONNECT;
+const RETRY_DELAY = 5000;
+
+async function connectWithRetry() {
+    try {
+        await mongoose.connect(DB_URI);
+        console.log("✅ Connected to DB!");
+    } catch (err) {
+        console.error("❌ DB connection failed. Retrying in 5 seconds...");
+        console.error(err.message);
+
+        setTimeout(connectWithRetry, RETRY_DELAY);
+    }
+}
+
+connectWithRetry();
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
@@ -34,5 +47,5 @@ app.use("/api/request", requestRoutes);
 
 app.listen(3000, (err) => {
     if (err) console.error(err);
-    console.log(`Server running`)
+    console.log(`✅ Server running`)
 });
