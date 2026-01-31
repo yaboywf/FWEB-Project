@@ -331,7 +331,7 @@ const SessionCreatePage = () => {
                             />
                             <div>
                                 {pairMatchableModules.map(m => (
-                                    <div key={m._id} data-selected={m._id === module_id} className={`${styles.module} ${(m.alreadyRequested || m.alreadyPaired) && styles.disabled}`} onClick={() => setValue("module_id", m.module_id?._id, { shouldValidate: true, shouldDirty: true })}>
+                                    <div key={m._id} data-selected={m.module_id._id === module_id} className={`${styles.module} ${(m.alreadyRequested || m.alreadyPaired) && styles.disabled}`} onClick={() => setValue("module_id", m.module_id?._id, { shouldValidate: true, shouldDirty: true })}>
                                         <i className="fa-regular fa-book"></i>
                                         <p>{m.module_id?.code}</p>
                                         <span>{m.module_id?.module}</span>
@@ -368,13 +368,13 @@ const SessionCreatePage = () => {
                 )}
 
                 <div className={styles.controls}>
-                    <button onClick={() => {
+                    {currentStep !== 3 && <button onClick={() => {
                         if (currentStep === 1) navigate('/explore');
                         setCurrentStep(prev => currentStep > 1 ? prev - 1 : prev)
                     }}>
                         <i className="fa-regular fa-arrow-left"></i>
                         {currentStep === 1 ? "Cancel" : "Previous"}
-                    </button>
+                    </button>}
                     <button onClick={handleSubmit(onSubmit)}>
                         {currentStep === 3 ? "Done" : "Next"}
                         <i className="fa-regular fa-arrow-right"></i>

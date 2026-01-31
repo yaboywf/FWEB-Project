@@ -3,7 +3,7 @@
     font-style: normal;
     font-weight: 900;
     font-display: block;
-    src: url(../webfonts/solid.ttf) format("truetype");
+    src: url(../webfonts/solid-icons.ttf) format("truetype");
 }
 
 @font-face {
@@ -11,7 +11,7 @@
     font-style: normal;
     font-weight: 400;
     font-display: block;
-    src: url(../webfonts/regular.ttf) format("truetype");
+    src: url(../webfonts/regular-icons.ttf) format("truetype");
 }
 
 .fa-regular,

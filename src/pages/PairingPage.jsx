@@ -17,7 +17,7 @@ const PlaceholderTemplate = () => {
             <Student loading={true} />
 
             <div className={styles.pair_info}>
-                <i className="fa-solid fa-link"></i>
+                <i className="fa-regular fa-link"></i>
                 <Placeholder width={100} height={18} />
                 <Placeholder width={100} height={18} />
                 <Placeholder width={60} height={18} />
@@ -181,6 +181,12 @@ const PairingPage = () => {
         <>
             <div className={styles.pairing_container}>
                 {loading && Array.from({ length: 2 }).map((_, index) => <PlaceholderTemplate key={`placeholder_${index}`} />)}
+
+                {!loading && pairings.length === 0 && <div className={styles.not_found}>
+                    <img src="/not_found.png" alt="Owl" />
+                    <p>No pairings found</p>
+                </div>}
+
                 {pairings && pairings.map(pair => (
                     <div className={styles.pair} key={pair._id}>
                         <div>
@@ -203,7 +209,7 @@ const PairingPage = () => {
                         <Student student={pair.sender_info} classes={styles.student} />
 
                         <div className={styles.pair_info}>
-                            <i className="fa-solid fa-link"></i>
+                            <i className="fa-regular fa-link"></i>
                             <p>{dayNumberToName(pair.day)} {pair.start_time} - {pair.end_time}</p>
                             <p id={styles.end_date} style={calcRemainingDays(pair.end_date) < 0 ? { color: "red" } : {}}>{calcRemainingDays(pair.end_date) < 0 ? "Ended" : `Ending in ${calcRemainingDays(pair.end_date)} Days`}</p>
                             <p title={pair.module_info.module}>{extractModuleName(pair.module_info.module)}</p>

@@ -12,7 +12,10 @@ This setup allows the application to be:
 Although the current workflow does not include automated testing or checks, it still demonstrates the core principles of CI/CD and GitOps, where deployment is driven directly by version control changes. This approach ensures that the live application always reflects the latest committed code and fulfills the deployment requirement of the project.
 
 # Website Link
-https://teach-and-tackle.onrender.com
+| Stage | Link |
+|-------|------|
+| Frontend | https://teach-and-tackle.onrender.com |
+| Backend | https://fweb-project.onrender.com |
 
 # Git Repository
 https://github.com/yaboywf/FWEB-Project

@@ -108,11 +108,11 @@ const ExplorePage = () => {
                         <div className={styles.student_skills}>
                             <div className={styles.toggles}>
                                 <button className={(moduleTab[student._id] === undefined || moduleTab[student._id] === 1) ? styles.selected : ""} onClick={() => selectTab(student._id, 1)}>
-                                    <i className="fa-solid fa-teach"></i>
+                                    <i className="fa-regular fa-teach"></i>
                                     Teach ({student.proficiencies.filter(p => p.type === 1).length})
                                 </button>
                                 <button className={moduleTab[student._id] === 2 ? styles.selected : ""} onClick={() => selectTab(student._id, 2)}>
-                                    <i className="fa-solid fa-graduation-cap"></i>
+                                    <i className="fa-regular fa-graduation-cap"></i>
                                     Learn ({student.proficiencies.filter(p => p.type === 2).length})
                                 </button>
                             </div>
@@ -145,7 +145,7 @@ const ExplorePage = () => {
                             </button>
 
                             <button onClick={() => navigate(`/session/create/${student.student_id}`)}>
-                                <i className="fa-solid fa-link"></i>
+                                <i className="fa-regular fa-link"></i>
                                 Request
                             </button>
                         </div>

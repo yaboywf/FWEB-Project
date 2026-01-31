@@ -114,7 +114,7 @@ const Sidebar = () => {
             setUserProficiencies(null);
             setUser(null);
             if (needMessage) showMessage("Logged out successfully", "success");
-            navigate("/");
+            navigate("/", { replace: true });
         } catch (error) {
             if (error.name !== "AbortError") {
                 console.error(error);

@@ -109,6 +109,7 @@ const ChatBot = () => {
                     <input
                         type="text"
                         value={input || ""}
+                        id="chat_input"
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="Ask TackleBot..."
                         onKeyDown={(e) => {

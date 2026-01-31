@@ -219,7 +219,8 @@ const ProfilePage = () => {
             const { request } = api('put', `/account/update`, data);
 
             await request;
-            setUser(prev => ({ ...prev, ...data }))
+            setUser(prev => ({ ...prev, ...data }));
+            showMessage("Profile updated successfully", "success");
         } catch (err) {
             if (err.name === "AbortError") return;
             console.error(err);
@@ -252,7 +253,7 @@ const ProfilePage = () => {
 
                 <form className={`${styles.profile_form} ${styles.container}`} id="section-0" noValidate onSubmit={updateProfile}>
                     <h2>Account</h2>
-                    <label htmlFor="diploma">Diploma</label>
+                    <p>Diploma</p>
                     <p>Year of Study</p>
 
                     {loading ? <Placeholder width={200} height={30} /> : <input type="text" name="diploma" id="diploma" placeholder="Enter Your Diploma" autoComplete="off" value={diploma || ""} onChange={(e) => setDiploma(e.target.value)} required />}
@@ -272,7 +273,7 @@ const ProfilePage = () => {
                     <h2 id="modules_proficiency">Modules Proficiency</h2>
                     <div className={styles.proficiency_group}>
                         <h3>Ok to teach</h3>
-                        <div 
+                        <div
                             className={`${styles.profile_proficiency} ${dragOverZone.includes("teach") ? styles.drag_over : ""}`}
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={(e) => {
@@ -298,7 +299,7 @@ const ProfilePage = () => {
                         </div>
                         <div className={styles.modules_search}>
                             <i className="fa-regular fa-magnifying-glass"></i>
-                            <input type="search" placeholder="Search Modules" value={moduleSearch} onChange={(e) => setModuleSearch(e.target.value)} />
+                            <input type="search" name="modules_search" placeholder="Search Modules" value={moduleSearch} onChange={(e) => setModuleSearch(e.target.value)} />
                         </div>
                         {availableModules.map(module => (
                             <div key={module._id} className={styles.module} draggable onDragStart={() => { setDraggedModule(module); setDragOverZone(["teach", "learn"]) }} onDrop={() => setDragOverZone([])}>
@@ -315,7 +316,7 @@ const ProfilePage = () => {
 
                     <div className={styles.proficiency_group}>
                         <h3>I need help in</h3>
-                        <div 
+                        <div
                             className={`${styles.profile_proficiency} ${dragOverZone.includes("learn") ? styles.drag_over : ""}`}
                             onDragOver={(e) => e.preventDefault()}
                             onDrop={(e) => {
@@ -323,7 +324,7 @@ const ProfilePage = () => {
                                 setDragOverZone([]);
                             }}
                         >
-                            
+
                             {loading && Array.from({ length: 3 }).map((_, i) => <Placeholder key={`proficiency_w${i}`} width={200} />)}
                             {category[2] && category[2].length !== 0 && category[2].map(module => (
                                 <div key={module._id} className={styles.module} draggable onDragStart={() => { setDraggedModule(module); setDragOverZone(["all", "teach"]) }} onDrop={() => setDragOverZone([])}>
@@ -362,7 +363,7 @@ const ProfilePage = () => {
                     </div>
                 </div>
             </div>
-            
+
             <div className={styles.action_bar}>
                 <div className={styles.selector} style={{ transform: `translateY(${40 * (selectedSection.split("-")[1])}px)` }}></div>
                 {["Account", "Proficiency", "Achievements"].map((section, i) => (
