@@ -137,7 +137,7 @@ const Sidebar = () => {
                 </button>
                 <button onClick={() => navigate("/pairing")} className={active === "pairing" ? styles.active : ""}>
                     <i className="fa-regular fa-users"></i>
-                    Pairing
+                    Pairing1
                 </button>
                 <button onClick={() => navigate("/tacklebot")} className={active === "tacklebot" ? styles.active : ""}>
                     <i className="fa-regular fa-star-christmas"></i>
