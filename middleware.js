@@ -44,7 +44,7 @@ const checkRequiredKeys = (source, keys) => {
 
 const writeLimiter = rateLimit({
     windowMs: 60 * 1000,
-    max: 30000,
+    max: 1000,
     message: { message: "Too many actions — slow down." },
     standardHeaders: true,
     legacyHeaders: false,
