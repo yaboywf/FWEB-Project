@@ -142,7 +142,10 @@ router.get("/callback", writeLimiter, async (req, res) => {
         return res.redirect(redirectBack);
     } catch (e) {
         console.error(e);
-        if (e.message.includes("AADSTS54005")) return res.redirect(req.query.state ? decodeURIComponent(req.query.state) : "https://teach-and-tackle.onrender.com");
+        if (e.message.includes("AADSTS54005")) {
+            const returnUrl = req.query.state ? decodeURIComponent(req.query.state) : "https://teach-and-tackle.onrender.com/explore";
+            return res.redirect(`/api/auth/login?return_url=${encodeURIComponent(returnUrl)}`);
+        }
         res.status(400).send("Authentication error");
     }
 });
