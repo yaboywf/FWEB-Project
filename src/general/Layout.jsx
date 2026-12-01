@@ -26,7 +26,7 @@ const Layout = () => {
 
         fetchUserData();
         console.log("Hi cher, if u see this, plz gimme good grade :)");
-        console.log(`
+        console.log(String.raw`
   _                  _                 _     _             _    _      
 _| |_ ___  ___  ___ | |_   ___ ._ _  _| |  _| |_ ___  ___ | |__| | ___ 
  | | / ._><_> |/ | '| . | <_> || ' |/ . |   | | <_> |/ | '| / /| |/ ._>
